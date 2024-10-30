@@ -8,10 +8,10 @@ ZED stereo images and publishes left, right annotated bbox images (more specific
 """
 
 import cv2
+import os
 import numpy as np
 import math
 import threading
-import matplotlib.pyplot as plt
 
 classes = []
 non_dups_left = []
@@ -126,7 +126,6 @@ def bounding_box_dim (of, img):
    pair.append([of, non_dups])
    return pair
 
-
 def get_pair (images):
    global pair
    for img in images:
@@ -148,153 +147,7 @@ def get_pair (images):
    return pair
    # After pair is sent -> pair = []
 
-get_pair(["left.png", "right.png"])
-
 # left = cv2.imread("left.png")
 # right = cv2.imread("right.png")
 # cv2.imshow("left", left)
 # cv2.waitKey(0)
-
-# Given the bounding boxes for each image: do 8 point algorithm for corresponding images in each bounding box.
-
-def eight_point (left, right):
-   # Step 2: Initialize SIFT detector
-   global left_P, right_P
-   sift = cv2.SIFT_create()
-
-   # For finding 8 corresponding keypoints for each bounding box.
-   # for i in range(len(left)):
-   #    x_l, y_l, w_l, h_l = left[i]
-   #    x_r, y_r, w_r, h_r = right[i]
-
-   #    l = cv2.imread("left.png")
-   #    l_img = l[min(0,y_l):max(l.shape[0],y_l+h_l), min(0,x_l):max(l.shape[1],x_l+w_l)]
-   #    r = cv2.imread("right.png")
-   #    r_img = r[min(0,y_l):max(r.shape[0],y_l+h_l), min(0,x_l):max(r.shape[1],x_l+w_l)]
-   
-   # Step 3: Detect keypoints and compute descriptors
-   l_img = cv2.imread("left.png")
-   r_img = cv2.imread("right.png")
-   kp1, des1 = sift.detectAndCompute(l_img, None)
-   kp2, des2 = sift.detectAndCompute(r_img, None)
-
-   # Step 4: Match keypoints using BFMatcher
-   bf = cv2.BFMatcher(cv2.NORM_L2, crossCheck=True)
-   matches = bf.match(des1, des2)
-
-   # Step 5: Sort matches by distance
-   matches = sorted(matches, key=lambda x: x.distance)
-
-   # Step 6: Extract the best 8 matches
-   good_matches = matches[:8]
-
-   # Draw matches
-   matched_img = cv2.drawMatches(l_img, kp1, r_img, kp2, good_matches, None, flags=2)
-
-   # Step 7: Extract corresponding keypoints
-   # for corr in (np.float32([kp1[m.queryIdx].pt for m in good_matches])):
-   #    x, y = corr
-   left_P = np.float32([kp1[m.queryIdx].pt for m in good_matches])
-   right_P = np.float32([kp2[m.trainIdx].pt for m in good_matches])
-   # left_P = np.concatenate((left_P, np.float32([kp1[m.queryIdx].pt for m in good_matches])))
-   # right_P = np.concatenate((right_P, np.float32([kp2[m.trainIdx].pt for m in good_matches])))
-   # return np.hstack((left_P, np.ones((points.shape[0], 1)))), np.hstack((right_P, np.ones((points.shape[0], 1))))
-
-   # Step 8: Display or plot the results
-   # plt.figure(figsize=(15, 10))
-   # plt.imshow(matched_img)
-   # plt.show()
-
-   return left_P, right_P
-
-
-# Normalize left, right corresponding points.
-def normalize_points(points):
-   """Normalize image points by translating and scaling."""
-   x_, y_ = np.mean(points, axis=0)
-   d = np.mean(np.sqrt(np.sum((points-np.array([x_, y_])) ** 2, axis = 1)))
-   s = np.sqrt(2)/d
-   T = np.array([[s, 0, -s * x_],
-                 [0, s, -s * y_],
-                 [0, 0, 1]])
-   P = np.dot(T, np.hstack((points, np.ones((points.shape[0], 1)))).T).T
-   return P, T
-
-def fundamentalMatrix(left_P, right_P):
-   A = np.zeros((8,9))
-   left_P, T1 = normalize_points(left_P)
-   right_P, T2 = normalize_points(right_P)
-   for i in range(8):
-      x1, y1 = left_P[i, 0], left_P[i, 1]
-      x2, y2 = right_P[i, 0], right_P[i, 1]
-      A[i] = [x2 * x1, x2 * y1, x2, y2 * x1, y2 * y1, y2, x1, y1, 1]
-   U, S, V = np.linalg.svd(A)
-   F = V[-1].reshape(3, 3)
-   # Enforce the rank-2 constraint on F using SVD
-   U, S, V = np.linalg.svd(F)
-   S[-1] = 0  # Set the smallest singular value to zero
-   F = U @ np.diag(S) @ V
-   return T2.T @ F @ T1
-
-def depth(left, right):
-   l = cv2.imread("left.png")
-   r = cv2.imread("right.png")
-   for i in range(len(left)):
-      Z = (2.8 * 120) / (left[i][0] - right[i][0])
-      X_L, Y_L = left[i][0]-(665.465*Z/700.819), left[i][1]-(371.953*Z/700.819) 
-      X_H, Y_H = (left[i][0]+left[i][2])-(665.465*Z/700.819), (left[i][1]+left[i][3])-(371.953*Z/700.819) 
-      # X_L, X_H, Y_L, Y_H = int(X_L), int(X_H), int(Y_L), int(Y_H)
-      # cv2.circle(r, (X_L, Y_L), 1, color=(255, 255, 255), thickness=3)
-      # cv2.circle(r, (X_L, Y_H), 1, color=(255, 255, 255), thickness=3)
-      # cv2.circle(r, (X_H, Y_L), 1, color=(255, 255, 255), thickness=3)
-      # cv2.circle(r, (X_H, Y_H), 1, color=(255, 255, 255), thickness=3)
-      cv2.putText(l, str(Z), (left[i][0], left[i][1]), cv2.FONT_HERSHEY_SIMPLEX, 
-            fontScale=0.5, color=(255, 25, 205), thickness=1)
-      cv2.putText(r, str(Z), (right[i][0], right[i][1]), cv2.FONT_HERSHEY_SIMPLEX, 
-            fontScale=0.5, color=(255, 25, 205), thickness=1)
-
-   cv2.imshow("left", l)
-   cv2.waitKey(0)
-   cv2.imshow("right", r)
-   cv2.waitKey(0)
-# print(non_dups_left)
-left_P, right_P = eight_point(non_dups_left, non_dups_right)
-# depth(non_dups_left, non_dups_right)
-# Test: [6.31.51587, 64.375595, 1].T(F)[633.0455, 64.169464, 1] = 0
-F = fundamentalMatrix(left_P, right_P)
-
-U, S, V = np.linalg.svd(F)
-
-e = V[-1]
-
-# left_P, right_P = np.hstack((left_P, np.ones((left_P.shape[0], 1)))), np.hstack((right_P, np.ones((right_P.shape[0], 1))))
-
-print(F)
-depth(non_dups_left, non_dups_right)
-# print(right_P[0].T @ F @ left_P[0])
-# print(left_P[0].T @ F.T @ right_P[0])
-
-# print(right_P[1].T@F@left_P[1])
-# print(right_P[0].T@F@left_P[2])
-# print(right_P[1].T@F@left_P[3])
-# print(right_P[0].T@F@left_P[4])
-# print(right_P[1].T@F@left_P[5])
-# print(right_P[0].T@F@left_P[6])
-# print(right_P[1].T@F@left_P[7])
-
-# print(right_P[0])
-# print(right_P[0].T)
-# print(fundamentalMatrix(left_P, right_P))
-# print(fundamentalMatrix(left_P, right_P).T)
-
-# Find the fundamental matrix using the 8-point algorithm
-F, mask = cv2.findFundamentalMat(left_P, right_P, method=cv2.RANSAC)
-left_P = left_P[mask.ravel() == 1]
-right_P = right_P[mask.ravel() == 1]
-boo, h1, h2 = cv2.stereoRectifyUncalibrated(left_P, right_P, F, cv2.imread("left.png").shape[:2])
-
-# fundamental_matrix, mask = cv2.findFundamentalMat(left_P, right_P, method=cv2.FM_8POINT, ransacReprojThreshold=3., confidence=0.99)
-
-# # Output the fundamental matrix
-# print("Fundamental Matrix:")
-# print(fundamental_matrix)
