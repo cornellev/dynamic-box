@@ -2,7 +2,7 @@
 3rd times the charm
 
 ## Update Notes:
-Still cannot push my commits :(.
+The better dynamic-box.
 
 ## Installation:
 ### Conda: 
