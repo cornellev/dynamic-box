@@ -23,27 +23,18 @@ import YOLO
 
 non_dups_left = []
 non_dups_right = []
+lefti = "wagner_left.png"
+righti = "wagner_right.png"
 
-YOLO.get_pair(["left.png", "right.png"])
+# YOLO.get_pair([lefti, righti])
 
 # Given the bounding boxes for each image: do 8 point algorithm for corresponding images in each bounding box.
-def eight_point (left, right):
+def eight_point ():
    # Step 2: Initialize SIFT detector
-   global left_P, right_P
+   global lefti, righti
    sift = cv2.SIFT_create()
-
-   # For finding 8 corresponding keypoints for each bounding box.
-   # for i in range(len(left)):
-   #    x_l, y_l, w_l, h_l = left[i]
-   #    x_r, y_r, w_r, h_r = right[i]
-
-   #    l = cv2.imread("left.png")
-   #    l_img = l[min(0,y_l):max(l.shape[0],y_l+h_l), min(0,x_l):max(l.shape[1],x_l+w_l)]
-   #    r = cv2.imread("right.png")
-   #    r_img = r[min(0,y_l):max(r.shape[0],y_l+h_l), min(0,x_l):max(r.shape[1],x_l+w_l)]
-   
-   l_img = cv2.imread("left.png")
-   r_img = cv2.imread("right.png")
+   l_img = cv2.imread(lefti)
+   r_img = cv2.imread(righti)
    kp1, des1 = sift.detectAndCompute(l_img, None)
    kp2, des2 = sift.detectAndCompute(r_img, None)
 
@@ -63,16 +54,21 @@ def eight_point (left, right):
    # return np.hstack((left_P, np.ones((points.shape[0], 1)))), np.hstack((right_P, np.ones((points.shape[0], 1))))
    return left_P, right_P
 
+p1 = np.array([[77,87],[75,142],[46,55],[204,190],[154,194],[182,120],[217,171],[270,166]])
+p2 = np.array([[81,83],[80,142],[47,55],[213,191],[162,194],[185,121],[224,172],[276,169]])
 # Normalize left, right corresponding points.
 def normalize_points(points):
    """Normalize image points by translating and scaling."""
    x_, y_ = np.mean(points, axis=0)
    d = np.mean(np.linalg.norm(points-np.array([x_, y_]), axis = 1))
    s = np.sqrt(2)/d
-   T = np.array([[s, 0, -s * x_],
-                 [0, s, -s * y_],
+   s1 = 1/np.sqrt((np.sum((points[:,0]-x_)**2)/points.shape[0]))
+   s2 = 1/np.sqrt((np.sum((points[:,1]-y_)**2)/points.shape[0]))
+   T = np.array([[s1, 0, -s1 * x_],
+                 [0, s2, -s2 * y_],
                  [0, 0, 1]])
-   P = ((points-np.array([x_, y_]))*s)[:, :2]
+
+   P = (T @ np.hstack([points, np.ones((points.shape[0], 1))]).T).T
    return P, T
 
 def fundamentalMatrix(left_P, right_P):
@@ -91,8 +87,9 @@ def fundamentalMatrix(left_P, right_P):
    return T2.T @ F @ T1
 
 def depth(left, right):
-   l = cv2.imread("left.png")
-   r = cv2.imread("right.png")
+   global lefti, righti
+   l = cv2.imread(lefti)
+   r = cv2.imread(righti)
    for i in range(len(left)):
       Z = (2.12 * 0.120) / (left[i][0] - right[i][0])
       X_L, Y_L = left[i][0]-(665.465*Z/700.819), left[i][1]-(371.953*Z/700.819) 
@@ -139,44 +136,46 @@ def draw_epipolar_lines(img1, img2, pts1, pts2, F):
 
     return img1, img2
 
-left_P, right_P = eight_point(non_dups_left, non_dups_right)
-F = fundamentalMatrix(left_P, right_P)
-epiline_l, epiline_r = draw_epipolar_lines(cv2.imread("left.png"), cv2.imread("right.png"), left_P, right_P, F)
+# left_P, right_P = eight_point()
+# F = fundamentalMatrix(left_P, right_P)
+# np.set_printoptions(suppress=True)
+# print(F*1000)
+# F, mask = cv2.findFundamentalMat(left_P, right_P, method=cv2.RANSAC)
+# print(F*1000*(-0.0077))
+# epiline_l, epiline_r = draw_epipolar_lines(cv2.imread(lefti), cv2.imread(righti), left_P, right_P, F)
 
-# Display the images with epipolar lines
-cv2.imwrite(os.path.join("data", "epip_l.png"), epiline_l)
-cv2.imwrite(os.path.join("data", "epip_r.png"), epiline_r)
+# # Display the images with epipolar lines
+# cv2.imwrite(os.path.join("data", "epip_l.png"), epiline_l)
+# cv2.imwrite(os.path.join("data", "epip_r.png"), epiline_r)
 
-U, S, V = np.linalg.svd(F)
-e = V[-1]
+# U, S, V = np.linalg.svd(F)
+# e = V[-1]
 
-# print(right_[1].T@F@left_[1])
-# print(right_[2].T@F@left_[2])
-# print(right_[3].T@F@left_[3])
-# print(right_[4].T@F@left_[4])
-# print(right_[5].T@F@left_[5])
-# print(right_[6].T@F@left_[6])
-# print(right_[7].T@F@left_[7])
+# left_ = np.hstack((left_P, np.ones((left_P.shape[0], 1))))
+# right_ = np.hstack((right_P, np.ones((right_P.shape[0], 1))))
+# # print(right_[1].T@F@left_[1])
+# # print(right_[2].T@F@left_[2])
+# # print(right_[3].T@F@left_[3])
+# # print(right_[4].T@F@left_[4])
+# # print(right_[5].T@F@left_[5])
+# # print(right_[6].T@F@left_[6])
+# # print(right_[7].T@F@left_[7])
 
-size = cv2.imread("left.png").shape[:2]
-_, h1, h2 = cv2.stereoRectifyUncalibrated(left_P, right_P, F, size)
+# size = cv2.imread(lefti).shape[:2]
+# _, h1, h2 = cv2.stereoRectifyUncalibrated(left_P, right_P, F, size)
 
-left_rectified = cv2.warpPerspective(cv2.imread("left.png"), h1, size)
-right_rectified = cv2.warpPerspective(cv2.imread("right.png"), h2, size)
+# left_rectified = cv2.warpPerspective(cv2.imread(lefti), h1, size)
+# right_rectified = cv2.warpPerspective(cv2.imread(righti), h2, size)
 
-# Display the rectified images
-cv2.imwrite(os.path.join("data", "leftrectified.png"), left_rectified)
-cv2.imwrite(os.path.join("data", "rightrectified.png"), right_rectified)
+# # Display the rectified images
+# cv2.imwrite(os.path.join("data", "leftrectified.png"), left_rectified)
+# cv2.imwrite(os.path.join("data", "rightrectified.png"), right_rectified)
 
-# Compare F with fundamental matrix from OpenCV's 8-point algorithm
-F, mask = cv2.findFundamentalMat(left_P, right_P, method=cv2.RANSAC)
-img1_with_lines, img2_with_lines = draw_epipolar_lines(cv2.imread("left.png"), cv2.imread("right.png"), left_P, right_P, F)
+# lefti = "leftrectifiedf.png"
+# righti = "rightrectifiedf.png"
+# left_P, right_P = eight_point()
+# img1_with_lines, img2_with_lines = draw_epipolar_lines(cv2.imread(lefti), cv2.imread(righti), left_P, right_P, F)
+# cv2.imwrite(os.path.join("data", "epip_lrec.png"), img1_with_lines)
+# cv2.imwrite(os.path.join("data", "epip_rrec.png"), img2_with_lines)
 
-cv2.imwrite(os.path.join("data", "epip_l1.png"), img1_with_lines)
-cv2.imwrite(os.path.join("data", "epip_r1.png"), img2_with_lines)
-size = cv2.imread("left.png").shape[:2]
-_, h1, h2 = cv2.stereoRectifyUncalibrated(left_P, right_P, F, size)
-left_rectified = cv2.warpPerspective(cv2.imread("left.png"), h1, size)
-right_rectified = cv2.warpPerspective(cv2.imread("right.png"), h2, size)
-cv2.imwrite(os.path.join("data", "leftrectified1.png"), left_rectified)
-cv2.imwrite(os.path.join("data", "rightrectified1.png"), right_rectified)
+# Verify F is calculated correctly -> recitfy the image -> generate a depth map / point cloud via stereo matching -> get 3D points
