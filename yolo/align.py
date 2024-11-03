@@ -23,9 +23,11 @@ import YOLO
 
 non_dups_left = []
 non_dups_right = []
-lefti = "wagner_left.png"
-righti = "wagner_right.png"
-
+# lefti = "wagner_left.png"
+# righti = "wagner_right.png"
+lefti = "left.png"
+righti = "right.png"
+np.set_printoptions(suppress=True)
 # YOLO.get_pair([lefti, righti])
 
 # Given the bounding boxes for each image: do 8 point algorithm for corresponding images in each bounding box.
@@ -54,11 +56,8 @@ def eight_point ():
    # return np.hstack((left_P, np.ones((points.shape[0], 1)))), np.hstack((right_P, np.ones((points.shape[0], 1))))
    return left_P, right_P
 
-p1 = np.array([[77,87],[75,142],[46,55],[204,190],[154,194],[182,120],[217,171],[270,166]])
-p2 = np.array([[81,83],[80,142],[47,55],[213,191],[162,194],[185,121],[224,172],[276,169]])
 # Normalize left, right corresponding points.
 def normalize_points(points):
-   """Normalize image points by translating and scaling."""
    x_, y_ = np.mean(points, axis=0)
    d = np.mean(np.linalg.norm(points-np.array([x_, y_]), axis = 1))
    s = np.sqrt(2)/d
@@ -67,9 +66,8 @@ def normalize_points(points):
    T = np.array([[s1, 0, -s1 * x_],
                  [0, s2, -s2 * y_],
                  [0, 0, 1]])
-
    P = (T @ np.hstack([points, np.ones((points.shape[0], 1))]).T).T
-   return P, T
+   return P[:, :2], T
 
 def fundamentalMatrix(left_P, right_P):
    left, T1 = normalize_points(left_P)
@@ -86,27 +84,10 @@ def fundamentalMatrix(left_P, right_P):
    F = U @ np.diag(S) @ V
    return T2.T @ F @ T1
 
-def depth(left, right):
-   global lefti, righti
-   l = cv2.imread(lefti)
-   r = cv2.imread(righti)
-   for i in range(len(left)):
-      Z = (2.12 * 0.120) / (left[i][0] - right[i][0])
-      X_L, Y_L = left[i][0]-(665.465*Z/700.819), left[i][1]-(371.953*Z/700.819) 
-      X_H, Y_H = (left[i][0]+left[i][2])-(665.465*Z/700.819), (left[i][1]+left[i][3])-(371.953*Z/700.819) 
-      cv2.putText(l, str(Z), (left[i][0], left[i][1]), cv2.FONT_HERSHEY_SIMPLEX, 
-               fontScale=0.5, color=(255, 25, 205), thickness=1)
-      cv2.putText(r, str(Z), (right[i][0], right[i][1]), cv2.FONT_HERSHEY_SIMPLEX, 
-               fontScale=0.5, color=(255, 25, 205), thickness=1)
-
-   cv2.imwrite(os.path.join("data", 'leftdepth.jpg'), l)
-   cv2.imwrite(os.path.join("data", 'rightdepth.jpg'), r)
-
 def draw_epipolar_lines(img1, img2, pts1, pts2, F):
     # Convert the points to homogeneous coordinates
     pts1_homogeneous = np.hstack([pts1, np.ones((pts1.shape[0], 1))])
     pts2_homogeneous = np.hstack([pts2, np.ones((pts2.shape[0], 1))])
-
     # Compute epipolar lines in the second image for points in the first image
     lines2 = np.dot(F, pts1_homogeneous.T).T  # Lines in image 2 for points in image 1
 
@@ -136,46 +117,70 @@ def draw_epipolar_lines(img1, img2, pts1, pts2, F):
 
     return img1, img2
 
-# left_P, right_P = eight_point()
-# F = fundamentalMatrix(left_P, right_P)
-# np.set_printoptions(suppress=True)
-# print(F*1000)
+left_P, right_P = eight_point()
+
+def drawLines(img, lines):
+   _, c, _ = img.shape
+   for r in lines:
+      x0, y0 = map(int, [0, -r[2]/r[1]])
+      x1, y1 = map(int, [c, -(r[2]+r[0]*c)/r[1]])
+      cv2.line(img, (x0, y0), (x1, y1), (0, 0, 255), 1)
+   return img
+
+F = fundamentalMatrix(left_P, right_P)
+left_ = np.hstack((left_P, np.ones((left_P.shape[0], 1))))
+right_ = np.hstack((right_P, np.ones((right_P.shape[0], 1))))
+
 # F, mask = cv2.findFundamentalMat(left_P, right_P, method=cv2.RANSAC)
-# print(F*1000*(-0.0077))
-# epiline_l, epiline_r = draw_epipolar_lines(cv2.imread(lefti), cv2.imread(righti), left_P, right_P, F)
+epiline_l, epiline_r = draw_epipolar_lines(cv2.imread(lefti), cv2.imread(righti), left_P, right_P, F)
 
-# # Display the images with epipolar lines
-# cv2.imwrite(os.path.join("data", "epip_l.png"), epiline_l)
-# cv2.imwrite(os.path.join("data", "epip_r.png"), epiline_r)
+# Display the images with epipolar lines
+cv2.imwrite(os.path.join("data", "epip_l.png"), epiline_l)
+cv2.imwrite(os.path.join("data", "epip_r.png"), epiline_r)
 
-# U, S, V = np.linalg.svd(F)
-# e = V[-1]
+U, S, V = svd(F)
+el, d1, d2 = np.array([[0,0,1], [0,1,0], [1,0,0]]) @ V
+er, s1, s2 = np.array([[0,0,1], [0,1,0], [1,0,0]]) @ U.T
+el1, el2, el3 = el
+er1, er2, er3 = er
+v = S[1]/S[0]
 
-# left_ = np.hstack((left_P, np.ones((left_P.shape[0], 1))))
-# right_ = np.hstack((right_P, np.ones((right_P.shape[0], 1))))
-# # print(right_[1].T@F@left_[1])
-# # print(right_[2].T@F@left_[2])
-# # print(right_[3].T@F@left_[3])
-# # print(right_[4].T@F@left_[4])
-# # print(right_[5].T@F@left_[5])
-# # print(right_[6].T@F@left_[6])
-# # print(right_[7].T@F@left_[7])
+HR = np.array([er, s1, np.sqrt(v)*s2]).T
+HL = np.array([el, np.sqrt(v)*d2, -d1])
 
-# size = cv2.imread(lefti).shape[:2]
-# _, h1, h2 = cv2.stereoRectifyUncalibrated(left_P, right_P, F, size)
+elx = np.array([[0,-el3,el2], [el3,0,-el1], [-el2,el1,0]])
+erx = np.array([[0,-er3,er2], [er3,0,-er1], [-er2,er1,0]])
 
-# left_rectified = cv2.warpPerspective(cv2.imread(lefti), h1, size)
-# right_rectified = cv2.warpPerspective(cv2.imread(righti), h2, size)
+HL = cv2.findHomography(left_P, right_P)[0]
+HR = cv2.findHomography(right_P, left_P)[0]
+
+size = cv2.imread(lefti).shape[:2]
+
+left_rectified = cv2.warpPerspective(cv2.imread(lefti), HL, (size[1],size[0]))
+right_rectified = cv2.warpPerspective(cv2.imread(righti), HR, (size[1],size[0]))
 
 # # Display the rectified images
-# cv2.imwrite(os.path.join("data", "leftrectified.png"), left_rectified)
-# cv2.imwrite(os.path.join("data", "rightrectified.png"), right_rectified)
+cv2.imwrite(os.path.join("data", "leftrectified.png"), left_rectified)
+cv2.imwrite(os.path.join("data", "rightrectified.png"), right_rectified)
 
-# lefti = "leftrectifiedf.png"
-# righti = "rightrectifiedf.png"
-# left_P, right_P = eight_point()
-# img1_with_lines, img2_with_lines = draw_epipolar_lines(cv2.imread(lefti), cv2.imread(righti), left_P, right_P, F)
-# cv2.imwrite(os.path.join("data", "epip_lrec.png"), img1_with_lines)
-# cv2.imwrite(os.path.join("data", "epip_rrec.png"), img2_with_lines)
+lefti = "data/leftrectified.png"
+righti = "data/rightrectified.png"
+F = np.dot(np.dot(HR.T, F), HL)
+
+pts1 = np.hstack((left_P, np.ones((left_P.shape[0], 1))))
+pts2 = np.hstack((right_P, np.ones((right_P.shape[0], 1))))
+left_P = cv2.perspectiveTransform(pts1.reshape(-1, 1, 2), HL).reshape(-1, 2)
+right_P = cv2.perspectiveTransform(pts2.reshape(-1, 1, 2), HR).reshape(-1, 2)
 
 # Verify F is calculated correctly -> recitfy the image -> generate a depth map / point cloud via stereo matching -> get 3D points
+epilinesR = cv2.computeCorrespondEpilines(right_P.reshape(-1, 1, 2), 2, F)
+epilinesR = epilinesR.reshape(-1, 3)
+lef = drawLines(cv2.imread(lefti), epilinesR)
+
+# find epilines corresponding to points in left image and draw them on the right image
+epilinesL = cv2.computeCorrespondEpilines(left_P.reshape(-1, 1, 2), 1, F)
+epilinesL = epilinesL.reshape(-1, 3)
+igh = drawLines(cv2.imread(righti), epilinesL)
+
+cv2.imwrite(os.path.join("data", "epip_lrec.png"), lef)
+cv2.imwrite(os.path.join("data", "epip_rrec.png"), igh)
