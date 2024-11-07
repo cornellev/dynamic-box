@@ -59,6 +59,7 @@ ZED camera captures stereo pairs of left (Il) and right (Ir) images -> run throu
    
 ### Currently working on:
    _With ZED calibration file, also find instrinsic matrices_ $K_R$ _and_ $K_L$.
+   
 3) __FIGURE OUT THE MATH FOR THIS:__ Rectify the stereo images with epipolar geometry and epipolar lines $l$ so that corresponding points between the two images lie on the same horizontal line (epipolar line).
 
    __Maybe instead of rectifying the stereo images, going to find the correspondence of each point on the left image to the right image. Is also 1D correspondence. Essentially going to derive an equation for calculating
