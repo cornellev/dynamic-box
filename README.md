@@ -53,14 +53,19 @@ ZED camera captures stereo pairs of left (Il) and right (Ir) images -> run throu
    
    _Eventually when I start working with the ZED, I'll also derive the Fundamental matrix_ $F=K^{'}[T_x]RK^{-1}$ _using the intrisinc and extrinsic parameters given by the calibration file to test accuracy of_ $F$. 
 
-### Currently working on:
-1) Given derived $F$, and assuming that the left camera is placed at the origin, then let us define the left camera in a canonical form where the camera projection or intrinsic matrix is $K_L = [I|0]$, where $I$ is the identity matrix and $0$ is the zero vector. Then we can compute the epipole $e_R$ of the right image with $F^Te_R=0$, where $e_R$ is in the null space of $F$. Finally, we derive the right camera's projection matrix as $K_R=[[e_R]_xF+e_2v^T]$.
-2) Use $F$, $K_R$ and $K_L$ to derive essential matrix $E={K_R^T}\cdot{F}\cdot{K_L}={[T_x]}\cdot{R}$, which is used to compute epipolar lines $l={E}\cdot{P}$ and $l^{'}={E^T}\cdot{P^{'}}$ with $P$ being a point on the left image and $P^{'}$ on the right image. The location of right $P^{'}$ in the left image is derived by rotating $P^{'}$ with rotation matrix $R$ and translating with translation matrix $T$ to get $P={R}\cdot{P^{'}}+T$.
+3) Given derived $F$, and assuming that the left camera is placed at the origin, then let us define the left camera in a canonical form where the camera projection or intrinsic matrix is $K_L = [I|0]$, where $I$ is the identity matrix and $0$ is the zero vector. Then we can compute the epipole $e_R$ of the right image with $F^Te_R=0$, where $e_R$ is in the null space of $F$. Finally, we derive the right camera's projection matrix as $K_R=[[e_R]_xF+e_2v^T]$.
+
+4) Use $F$, $K_R$ and $K_L$ to derive essential matrix $E={K_R^T}\cdot{F}\cdot{K_L}={[T_x]}\cdot{R}$, which is used to compute epipolar lines $l={E}\cdot{P}$ and $l^{'}={E^T}\cdot{P^{'}}$ with $P$ being a point on the left image and $P^{'}$ on the right image. The location of right $P^{'}$ in the left image is derived by rotating $P^{'}$ with rotation matrix $R$ and translating with translation matrix $T$ to get $P={R}\cdot{P^{'}}+T$.
    
+### Currently working on:
    _With ZED calibration file, also find instrinsic matrices_ $K_R$ _and_ $K_L$.
 3) __FIGURE OUT THE MATH FOR THIS:__ Rectify the stereo images with epipolar geometry and epipolar lines $l$ so that corresponding points between the two images lie on the same horizontal line (epipolar line).
 
+   __Maybe instead of rectifying the stereo images, going to find the correspondence of each point on the left image to the right image. Is also 1D correspondence. Essentially going to derive an equation for calculating
+   epipolar lines, then use that to compute a depth map (step 4).__
+
    _The rectification problem setup: we compute two homographies_ $H_1$ _and_ $H_2$ _that we can apply to the image planes to make the resulting planes parallel. This would make the epipole_ $e$ _at infinity._
+
 4) Derive depth of objects (most likely the corners of each 2D bounding box) in the rectified stereo images. Use the formula $Z=\dfrac{{f}\cdot{B}}{d}$, where $Z$ is distance of the object from the camera, $f$ is focal length, $B=120mm$ (for ZED) is baseline, and $d$ is disparity (horizontal shift between left and right image). Given a point $P$ that corresponds in the left and right images, disparity $d=x_l-x_r$, where $x_l$ is the horizontal pixel distance of $P$ in the left image, and $x_r$ is the horizontal pixel distance of $P$ in the right image.
 
    _Only need to calculate horizontal disparity between stereo images have been rectified, so we ignore vertical disparity._
