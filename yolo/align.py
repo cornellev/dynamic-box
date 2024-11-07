@@ -21,14 +21,60 @@ import matplotlib.pyplot as plt
 from scipy.linalg import svd
 import YOLO
 
-non_dups_left = []
-non_dups_right = []
+np.set_printoptions(suppress=True)
+
+# Given the sample images from ZED are 1280 x 720, most likely using HD resolution.
+# [LEFT_CAM_HD]
+fx_l=699.41
+fy_l=699.365
+cx_l=652.8
+cy_l=358.133
+k1_l=-0.170704
+k2_l=0.0249542
+p1_l=9.55189e-05
+p2_l=-0.000109509
+k3_l=-9.96888e-11
+
+# [RIGHT_CAM_HD]
+fx_r=697.635
+fy_r=697.63
+cx_r=671.665
+cy_r=354.611
+k1_r=-0.171533
+k2_r=0.0258402
+p1_r=7.86599e-05
+p2_r=-0.000136126
+k3_r=-2.87251e-10
+
+Baseline=119.905
+TY=0.0458908
+TZ=-0.467919
+CV_2K=0.00697667
+RX_2K=0.00239722
+RZ_2K=-0.0021326
+
+# Canera matrices.
+K_L = np.array([[fx_l, 0, cx_l], [0, fy_l, cy_l], [0, 0, 1]])
+K_R = np.array([[fx_r, 0, cx_r], [0, fy_r, cy_r], [0, 0, 1]])
+T = np.array([Baseline, TY, TZ])
+# R_Z, _ = cv2.Rodrigues(np.array([0, 0, RZ_2K]))
+# R_Y, _ = cv2.Rodrigues(np.array([0, CV_2K, 0]))
+# R_X, _ = cv2.Rodrigues(np.array([RX_2K, 0, 0]))
+R, _ = cv2.Rodrigues(np.array([RX_2K, CV_2K, RZ_2K]))
+T_x = np.array([[0, -TZ, TY], [TZ, 0, -Baseline], [-TY, Baseline, 0]])
+E = T_x @ R
+W = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])
+
+# Given essential matrix E, get R and T using SVD, where R = U @ W.T @ V
+# and W = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])
+
 # lefti = "wagner_left.png"
 # righti = "wagner_right.png"
-lefti = "left.png"
-righti = "right.png"
-np.set_printoptions(suppress=True)
-# YOLO.get_pair([lefti, righti])
+lefti = "left0.png"
+righti = "right0.png"
+
+# Use this to get points to draw epipolar lines. Not for 8-point algorithm.
+non_dups_left, non_dups_right = YOLO.get_pair([lefti, righti])
 
 # Given the bounding boxes for each image: do 8 point algorithm for corresponding images in each bounding box.
 def eight_point ():
@@ -56,6 +102,9 @@ def eight_point ():
    # return np.hstack((left_P, np.ones((points.shape[0], 1)))), np.hstack((right_P, np.ones((points.shape[0], 1))))
    return left_P, right_P
 
+img1 = cv2.imread('left0.png', cv2.IMREAD_GRAYSCALE)  #queryimage # left image
+img2 = cv2.imread('right0.png', cv2.IMREAD_GRAYSCALE) #trainimage # right image
+ 
 # Normalize left, right corresponding points.
 def normalize_points(points):
    x_, y_ = np.mean(points, axis=0)
@@ -85,39 +134,55 @@ def fundamentalMatrix(left_P, right_P):
    return T2.T @ F @ T1
 
 def draw_epipolar_lines(img1, img2, pts1, pts2, F):
-    # Convert the points to homogeneous coordinates
-    pts1_homogeneous = np.hstack([pts1, np.ones((pts1.shape[0], 1))])
-    pts2_homogeneous = np.hstack([pts2, np.ones((pts2.shape[0], 1))])
-    # Compute epipolar lines in the second image for points in the first image
-    lines2 = np.dot(F, pts1_homogeneous.T).T  # Lines in image 2 for points in image 1
+   U, S, V = svd(F)
+   # e is epipole.
+   e = S
+   # Convert the points to homogeneous coordinates
+   pts1_homogeneous = np.hstack([pts1, np.ones((pts1.shape[0], 1))])
+   pts2_homogeneous = np.hstack([pts2, np.ones((pts2.shape[0], 1))])
+   # Compute epipolar lines in the second image for points in the first image
+   lines2 = np.dot(F, pts1_homogeneous.T).T  # Lines in image 2 for points in image 1
 
-    # Compute epipolar lines in the first image for points in the second image
-    lines1 = np.dot(F.T, pts2_homogeneous.T).T  # Lines in image 1 for points in image 2
+   # Compute epipolar lines in the first image for points in the second image
+   lines1 = np.dot(F.T, pts2_homogeneous.T).T  # Lines in image 1 for points in image 2
 
-    # Draw the lines on the images
-    for r, pt1, pt2 in zip(lines2, pts1, pts2):
-        # Line in image 2
-        x0, y0 = map(int, [0, -r[2] / r[1]])
-        x1, y1 = map(int, [img2.shape[1], -(r[2] + r[0] * img2.shape[1]) / r[1]])
-        img2 = cv2.line(img2, (x0, y0), (x1, y1), (0, 255, 0), 1)
+   # Draw line from epipole to point.
 
-        # Draw the corresponding points
-        x, y = pt2
-        img2 = cv2.circle(img2, (int(x), int(y)), 5, (0, 0, 255), -1)
+   # Draw the lines on the images
+   l_count = 0
+   for r, _, pt2 in zip(lines2, pts1, pts2):
+      # Line in image 2
+      x0, y0 = e[:2]
+      x1, y1 = pt2
+      # x0, y0 = map(int, [0, -r[2] / r[1]])
+      # x1, y1 = map(int, [img2.shape[1], -(r[2] + r[0] * img2.shape[1]) / r[1]])
+      img2 = cv2.line(img2, (int(x0), int(y0)), (int(x1), int(y1)), (0, 255, 0), 1)
 
-    for r, pt1, pt2 in zip(lines1, pts1, pts2):
-        # Line in image 1
-        x0, y0 = map(int, [0, -r[2] / r[1]])
-        x1, y1 = map(int, [img1.shape[1], -(r[2] + r[0] * img1.shape[1]) / r[1]])
-        img1 = cv2.line(img1, (x0, y0), (x1, y1), (0, 255, 0), 1)
+      # Draw the corresponding points
+      x, y = pt2
+      cv2.putText(img2, str(l_count), (x, y-10), cv2.FONT_HERSHEY_PLAIN, 1.5, 2)
+      l_count = l_count + 1
+      img2 = cv2.circle(img2, (int(x), int(y)), 5, (0, 0, 255), -1)
 
-        x, y = pt1
-        # Draw the corresponding points
-        img1 = cv2.circle(img1, (int(x), int(y)), 5, (0, 0, 255), -1)
+   r_count = 0
+   for r, pt1, _ in zip(lines1, pts1, pts2):
+      # Line in image 1
+      x0, y0 = map(int, [0, -r[2] / r[1]])
+      x1, y1 = map(int, [img1.shape[1], -(r[2] + r[0] * img1.shape[1]) / r[1]])
+      img1 = cv2.line(img1, (x0, y0), (x1, y1), (0, 255, 0), 1)
 
-    return img1, img2
-
-left_P, right_P = eight_point()
+      x, y = pt1
+      # Draw the corresponding points
+      cv2.putText(img1, str(r_count), (x, y-10), cv2.FONT_HERSHEY_PLAIN, 1.5, 2)
+      r_count = r_count + 1
+      img1 = cv2.circle(img1, (int(x), int(y)), 5, (0, 0, 255), -1)
+   
+   for i in range(min(len(pts1), len(pts2))):
+      depth = (Baseline/100 * fx_l/10)/(pts1[i][0]-pts2[i][0])
+      x, y = pts1[i][0], pts1[i][1]
+      cv2.putText(img1, str(depth), (x-10, y-50), cv2.FONT_HERSHEY_PLAIN, 1.5, 2)
+   print("worked")
+   return img1, img2
 
 def drawLines(img, lines):
    _, c, _ = img.shape
@@ -127,60 +192,113 @@ def drawLines(img, lines):
       cv2.line(img, (x0, y0), (x1, y1), (0, 0, 255), 1)
    return img
 
-F = fundamentalMatrix(left_P, right_P)
+def getEpipolarLines (pt, F):
+   # Given: a point on the left image, fundamental matrix F
+   # Return: equation of epipolar line in the right image.
+   a = (F[0][0] * pt[0] + F[1][0] * pt[1] + F[2][0])
+   b = (F[0][1] * pt[0] + F[1][1] * pt[1] + F[2][1])
+   c = (F[0][2] * pt[0] + F[1][2] * pt[1] + F[2][2])
+
+   # Find point on right image [u_r, v_r, 1] such that a*u_r + b*v_r + c = 0.
+
+left_P, right_P = eight_point()
+
 left_ = np.hstack((left_P, np.ones((left_P.shape[0], 1))))
 right_ = np.hstack((right_P, np.ones((right_P.shape[0], 1))))
-
+print(left_[2].T @ (np.linalg.inv(K_L)).T @ E @ np.linalg.inv(K_R) @ right_[2])
+print(left_[3].T @ (np.linalg.inv(K_L)).T @ E @ np.linalg.inv(K_R) @ right_[3])
+print(left_[4].T @ (np.linalg.inv(K_L)).T @ E @ np.linalg.inv(K_R) @ right_[4])
+print(left_[5].T @ (np.linalg.inv(K_L)).T @ E @ np.linalg.inv(K_R) @ right_[5])
+F = fundamentalMatrix(left_P, right_P)
 # F, mask = cv2.findFundamentalMat(left_P, right_P, method=cv2.RANSAC)
-epiline_l, epiline_r = draw_epipolar_lines(cv2.imread(lefti), cv2.imread(righti), left_P, right_P, F)
+# F = np.linalg.inv(K_L).T @ E @ np.linalg.inv(K_R)
+E = K_R.T @ F @ K_L
+U, S, V = np.linalg.svd(E)
+# U @ W @ V to get the rotation matrix R.
 
-# Display the images with epipolar lines
-cv2.imwrite(os.path.join("data", "epip_l.png"), epiline_l)
-cv2.imwrite(os.path.join("data", "epip_r.png"), epiline_r)
 
-U, S, V = svd(F)
-el, d1, d2 = np.array([[0,0,1], [0,1,0], [1,0,0]]) @ V
-er, s1, s2 = np.array([[0,0,1], [0,1,0], [1,0,0]]) @ U.T
-el1, el2, el3 = el
-er1, er2, er3 = er
-v = S[1]/S[0]
+# HL = cv2.findHomography(left_P, right_P)[0]
+# HR = cv2.findHomography(right_P, left_P)[0]
 
-HR = np.array([er, s1, np.sqrt(v)*s2]).T
-HL = np.array([el, np.sqrt(v)*d2, -d1])
+# size = cv2.imread(lefti).shape[:2]
 
-elx = np.array([[0,-el3,el2], [el3,0,-el1], [-el2,el1,0]])
-erx = np.array([[0,-er3,er2], [er3,0,-er1], [-er2,er1,0]])
+# left_rectified = cv2.warpPerspective(cv2.imread(lefti), HL, (size[1],size[0]))
+# right_rectified = cv2.warpPerspective(cv2.imread(righti), HR, (size[1],size[0]))
 
-HL = cv2.findHomography(left_P, right_P)[0]
-HR = cv2.findHomography(right_P, left_P)[0]
 
-size = cv2.imread(lefti).shape[:2]
+# # # Display the rectified images
+# cv2.imwrite(os.path.join("data", "leftrectified.png"), left_rectified)
+# cv2.imwrite(os.path.join("data", "rightrectified.png"), right_rectified)
 
-left_rectified = cv2.warpPerspective(cv2.imread(lefti), HL, (size[1],size[0]))
-right_rectified = cv2.warpPerspective(cv2.imread(righti), HR, (size[1],size[0]))
+# left_P = []
+# right_P = []
+# for left in non_dups_left:
+#    left_P.append([left[0],left[1]])
+#    # left_P.append([left[0]+left[2],left[1]])
+#    # left_P.append([left[0],left[1]])
+#    # left_P.append([left[0],left[1]+left[3]])
 
-# # Display the rectified images
-cv2.imwrite(os.path.join("data", "leftrectified.png"), left_rectified)
-cv2.imwrite(os.path.join("data", "rightrectified.png"), right_rectified)
+# for right in non_dups_right:
+#    right_P.append([right[0],right[1]])
+#    # right_P.append([right[0]+right[2],right[1]])
+#    # right_P.append([right[0],right[1]])
+#    # right_P.append([right[0],right[1]+right[3]])
 
-lefti = "data/leftrectified.png"
-righti = "data/rightrectified.png"
-F = np.dot(np.dot(HR.T, F), HL)
+# left_P = np.array(left_P)
+# right_P = np.array(right_P)
+# print(left_P, right_P)
 
-pts1 = np.hstack((left_P, np.ones((left_P.shape[0], 1))))
-pts2 = np.hstack((right_P, np.ones((right_P.shape[0], 1))))
-left_P = cv2.perspectiveTransform(pts1.reshape(-1, 1, 2), HL).reshape(-1, 2)
-right_P = cv2.perspectiveTransform(pts2.reshape(-1, 1, 2), HR).reshape(-1, 2)
+# epiline_l, epiline_r = draw_epipolar_lines(cv2.imread("boundedleft0.png"), cv2.imread("boundedright0.png"), left_P, right_P, F)
+# cv2.imwrite(os.path.join("data", "boundepip_l.png"), epiline_l)
+# cv2.imwrite(os.path.join("data", "boundepip_r.png"), epiline_r)
+
+# epiline_l, epiline_r = draw_epipolar_lines(cv2.imread("boundedleft0.png"), cv2.imread("boundedright0.png"), left_P, right_P, F)
+
+# # # Display the images with epipolar lines
+# cv2.imwrite(os.path.join("data", "epip_l.png"), epiline_l)
+# cv2.imwrite(os.path.join("data", "epip_r.png"), epiline_r)
+
+# epilinesR = cv2.computeCorrespondEpilines(right_P.reshape(-1, 1, 2), 2, F)
+# epilinesR = epilinesR.reshape(-1, 3)
+
+# lefti = "boundedleft0.png"
+# righti = "boundedright0.png"
+# F = np.dot(np.dot(HR.T, F), HL)
+
+# pts1 = np.hstack((left_P, np.ones((left_P.shape[0], 1))))
+# pts2 = np.hstack((right_P, np.ones((right_P.shape[0], 1))))
+# left_P = cv2.perspectiveTransform(pts1.reshape(-1, 1, 2), HL).reshape(-1, 2)
+# right_P = cv2.perspectiveTransform(pts2.reshape(-1, 1, 2), HR).reshape(-1, 2)
 
 # Verify F is calculated correctly -> recitfy the image -> generate a depth map / point cloud via stereo matching -> get 3D points
-epilinesR = cv2.computeCorrespondEpilines(right_P.reshape(-1, 1, 2), 2, F)
-epilinesR = epilinesR.reshape(-1, 3)
-lef = drawLines(cv2.imread(lefti), epilinesR)
+# left_P = []
+# right_P = []
 
-# find epilines corresponding to points in left image and draw them on the right image
-epilinesL = cv2.computeCorrespondEpilines(left_P.reshape(-1, 1, 2), 1, F)
-epilinesL = epilinesL.reshape(-1, 3)
-igh = drawLines(cv2.imread(righti), epilinesL)
+# for left in non_dups_left:
+#    left_P.append([left[0],left[1]])
+#    left_P.append([left[0]+left[2],left[1]])
+#    left_P.append([left[0],left[1]])
+#    left_P.append([left[0],left[1]+left[3]])
 
-cv2.imwrite(os.path.join("data", "epip_lrec.png"), lef)
-cv2.imwrite(os.path.join("data", "epip_rrec.png"), igh)
+# for right in non_dups_right:
+#    right_P.append([right[0],right[1]])
+#    right_P.append([right[0]+right[2],right[1]])
+#    right_P.append([right[0],right[1]])
+#    right_P.append([right[0],right[1]+right[3]])
+
+# left_P = np.array(left_P)
+# right_P = np.array(right_P)
+
+
+# epilinesR = cv2.computeCorrespondEpilines(right_P.reshape(-1, 1, 2), 2, F)
+# epilinesR = epilinesR.reshape(-1, 3)
+# lef = drawLines(cv2.imread(lefti), epilinesR)
+
+# # find epilines corresponding to points in left image and draw them on the right image
+# epilinesL = cv2.computeCorrespondEpilines(left_P.reshape(-1, 1, 2), 1, F)
+# epilinesL = epilinesL.reshape(-1, 3)
+# igh = drawLines(cv2.imread(righti), epilinesL)
+
+# epiline_l, epiline_r = draw_epipolar_lines(cv2.imread("boundedleft0.png"), cv2.imread("boundedright0.png"), left_P, right_P, F)
+# cv2.imwrite(os.path.join("data", "boundepip_l.png"), epiline_l)
+# cv2.imwrite(os.path.join("data", "boundepip_r.png"), epiline_r)
