@@ -192,28 +192,41 @@ def drawLines(img, lines):
       cv2.line(img, (x0, y0), (x1, y1), (0, 0, 255), 1)
    return img
 
-def getEpipolarLines (pt, F):
+# Find point on right image [u_r, v_r, 1] such that a*u_r + b*v_r + c = 0.
+def getEpipolarLines (img1, img2, pt, F):
+   pt, dir = pt
+   # Given: a point on the right image, fundamental matrix F
+   # Return: equation of epipolar line in the left image.
+   if (dir == "RIGHT"): 
+      a = (F[0][0] * pt[0] + F[1][0] * pt[1] + F[2][0])
+      b = (F[0][1] * pt[0] + F[1][1] * pt[1] + F[2][1])
+      c = (F[0][2] * pt[0] + F[1][2] * pt[1] + F[2][2])
    # Given: a point on the left image, fundamental matrix F
    # Return: equation of epipolar line in the right image.
-   a = (F[0][0] * pt[0] + F[1][0] * pt[1] + F[2][0])
-   b = (F[0][1] * pt[0] + F[1][1] * pt[1] + F[2][1])
-   c = (F[0][2] * pt[0] + F[1][2] * pt[1] + F[2][2])
+   elif (dir == "LEFT"):
+      a = (F[0][0] * pt[0] + F[0][1] * pt[1] + F[0][2])
+      b = (F[1][0] * pt[0] + F[1][1] * pt[1] + F[1][2])
+      c = (F[2][0] * pt[0] + F[2][1] * pt[1] + F[2][2])
+   y = lambda x : -(a/b)*x - c/b
+   im1 = cv2.circle(img1, (int(pt[0]), int(pt[1])), 5, (0, 0, 255), -1)
+   im2 = cv2.line(img2, (0, int(y(0))), (img1.shape[1], int(y(img1.shape[1]))), (0, 0, 255), 1)
+   return img1, img2
 
-   # Find point on right image [u_r, v_r, 1] such that a*u_r + b*v_r + c = 0.
 
 left_P, right_P = eight_point()
 
 left_ = np.hstack((left_P, np.ones((left_P.shape[0], 1))))
 right_ = np.hstack((right_P, np.ones((right_P.shape[0], 1))))
-print(left_[2].T @ (np.linalg.inv(K_L)).T @ E @ np.linalg.inv(K_R) @ right_[2])
-print(left_[3].T @ (np.linalg.inv(K_L)).T @ E @ np.linalg.inv(K_R) @ right_[3])
-print(left_[4].T @ (np.linalg.inv(K_L)).T @ E @ np.linalg.inv(K_R) @ right_[4])
-print(left_[5].T @ (np.linalg.inv(K_L)).T @ E @ np.linalg.inv(K_R) @ right_[5])
 F = fundamentalMatrix(left_P, right_P)
-# F, mask = cv2.findFundamentalMat(left_P, right_P, method=cv2.RANSAC)
+F, mask = cv2.findFundamentalMat(left_P, right_P, method=cv2.RANSAC)
 # F = np.linalg.inv(K_L).T @ E @ np.linalg.inv(K_R)
 E = K_R.T @ F @ K_L
 U, S, V = np.linalg.svd(E)
+
+print(left_[0])
+img1, img2 = getEpipolarLines(cv2.imread(lefti), cv2.imread(righti), (left_[0], "LEFT"), F)
+cv2.imwrite(os.path.join("data", "leftepip.png"), img1)
+cv2.imwrite(os.path.join("data", "rightepip.png"), img2)
 # U @ W @ V to get the rotation matrix R.
 
 
