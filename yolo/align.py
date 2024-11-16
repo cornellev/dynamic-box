@@ -148,10 +148,37 @@ def getEpipolarLines (img1, img2, pt, F):
       a = (F[0][0] * pt[0] + F[0][1] * pt[1] + F[0][2])
       b = (F[1][0] * pt[0] + F[1][1] * pt[1] + F[1][2])
       c = (F[2][0] * pt[0] + F[2][1] * pt[1] + F[2][2])
+
    y = lambda x : -(a/b)*x - c/b
    im1 = cv2.circle(img1, (int(pt[0]), int(pt[1])), 5, (0, 0, 255), -1)
    im2 = cv2.line(img2, (0, int(y(0))), (img1.shape[1], int(y(img1.shape[1]))), (0, 0, 255), 1)
+
+   # Do block matching on left point and right epipolar line within the range of the left point:
+   ptr = np.array([0, 0, 1])
+   xl, xr = int(max(0.,pt[0]-50.)), int(min(float(im1.shape[1]), pt[0]+50.))
+   yl, yr = int(max(0.,pt[1]-50.)), int(min(float(im1.shape[0]), pt[1]+50.))
+   block = lambda im, pt : im[int(max(0.,pt[1]-50.)):int(min(float(im1.shape[0]), pt[1]+50.)), 
+                              int(max(0.,pt[0]-50.)):int(min(float(im1.shape[1]), pt[0]+50.)),
+                              :] 
+   blockl = block (img1, pt)
+   ptr = np.array([int(max(0.,pt[0]-50.)), 
+                           y(int(max(0.,pt[0]-50.)))])
+   diff = np.absolute(blockl - 
+                           block (img2, ptr))
+   min_SAD = np.sum(np.sum(diff, axis=(0,1)))
+   # I HAVE A LINE: 
+   for x in range(int(max(0.,pt[0]-50.)), int(min(float(im1.shape[1]), pt[0]+50.))):
+      abs_diff = np.absolute(blockl - block (img2, np.array([x, y(x)])))
+      sum = np.sum(np.sum(abs_diff, axis=(0,1)))
+      if sum < min_SAD:
+         min_SAD = sum
+         ptr = np.array([x, y(x)])
+
+   im2 = cv2.circle(img2, (int(ptr[0]), int(ptr[1])), 5, (0, 0, 255), -1)
+
+   cv2.imwrite("im.png", block (im2, ptr) )
    return img1, img2
+
 
 def getDepthMap (ptl, ptr):
    # Depth map: 2D u_r = M_intR @ x_r (3D), u_l = P_L @ x_r
@@ -186,7 +213,7 @@ F = fundamentalMatrix(left_P, right_P)
 E = K_R.T @ F @ K_L
 U, S, V = np.linalg.svd(E)
 
-img1, img2 = getEpipolarLines(cv2.imread(lefti), cv2.imread(righti), (left_[5], "LEFT"), F)
+img1, img2 = getEpipolarLines(cv2.imread(lefti), cv2.imread(righti), (left_[1], "LEFT"), F)
 cv2.imwrite(os.path.join("data", "leftepip.png"), img1)
 cv2.imwrite(os.path.join("data", "rightepip.png"), img2)
 
