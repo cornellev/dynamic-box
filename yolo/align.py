@@ -65,11 +65,6 @@ T_x = np.array([[0, -TZ, TY], [TZ, 0, -Baseline], [-TY, Baseline, 0]])
 E = T_x @ R
 W = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])
 
-# Given essential matrix E, get R and T using SVD, where R = U @ W.T @ V
-# and W = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])
-
-# lefti = "wagner_left.png"
-# righti = "wagner_right.png"
 lefti = "left0.png"
 righti = "right0.png"
 
@@ -78,7 +73,6 @@ non_dups_left, non_dups_right = YOLO.get_pair([lefti, righti])
 
 # Given the bounding boxes for each image: do 8 point algorithm for corresponding images in each bounding box.
 def eightPoint ():
-   # Step 2: Initialize SIFT detector
    global lefti, righti
    sift = cv2.SIFT_create()
    l_img = cv2.imread(lefti)
@@ -93,18 +87,11 @@ def eightPoint ():
    good_matches = matches[:8]
    matched_img = cv2.drawMatches(l_img, kp1, r_img, kp2, good_matches, None, flags=2)
 
-   # for corr in (np.float32([kp1[m.queryIdx].pt for m in good_matches])):
-   #    x, y = corr
    left_P = np.float32([kp1[m.queryIdx].pt for m in good_matches])
    right_P = np.float32([kp2[m.trainIdx].pt for m in good_matches])
-   # left_P = np.concatenate((left_P, np.float32([kp1[m.queryIdx].pt for m in good_matches])))
-   # right_P = np.concatenate((right_P, np.float32([kp2[m.trainIdx].pt for m in good_matches])))
-   # return np.hstack((left_P, np.ones((points.shape[0], 1)))), np.hstack((right_P, np.ones((points.shape[0], 1))))
+
    return left_P, right_P
 
-img1 = cv2.imread('left0.png', cv2.IMREAD_GRAYSCALE)  #queryimage # left image
-img2 = cv2.imread('right0.png', cv2.IMREAD_GRAYSCALE) #trainimage # right image
- 
 # Normalize left, right corresponding points.
 def normalizePoints(points):
    x_, y_ = np.mean(points, axis=0)
@@ -133,6 +120,27 @@ def fundamentalMatrix(left_P, right_P):
    F = U @ np.diag(S) @ V
    return T2.T @ F @ T1
 
+def getDepthMap (ptl, ptr):
+   # Depth map: 2D u_r = M_intR @ x_r (3D), u_l = P_L @ x_r
+   # Need corresponding points left ptl and right ptr.
+   M_intL = np.append(K_L, np.array([[0], [0], [0]]), axis = 1)
+   M_intR = np.append(K_R, np.array([[0], [0], [0]]), axis = 1)
+   R_T = np.append(np.append(R, np.array([[Baseline], [TY], [TZ]]), axis = 1), [np.array([0, 0, 0, 1])], axis = 0)
+   P_L = M_intL @ R_T
+   u_l, v_l, _ = ptl
+   u_r, v_r, _ = ptr
+   # A @ x_r = b
+   A = np.array([[u_r*M_intR[2][0]-M_intR[0][0], u_r*M_intR[2][1]-M_intR[0][1], u_r*M_intR[2][2]-M_intR[0][2]],
+                 [v_r*M_intR[2][0]-M_intR[1][0], v_r*M_intR[2][1]-M_intR[1][1], v_r*M_intR[2][2]-M_intR[1][2]],
+                 [u_l*P_L[2][0]-P_L[0][0], u_l*P_L[2][1]-P_L[0][1], u_l*P_L[2][2]-P_L[0][2]],
+                 [v_l*P_L[2][0]-P_L[1][0], v_l*P_L[2][1]-P_L[1][1], v_l*P_L[2][2]-P_L[1][2]]])
+   b = np.array([[M_intR[0][3]-M_intR[2][3]], 
+                 [M_intR[1][3]-M_intR[2][3]], 
+                 [P_L[0][3]-P_L[2][3]], 
+                 [P_L[1][3]-P_L[2][3]]])
+   # 3D coordinate in the right image x_r = np.linalg.inv(A.T @ A) @ A.T @ B
+   return np.linalg.inv(A.T @ A) @ A.T @ b
+
 # Find point on right image [u_r, v_r, 1] such that a*u_r + b*v_r + c = 0.
 def getEpipolarLines (img1, img2, pt, F):
    pt, dir = pt
@@ -152,87 +160,66 @@ def getEpipolarLines (img1, img2, pt, F):
       c = (F[2][0] * pt[0] + F[2][1] * pt[1] + F[2][2])
 
    y = lambda x : -(a/b)*x - c/b
-   im1 = cv2.circle(img1, (int(pt[0]), int(pt[1])), 5, (0, 0, 255), -1)
-   im2 = cv2.line(img2, (0, int(y(0))), (img1.shape[1], int(y(img1.shape[1]))), (0, 0, 255), 1)
 
    # Do block matching on left point and right epipolar line within the range of the left point:
    ptr = np.array([0, 0, 1])
-   print(tmg1)
-   print((tmg1[pt[1]+50, pt[0]+50]))
-   xl, xr = int(max(0.,pt[0]-50.)), int(min(float(im1.shape[1]), pt[0]+50.))
-   yl, yr = int(max(0.,pt[1]-50.)), int(min(float(im1.shape[0]), pt[1]+50.))
-   block = lambda im, pt : im[int(max(0.,pt[1]-50.)):int(min(float(im1.shape[0]), pt[1]+50.)), 
-                              int(max(0.,pt[0]-50.)):int(min(float(im1.shape[1]), pt[0]+50.)),
+   # print(tmg1)
+   # print((tmg1[pt[1]+50, pt[0]+50]))
+   xl, xr = int(max(0.,pt[0]-50.)), int(min(float(img1.shape[1]), pt[0]+50.))
+   yl, yr = int(max(0.,pt[1]-50.)), int(min(float(img1.shape[0]), pt[1]+50.))
+   block = lambda im, pt : im[int(max(0.,pt[1]-50.)):int(min(float(img1.shape[0]), pt[1]+50.)), 
+                              int(max(0.,pt[0]-50.)):int(min(float(img1.shape[1]), pt[0]+50.)),
                               :] 
    blockl = block (img1, pt)
    ptr = np.array([int(max(0.,pt[0]-50.)), 
                            y(int(max(0.,pt[0]-50.)))])
    diff = np.absolute(blockl - 
                            block (img2, ptr))
+   weight = 1000 * np.absolute(img1[int(pt[1])][int(pt[0])] - img2[int(y(ptr[0]))][int(ptr[0])])
    min_SAD = np.sum(np.sum(diff, axis=(0,1)))
    # I HAVE A LINE: 
-   for x in range(int(max(0.,pt[0]-50.)), int(min(float(im1.shape[1]), pt[0]+50.))):
-      abs_diff = np.absolute(blockl - block (img2, np.array([x, y(x)])))
+   shift = (pt[0] - img1.shape[1]/2) * 2 * 0
+
+   for x in range(int(max(0.,pt[0]-50.+shift)), int(min(float(img1.shape[1]), pt[0]+50.+shift))):
+      blockr = block (img2, np.array([x, y(x)]))
+      abs_diff = np.absolute(blockl - blockr)
+      weight = 1000 * np.sum(np.sum(np.absolute(img1[int(pt[1])][int(pt[0])] - img2[int(y(x))][x])))
       sum = np.sum(np.sum(abs_diff, axis=(0,1)))
       if sum < min_SAD:
          min_SAD = sum
-         ptr = np.array([x, y(x)])
+         # curr
+         if np.sum(np.sum(np.absolute(img1[int(pt[1])][int(pt[0])] - img2[int(y(x))][x]))) < np.sum(np.sum(np.absolute(img1[int(pt[1])][int(pt[0])] - img2[int(ptr[1])][int(ptr[0])]))) : 
+            ptr = np.array([x, y(x)])
+   
+   im1 = cv2.circle(img1, (int(pt[0]), int(pt[1])), 5, (0, 0, 255), -1)
+   im2 = cv2.line(img2, (0, int(y(0))), (img1.shape[1], int(y(img1.shape[1]))), (0, 0, 255), 1)
+   im2 = cv2.circle(img2, (int(max(0.,pt[0]-50)), int(y(max(0.,pt[0]-50)))), 5, (100, 20, 100), -1)
+   im2 = cv2.circle(img2, (int(min(float(im1.shape[1]), pt[0]+50)), int(y(min(float(im1.shape[1]), pt[0]+50)))), 5, (255, 255, 0), -1)
+   z = (fx_l * Baseline) / (pt[0] - ptr[0])
+   x = pt[0] - cx_l * z/fx_l
+   y = pt[1] - cy_l * z/fy_l
+   print(z*0.001)
+   print(getDepthMap(pt, np.append(ptr, np.array([1.])))[-1] * 0.001)
 
    im2 = cv2.circle(img2, (int(ptr[0]), int(ptr[1])), 5, (0, 0, 255), -1)
-
+   
    cv2.imwrite("im.png", block (im2, ptr) )
    return img1, img2
-
-
-def getDepthMap (ptl, ptr):
-   # Depth map: 2D u_r = M_intR @ x_r (3D), u_l = P_L @ x_r
-   # Need corresponding points left ptl and right ptr.
-   M_intL = np.append(K_L, np.array([[0], [0], [0]]), axis = 1)
-   M_intR = np.append(K_R, np.array([[0], [0], [0]]))
-   R_T = np.append(np.append(R, np.array([[Baseline], [TY], [TZ]]), axis = 1), [np.array([0, 0, 0, 1])], axis = 0)
-   P_L = np.append(M_intL, np.array([[0], [0], [0]]), axis = 1) @ R_T
-   u_l, v_l = ptl
-   u_r, v_r = ptr
-   # A @ x_r = b
-   A = np.array([[u_r*M_intR[2][0]-M_intR[0][0], u_r*M_intR[2][1]-M_intR[0][1], u_r*M_intR[2][2]-M_intR[0][2]],
-                 [v_r*M_intR[2][0]-M_intR[1][0], v_r*M_intR[2][1]-M_intR[1][1], v_r*M_intR[2][2]-M_intR[1][2]],
-                 [u_l*P_L[2][0]-P_L[0][0], u_l*P_L[2][1]-P_L[0][1], u_l*P_L[2][2]-P_L[0][2]],
-                 [v_l*P_L[2][0]-P_L[1][0], v_l*P_L[2][1]-P_L[1][1], v_l*P_L[2][2]-P_L[1][2]]])
-   b = np.array([[M_intR[0][3]-M_intR[2][3]], 
-                 [M_intR[1][3]-M_intR[2][3]], 
-                 [P_L[0][3]-P_L[2][3]], 
-                 [P_L[1][3]-P_L[2][3]]])
-   # 3D coordinate in the right image x_r = np.linalg.inv(A.T @ A) @ A.T @ B
-   return np.linalg.inv(A.T @ A) @ A.T @ b
 
 
 left_P, right_P = eightPoint()
 
 left_ = np.hstack((left_P, np.ones((left_P.shape[0], 1))))
 right_ = np.hstack((right_P, np.ones((right_P.shape[0], 1))))
-F = fundamentalMatrix(left_P, right_P)
+# F = fundamentalMatrix(left_P, right_P)
 # F, mask = cv2.findFundamentalMat(left_P, right_P, method=cv2.RANSAC)
-# F = np.linalg.inv(K_L).T @ E @ np.linalg.inv(K_R)
+F = np.linalg.inv(K_L).T @ E @ np.linalg.inv(K_R)
 E = K_R.T @ F @ K_L
 U, S, V = np.linalg.svd(E)
 
-img1, img2 = getEpipolarLines(cv2.imread(lefti), cv2.imread(righti), (left_[1], "LEFT"), F)
+img1, img2 = getEpipolarLines(cv2.imread(lefti), cv2.imread(righti), (left_[7], "LEFT"), F)
 cv2.imwrite(os.path.join("data", "leftepip.png"), img1)
 cv2.imwrite(os.path.join("data", "rightepip.png"), img2)
-
-
-# HL = cv2.findHomography(left_P, right_P)[0]
-# HR = cv2.findHomography(right_P, left_P)[0]
-
-# size = cv2.imread(lefti).shape[:2]
-
-# left_rectified = cv2.warpPerspective(cv2.imread(lefti), HL, (size[1],size[0]))
-# right_rectified = cv2.warpPerspective(cv2.imread(righti), HR, (size[1],size[0]))
-
-
-# # # Display the rectified images
-# cv2.imwrite(os.path.join("data", "leftrectified.png"), left_rectified)
-# cv2.imwrite(os.path.join("data", "rightrectified.png"), right_rectified)
 
 # left_P = []
 # right_P = []
