@@ -178,18 +178,14 @@ def getEpipolarLines (img1, img2, pt, F):
    weight = 1000 * np.absolute(img1[int(pt[1])][int(pt[0])] - img2[int(y(ptr[0]))][int(ptr[0])])
    min_SAD = np.sum(np.sum(diff, axis=(0,1)))
    # I HAVE A LINE: 
-   shift = (pt[0] - img1.shape[1]/2) * 2 * 0
-
-   for x in range(int(max(0.,pt[0]-50.+shift)), int(min(float(img1.shape[1]), pt[0]+50.+shift))):
+   for x in range(int(max(0.,pt[0]-Baseline)), int(min(float(img1.shape[1]), pt[0]+50.))):
       blockr = block (img2, np.array([x, y(x)]))
       abs_diff = np.absolute(blockl - blockr)
       weight = 1000 * np.sum(np.sum(np.absolute(img1[int(pt[1])][int(pt[0])] - img2[int(y(x))][x])))
-      sum = np.sum(np.sum(abs_diff, axis=(0,1)))
+      sum = np.sum(np.sum(abs_diff, axis=(0,1))) + np.sum(weight)
       if sum < min_SAD:
          min_SAD = sum
-         # curr
-         if np.sum(np.sum(np.absolute(img1[int(pt[1])][int(pt[0])] - img2[int(y(x))][x]))) < np.sum(np.sum(np.absolute(img1[int(pt[1])][int(pt[0])] - img2[int(ptr[1])][int(ptr[0])]))) : 
-            ptr = np.array([x, y(x)])
+         ptr = np.array([x, y(x)])
    
    im1 = cv2.circle(img1, (int(pt[0]), int(pt[1])), 5, (0, 0, 255), -1)
    im2 = cv2.line(img2, (0, int(y(0))), (img1.shape[1], int(y(img1.shape[1]))), (0, 0, 255), 1)
@@ -217,7 +213,7 @@ F = np.linalg.inv(K_L).T @ E @ np.linalg.inv(K_R)
 E = K_R.T @ F @ K_L
 U, S, V = np.linalg.svd(E)
 
-img1, img2 = getEpipolarLines(cv2.imread(lefti), cv2.imread(righti), (left_[7], "LEFT"), F)
+img1, img2 = getEpipolarLines(cv2.imread(lefti), cv2.imread(righti), (np.array([900., 300., 1.]), "LEFT"), F)
 cv2.imwrite(os.path.join("data", "leftepip.png"), img1)
 cv2.imwrite(os.path.join("data", "rightepip.png"), img2)
 
@@ -234,4 +230,3 @@ cv2.imwrite(os.path.join("data", "rightepip.png"), img2)
 #    # right_P.append([right[0]+right[2],right[1]])
 #    # right_P.append([right[0],right[1]])
 #    # right_P.append([right[0],right[1]+right[3]])
-
