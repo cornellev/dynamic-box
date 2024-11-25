@@ -145,7 +145,6 @@ def getDepthMap (ptl, ptr):
 
 # Find point on right image [u_r, v_r, 1] such that a*u_r + b*v_r + c = 0.
 def getEpipolarLines (img1, img2, pt, F, data):
-   try:
       pt, dir = pt
       # tmg1 = np.pad(img1, pad_width=120, mode = "constant", constant_values = 0)
       # tmg2 = np.pad(img2, pad_width=120, mode = "constant", constant_values = 0)
@@ -194,7 +193,8 @@ def getEpipolarLines (img1, img2, pt, F, data):
       z = (fx_l * Baseline) / (pt[0] - ptr[0])
       x = pt[0] - cx_l * z/fx_l
       y = pt[1] - cy_l * z/fy_l
-      print(x*0.001, y*0.001, z*0.001)
+      # print(np.array([x,y,z])*0.001)
+      data = np.concatenate((data, [[x*0.001], [y*0.001], [z*0.001]]), axis=1)
       # print(getDepthMap(pt, np.append(ptr, np.array([1.])))  * 0.001)
       # if (z*0.001 > 1.0 and z*0.001 < 2.4):
       im1 = cv2.circle(img1, (int(pt[0]), int(pt[1])), 5, (0, 0, 255), -1)
@@ -206,9 +206,15 @@ def getEpipolarLines (img1, img2, pt, F, data):
       im2 = cv2.circle(img2, (int(ptr[0]), int(ptr[1])), 5, (0, 0, 255), -1)
    
       cv2.imwrite("im.png", block (im2, ptr) )
-      return img1, img2, np.vstack(data, np.array([x,y,z])*0.001)
-   except ValueError: 
       return img1, img2, data
+
+def drawMinMaxBox (data):
+   means = np.mean(data, axis = 1)
+   cov = np.cov(data)
+   eigval, eigvec = np.linalg.eig(cov)
+   centered_data = data - means[:,np.newaxis]
+
+# def drawOrientedBox
 
 # left_P, right_P = eightPoint()
 
@@ -235,17 +241,17 @@ U, S, V = np.linalg.svd(E)
 img1, img2 = cv2.imread(lefti), cv2.imread(righti)
 # for left in non_dups_left:
 left = non_dups_left[2]
-data = np.array([0.,0.,0.])
+data = np.array([[0.], [0.], [0.]])
 for x in range(left[0], left[0]+left[2], 20):
    for y in range(left[1], left[1]+left[3], 20):
       pt = np.array([x, y, 1])
       img1, img2, data = getEpipolarLines(img1, img2, (pt, "LEFT"), F, data)
-      print(data)
       # left_P = np.array([left[0],left[1]])
       # left_P = np.vstack((left_P, np.array([left[0]+left[2],left[1]])))
       # left_P = np.vstack((left_P, np.array([left[0]+left[2],left[1]+left[3]])))
       # left_P = np.vstack((left_P, np.array([left[0],left[1]+left[3]])))
-print(data)
+drawMinMaxBox(data)
+
 # left_P = np.array([200,200])
 # for left in non_dups_left:
 #    left_P = np.vstack((left_P, np.array([left[1],left[0]])))
