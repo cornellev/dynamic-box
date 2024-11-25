@@ -20,7 +20,7 @@ import threading
 import matplotlib.pyplot as plt
 from scipy.linalg import svd
 import YOLO
-import asyncio
+from mpl_toolkits.mplot3d import Axes3D
 
 np.set_printoptions(suppress=True)
 
@@ -194,7 +194,7 @@ def getEpipolarLines (img1, img2, pt, F, data):
       x = pt[0] - cx_l * z/fx_l
       y = pt[1] - cy_l * z/fy_l
       # print(np.array([x,y,z])*0.001)
-      data = np.concatenate((data, [[x*0.001], [y*0.001], [z*0.001]]), axis=1)
+      data = np.concatenate((data, [[pt[0]], [pt[1]], [z*0.001]]), axis=1)
       # print(getDepthMap(pt, np.append(ptr, np.array([1.])))  * 0.001)
       # if (z*0.001 > 1.0 and z*0.001 < 2.4):
       im1 = cv2.circle(img1, (int(pt[0]), int(pt[1])), 5, (0, 0, 255), -1)
@@ -208,12 +208,44 @@ def getEpipolarLines (img1, img2, pt, F, data):
       cv2.imwrite("im.png", block (im2, ptr) )
       return img1, img2, data
 
+def draw3DRectangle(ax, x1, y1, z1, x2, y2, z2):
+    # the Translate the datatwo sets of coordinates form the apposite diagonal points of a cuboid
+    ax.plot([x1, x2], [y1, y1], [z1, z1], color='b') # | (up)
+    ax.plot([x2, x2], [y1, y2], [z1, z1], color='b') # -->
+    ax.plot([x2, x1], [y2, y2], [z1, z1], color='b') # | (down)
+    ax.plot([x1, x1], [y2, y1], [z1, z1], color='b') # <--
+
+    ax.plot([x1, x2], [y1, y1], [z2, z2], color='b') # | (up)
+    ax.plot([x2, x2], [y1, y2], [z2, z2], color='b') # -->
+    ax.plot([x2, x1], [y2, y2], [z2, z2], color='b') # | (down)
+    ax.plot([x1, x1], [y2, y1], [z2, z2], color='b') # <--
+    
+    ax.plot([x1, x1], [y1, y1], [z1, z2], color='b') # | (up)
+    ax.plot([x2, x2], [y2, y2], [z1, z2], color='b') # -->
+    ax.plot([x1, x1], [y2, y2], [z1, z2], color='b') # | (down)
+    ax.plot([x2, x2], [y1, y1], [z1, z2], color='b') # <--
+
 def drawMinMaxBox (data):
    means = np.mean(data, axis = 1)
    cov = np.cov(data)
    eigval, eigvec = np.linalg.eig(cov)
-   centered_data = data - means[:,np.newaxis]
-
+   centered_data = data
+   xmin, xmax, ymin, ymax, zmin, zmax = np.min(centered_data[0, :]), np.max(centered_data[0, :]), np.min(centered_data[1, :]), np.max(centered_data[1, :]), np.min(centered_data[2, :]), np.max(centered_data[2, :])
+   fig = plt.figure()
+   ax = fig.add_subplot(111, projection='3d')
+   ax.scatter(data[0,:], data[1,:], data[2,:], label="original data")
+   # ax.scatter(centered_data[0,:], centered_data[1,:], centered_data[2,:], label="centered data")
+   ax.legend()
+   # cartesian basis
+   ax.plot([0, 1],  [0, 0], [0, 0], color='b', linewidth=4)
+   ax.plot([0, 0],  [0, 1], [0, 0], color='b', linewidth=4)
+   ax.plot([0, 0],  [0, 0], [0, 1], color='b', linewidth=4)
+   # eigen basis
+   ax.plot([0, eigvec[0, 0]],  [0, eigvec[1, 0]], [0, eigvec[2, 0]], color='r', linewidth=4)
+   ax.plot([0, eigvec[0, 1]],  [0, eigvec[1, 1]], [0, eigvec[2, 1]], color='g', linewidth=4)
+   ax.plot([0, eigvec[0, 2]],  [0, eigvec[1, 2]], [0, eigvec[2, 2]], color='k', linewidth=4)
+   draw3DRectangle(ax, xmin, ymin, zmin, xmax, ymax, zmax)
+   plt.show()
 # def drawOrientedBox
 
 # left_P, right_P = eightPoint()
@@ -241,7 +273,7 @@ U, S, V = np.linalg.svd(E)
 img1, img2 = cv2.imread(lefti), cv2.imread(righti)
 # for left in non_dups_left:
 left = non_dups_left[2]
-data = np.array([[0.], [0.], [0.]])
+data = np.array([[], [], []])
 for x in range(left[0], left[0]+left[2], 20):
    for y in range(left[1], left[1]+left[3], 20):
       pt = np.array([x, y, 1])
