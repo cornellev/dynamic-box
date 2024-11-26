@@ -18,6 +18,7 @@ import numpy as np
 import math
 import threading
 import matplotlib.pyplot as plt
+import scipy as sp
 from scipy.linalg import svd
 import YOLO
 from mpl_toolkits.mplot3d import Axes3D
@@ -197,13 +198,11 @@ def getEpipolarLines (img1, img2, pt, F, data):
       # print(getDepthMap(pt, np.append(ptr, np.array([1.])))  * 0.001)
       # if (z*0.001 > 1.0 and z*0.001 < 2.4):
       data = np.concatenate((data, [[pt[0]], [pt[1]], [z*0.001]]), axis=1)
-      im1 = cv2.circle(img1, (int(pt[0]), int(pt[1])), 5, (0, 0, 255), -1)
-      im2 = cv2.putText(img2, str(round(z*0.001,3)), (int(ptr[0]), int(ptr[1])-10), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
+      # im1 = cv2.circle(img1, (int(pt[0]), int(pt[1])), 5, (0, 0, 255), -1)
+      # im2 = cv2.putText(img2, str(round(z*0.001,3)), (int(ptr[0]), int(ptr[1])-10), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
       # im1 = cv2.putText(img1, str(round(z*0.001,3)), (int(pt[0]), int(pt[1])), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
-      z = getDepthMap(pt, np.append(ptr, np.array([1.])))[-1]  * 0.001
       # im2 = cv2.putText(img2, str(round(z[0],3)), (int(ptr[0]), int(ptr[1])+30), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 0), 2)
-   
-      cv2.imwrite("im.png", block (im2, ptr) )
+      # cv2.imwrite("im.png", block (im2, ptr) )
       return img1, img2, data
 
 def draw3DRectangle(ax, x1, y1, z1, x2, y2, z2):
@@ -224,6 +223,7 @@ def draw3DRectangle(ax, x1, y1, z1, x2, y2, z2):
    #  ax.plot([x2, x2], [y1, y1], [z1, z2], color='b') # <--
 
 def drawMinMaxBox (data):
+   data = data[:, np.abs(data[-1, :] - np.mean(data, axis = 1)[-1])/np.std(data[-1]) < 3]
    means = np.mean(data, axis = 1)
    cov = np.cov(data)
    data = data[:, (data[-1, :] > means[-1]-np.std(data[-1])) & ((data[-1, :] < means[-1]+np.std(data[-1])))]
@@ -272,8 +272,8 @@ img1, img2 = cv2.imread(lefti), cv2.imread(righti)
 # for left in non_dups_left:
 left = non_dups_left[4]
 data = np.array([[], [], []])
-for x in range(left[0], left[0]+left[2], 20):
-   for y in range(left[1], left[1]+left[3], 20):
+for x in range(left[0], left[0]+left[2], 10):
+   for y in range(left[1], left[1]+left[3], 10):
       pt = np.array([x, y, 1])
       img1, img2, data = getEpipolarLines(img1, img2, (pt, "LEFT"), F, data)
       # left_P = np.array([left[0],left[1]])
