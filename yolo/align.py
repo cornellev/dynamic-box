@@ -194,16 +194,14 @@ def getEpipolarLines (img1, img2, pt, F, data):
       x = pt[0] - cx_l * z/fx_l
       y = pt[1] - cy_l * z/fy_l
       # print(np.array([x,y,z])*0.001)
-      data = np.concatenate((data, [[pt[0]], [pt[1]], [z*0.001]]), axis=1)
       # print(getDepthMap(pt, np.append(ptr, np.array([1.])))  * 0.001)
       # if (z*0.001 > 1.0 and z*0.001 < 2.4):
+      data = np.concatenate((data, [[pt[0]], [pt[1]], [z*0.001]]), axis=1)
       im1 = cv2.circle(img1, (int(pt[0]), int(pt[1])), 5, (0, 0, 255), -1)
       im2 = cv2.putText(img2, str(round(z*0.001,3)), (int(ptr[0]), int(ptr[1])-10), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
       # im1 = cv2.putText(img1, str(round(z*0.001,3)), (int(pt[0]), int(pt[1])), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
       z = getDepthMap(pt, np.append(ptr, np.array([1.])))[-1]  * 0.001
       # im2 = cv2.putText(img2, str(round(z[0],3)), (int(ptr[0]), int(ptr[1])+30), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 0), 2)
-
-      im2 = cv2.circle(img2, (int(ptr[0]), int(ptr[1])), 5, (0, 0, 255), -1)
    
       cv2.imwrite("im.png", block (im2, ptr) )
       return img1, img2, data
@@ -220,17 +218,17 @@ def draw3DRectangle(ax, x1, y1, z1, x2, y2, z2):
     ax.plot([x2, x1], [y2, y2], [z2, z2], color='b') # | (down)
     ax.plot([x1, x1], [y2, y1], [z2, z2], color='b') # <--
     
-    ax.plot([x1, x1], [y1, y1], [z1, z2], color='b') # | (up)
-    ax.plot([x2, x2], [y2, y2], [z1, z2], color='b') # -->
-    ax.plot([x1, x1], [y2, y2], [z1, z2], color='b') # | (down)
-    ax.plot([x2, x2], [y1, y1], [z1, z2], color='b') # <--
+   #  ax.plot([x1, x1], [y1, y1], [z1, z2], color='b') # | (up)
+   #  ax.plot([x2, x2], [y2, y2], [z1, z2], color='b') # -->
+   #  ax.plot([x1, x1], [y2, y2], [z1, z2], color='b') # | (down)
+   #  ax.plot([x2, x2], [y1, y1], [z1, z2], color='b') # <--
 
 def drawMinMaxBox (data):
    means = np.mean(data, axis = 1)
    cov = np.cov(data)
+   data = data[:, (data[-1, :] > means[-1]-np.std(data[-1])) & ((data[-1, :] < means[-1]+np.std(data[-1])))]
    eigval, eigvec = np.linalg.eig(cov)
-   centered_data = data
-   xmin, xmax, ymin, ymax, zmin, zmax = np.min(centered_data[0, :]), np.max(centered_data[0, :]), np.min(centered_data[1, :]), np.max(centered_data[1, :]), np.min(centered_data[2, :]), np.max(centered_data[2, :])
+   xmin, xmax, ymin, ymax, zmin, zmax = np.min(data[0, :]), np.max(data[0, :]), np.min(data[1, :]), np.max(data[1, :]), np.min(data[2, :]), np.max(data[2, :])
    fig = plt.figure()
    ax = fig.add_subplot(111, projection='3d')
    ax.scatter(data[0,:], data[1,:], data[2,:], label="original data")
@@ -272,7 +270,7 @@ U, S, V = np.linalg.svd(E)
 
 img1, img2 = cv2.imread(lefti), cv2.imread(righti)
 # for left in non_dups_left:
-left = non_dups_left[2]
+left = non_dups_left[4]
 data = np.array([[], [], []])
 for x in range(left[0], left[0]+left[2], 20):
    for y in range(left[1], left[1]+left[3], 20):
