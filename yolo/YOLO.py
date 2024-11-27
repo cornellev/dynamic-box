@@ -1,17 +1,8 @@
-"""
-Implement YOLO without the object classification task: any obstacle is an obstacle:
-try cv2's selective search: proposes all regions in an image -> associate with obstacle. """
-
-""" 
-After everything works, change YOLO.py into a publisher node with name : "yolo" that takes in
-ZED stereo images and publishes left, right annotated bbox images (more specifically triple (boxes, confs, class_ids)).
-"""
-
 import cv2
-import os
 import numpy as np
 import math
 import threading
+import matplotlib.pyplot as plt
 
 classes = []
 non_dups_left = []
@@ -116,20 +107,23 @@ def bounding_box_dim (of, img):
    for i in non_dups: 
       x, y, w, h = boxes[i]
       label = str(classes[class_ids[i]])
-      cv2.rectangle(img, (x,y), (x+w,y+h), 2)
+      cv2.rectangle(img, (x,y), (x+w,y+h), colors[i], 2)
       cv2.putText(img, label, (x, y-10), cv2.FONT_HERSHEY_PLAIN, 1.5, colors[i], 2)
-      if (of == "boundedright.png"):
+      if (of == "right0.png"):
          non_dups_right.append(boxes[i])
-      if (of == "boundedleft.png"):
+      if (of == "left0.png"):
          non_dups_left.append(boxes[i])
+   
+   cv2.imwrite("bounded" + of, img)
    
    pair.append([of, non_dups])
    return pair
 
+
 def get_pair (images):
    global pair
    for img in images:
-      pool.append(threading.Thread(target = bounding_box_dim, args = ("bounded" + img, cv2.imread(img), )))
+      pool.append(threading.Thread(target = bounding_box_dim, args = (img, cv2.imread(img), )))
       pool[-1].start()
 
    for thread in pool:
@@ -142,12 +136,7 @@ def get_pair (images):
    reorder_boxes()
 
    for i in range(len(non_dups_left)):
-      left.append(cv2.imread("left.png")[non_dups_left[i][1]:non_dups_left[i][1]+non_dups_left[i][3], non_dups_left[i][0]:non_dups_left[i][0]+non_dups_left[i][2]])
-      right.append(cv2.imread("left.png")[non_dups_right[i][1]:non_dups_right[i][1]+non_dups_right[i][3], non_dups_right[i][0]:non_dups_right[i][0]+non_dups_right[i][2]])
-   return pair
+      left.append(cv2.imread("left0.png")[non_dups_left[i][1]:non_dups_left[i][1]+non_dups_left[i][3], non_dups_left[i][0]:non_dups_left[i][0]+non_dups_left[i][2]])
+      right.append(cv2.imread("right0.png")[non_dups_right[i][1]:non_dups_right[i][1]+non_dups_right[i][3], non_dups_right[i][0]:non_dups_right[i][0]+non_dups_right[i][2]])
+   return non_dups_left, non_dups_right
    # After pair is sent -> pair = []
-
-# left = cv2.imread("left.png")
-# right = cv2.imread("right.png")
-# cv2.imshow("left", left)
-# cv2.waitKey(0)

@@ -252,7 +252,7 @@ E = K_R.T @ F @ K_L
 U, S, V = np.linalg.svd(E)
 
 img1, img2 = cv2.imread(lefti), cv2.imread(righti)
-left = non_dups_left[0]
+left = non_dups_left[4]
 data = np.array([[], [], []])
 for x in range(left[0], left[0]+left[2], 10):
    for y in range(left[1], left[1]+left[3], 10):
