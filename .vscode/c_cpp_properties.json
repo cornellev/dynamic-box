@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${userHome}/.conda/envs/env_stereo/include/**"
+            ],
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerPath": "${userHome}/.conda/envs/env_stereo/bin/nvcc",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

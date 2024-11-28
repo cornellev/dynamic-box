@@ -1,19 +1,22 @@
 # dynamic-box
 3rd times the charm
 
-## Update Notes:
+## Update Notes
 The better dynamic-box.
 
-## Installation:
-### Conda: 
-https://docs.anaconda.com/anaconda/install/linux/:
+## Dependencies
+
+### Conda
+You can find installation instruction for Conda [here](https://docs.anaconda.com/anaconda/install/linux/).
+Miniconda should also work fine. A brief version of the instructions is below:
+
 Download in Ubuntu home directory:
 ``` 
 Anaconda3-2024.06-1-Linux-x86_64.sh from https://repo.anaconda.com/archive/
 ```
 
 Run:
-```
+```bash
 curl -O https://repo.anaconda.com/archive/Anaconda3-2024.06-1-Linux-x86_64.sh
 bash ~/<Wherever you downloaded it>/Anaconda3-2024.06-1-Linux-x86_64.sh
 ```
@@ -22,17 +25,16 @@ Anaconda is now downloaded in ``` /home/<USER>/anaconda3 ``` in Ubuntu
 
 Refresh terminal: ``` source ~/.bashrc ```
 
-### Activate conda environment:
-``` python
+### Setting up the Conda environment
+Use the commands below. Please do call your environment `env_stereo` so your C++ autocomplete works.
+```bash
 conda create -n env_stereo python=3.10
 conda activate env_stereo
-conda install pytorch
-conda install cuda80 -c pytorch
-conda install torchvision -c pytorch
+conda install cuda=12.6 gcc=13 opencv numpy -c nvidia -c conda-forge
 ```
 
 
-## How This Works (NEED TO UPDATE):
+## How This Works (NEED TO UPDATE)
 ZED camera captures stereo pairs of left (Il) and right (Ir) images -> run through a 2D detector that generates 2D boxes on regions of interest (ROIs) in Il and Ir:
 1) 2D detector that generates 2D boxes in Il and Ir:
    Given stereo image pair input: an Il, Ir pair from ZED -> identify left (l) and right (r) ROIs -> threshold -> aquire m, n ROIs in Il, Ir ->
@@ -47,7 +49,7 @@ ZED camera captures stereo pairs of left (Il) and right (Ir) images -> run throu
    3D box: look at ```3D box Estimation``` for reference on how we will use the 
    left and right 2D boxes to generate a 3D box. 
 
-### Steps completed:
+### Steps completed
 1) Used YOLOv3 to generate 2D bounding boxes for objects in stereo images taken by the ZED camera. Returns 2D bounding box information in the form of $(x_l,y_l,w,h)$.
 2) Given derived $F$, and assuming that the left camera is placed at the origin, then let us define the left camera in a canonical form where the camera projection or intrinsic matrix is $K_L = [I|0]$, where $I$ is the identity matrix and $0$ is the zero vector. Then we can compute the epipole $e_R$ of the right image with $F^Te_R=0$, where $e_R$ is in the null space of $F$. Finally, we derive the right camera's projection matrix as $K_R=[[e_R]_xF+e_2v^T]$.
 
@@ -61,13 +63,13 @@ ZED camera captures stereo pairs of left (Il) and right (Ir) images -> run throu
 
 6) For each object detected by YOLOv3, convert 2D points constrained in its corresponding bounding box into a 3D point cloud. Then find the eigenvalues and eigenvectors of the covariance matrix of the 3D dataset to construct a rotation matrix, which is used to derive yaw, pitch, and roll of the object. The dimensions of the 3D bounding box is constrained within the 2D bounding box, and orientation and pose are estimated using the calculated yaw, pitch, and roll.
 
-### Currently working on:
+### Currently working on
 1) Getting more accurate 3D bounding boxes that consider perspective, rotation of the object in 3D space, and its overall pose.
    
-## Eventual ROS2 Package Implementation:
+## Eventual ROS2 Package Implementation
 ...
 
-## Important links:
+## References
 [An Introduction to 3D Computer Vision Techniques and Algorithms](https://ia801208.us.archive.org/12/items/an-introduction-to-3-d-computer-vision-techniques-and-algorithms-cyganek-siebert-2009-02-09/An%20Introduction%20to%203D%20Computer%20Vision%20Techniques%20and%20Algorithms%20%5BCyganek%20%26%20Siebert%202009-02-09%5D.pdf)
 
 [ZED Calibration File](https://support.stereolabs.com/hc/en-us/articles/360007497173-What-is-the-calibration-file)
