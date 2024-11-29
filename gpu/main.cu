@@ -1,62 +1,53 @@
 #include <iostream>
 #include <cuda_runtime.h>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
 
-__global__ void vectorAdd(const float* A, const float* B, float* C, int N) {
+// __global__ void calculateDepth(const char3* left, const char3* right, float* depth, size_t rows,
+//     size_t cols) {
+//     int i = blockDim.x * blockIdx.x + threadIdx.x;
+// }
+
+__global__ void greyscale(const uchar3* img, uchar* out, size_t rows, size_t cols) {
     int i = blockDim.x * blockIdx.x + threadIdx.x;
-    if (i < N) {
-        C[i] = A[i] + B[i];
+    if (i >= rows * cols) {
+        return;
     }
+
+    uchar3 val = img[i];
+    out[i] = ((int)val.x + (int)val.y + (int)val.z) / 3;
 }
 
 int main() {
-    int N = 1000;
-    size_t size = N * sizeof(float);
+    cv::Mat3b img = cv::imread("../dog.png", cv::IMREAD_COLOR);
+    cv::Mat1b img_grey(img.rows, img.cols);
 
-    // Allocate host memory
-    float* h_A = (float*)malloc(size);
-    float* h_B = (float*)malloc(size);
-    float* h_C = (float*)malloc(size);
+    size_t img_bytes = img.total() * img.elemSize();
+    size_t img_grey_bytes = img_grey.total() * img_grey.elemSize();
 
-    // Initialize host arrays
-    for (int i = 0; i < N; i++) {
-        h_A[i] = static_cast<float>(i);
-        h_B[i] = static_cast<float>(i * 2);
-    }
+    uchar3* d_img;
+    uchar* d_img_grey;
+    cudaMalloc(&d_img, img_bytes);
+    cudaMalloc(&d_img_grey, img_grey_bytes);
 
-    // Allocate device memory
-    float *d_A, *d_B, *d_C;
-    cudaMalloc((void**)&d_A, size);
-    cudaMalloc((void**)&d_B, size);
-    cudaMalloc((void**)&d_C, size);
+    cudaMemcpy(d_img, img.data, img_bytes, cudaMemcpyHostToDevice);
 
-    // Copy data from host to device
-    cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
+    size_t threads = img.rows * img.cols;
+    size_t threadsPerBlock = 256;
+    size_t blocksPerGrid = (threads + threadsPerBlock - 1) / threadsPerBlock;
 
-    // Launch kernel
-    int threadsPerBlock = 256;
-    int blocksPerGrid = (N + threadsPerBlock - 1) / threadsPerBlock;
-    vectorAdd<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, N);
+    greyscale<<<blocksPerGrid, threadsPerBlock>>>(d_img, d_img_grey, img.rows, img.cols);
 
-    // Copy result from device to host
-    cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
+    cudaDeviceSynchronize();
 
-    // Verify result
-    for (int i = 0; i < N; i++) {
-        if (h_C[i] != h_A[i] + h_B[i]) {
-            std::cerr << "Error at index " << i << std::endl;
-            break;
-        }
-    }
+    cudaMemcpy(img_grey.data, d_img_grey, img_grey_bytes, cudaMemcpyDeviceToHost);
 
-    // Free memory
-    cudaFree(d_A);
-    cudaFree(d_B);
-    cudaFree(d_C);
-    free(h_A);
-    free(h_B);
-    free(h_C);
+    cv::imshow("Greyscale", img_grey);
+    cv::waitKey(0);
 
-    std::cout << "Vector addition completed successfully!" << std::endl;
+    cudaFree(d_img);
+    cudaFree(d_img_grey);
+
     return 0;
 }
