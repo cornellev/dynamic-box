@@ -43,7 +43,7 @@ int main() {
 
     cudaMemcpy(img_grey.data, d_img_grey, img_grey_bytes, cudaMemcpyDeviceToHost);
 
-    cv::imshow("Greyscale", img_grey);
+    cv::imshow("Greyscale Image", img_grey);
     cv::waitKey(0);
 
     cudaFree(d_img);
