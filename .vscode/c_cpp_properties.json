@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${userHome}/.conda/envs/env_stereo/include/**"
+                "${userHome}/.conda/envs/env_stereo/include/opencv4"
             ],
             "intelliSenseMode": "linux-gcc-x64",
             "compilerPath": "${userHome}/.conda/envs/env_stereo/bin/nvcc",
