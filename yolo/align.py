@@ -20,7 +20,7 @@ import threading
 import matplotlib.pyplot as plt
 import scipy as sp
 from scipy.linalg import svd
-# import YOLO
+import YOLO
 import edge
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -70,7 +70,7 @@ righti = "right0.png"
 
 # Use this to get points to draw epipolar lines. Not for 8-point algorithm.
 # Make YOLO async.
-# non_dups_left, non_dups_right = YOLO.get_pair([lefti, righti])
+non_dups_left, non_dups_right = YOLO.get_pair([lefti, righti])
 
 # Given the bounding boxes for each image: do 8 point algorithm for corresponding images in each bounding box.
 def eightPoint ():
@@ -188,6 +188,7 @@ def getEpipolarLines (img1, img2, pt, F, data):
       # im2 = cv2.circle(img2, (int(max(0.,pt[0]-Baseline)), int(y(max(0.,pt[0]-Baseline)))), 5, (100, 20, 100), -1)
       # im2 = cv2.circle(img2, (int(min(float(im1.shape[1]), pt[0])), int(y(min(float(im1.shape[1]), pt[0])))), 5, (255, 255, 0), -1)
       z = (fx_l * Baseline) / (pt[0] - ptr[0])
+      # z = getDepthMap(pt, np.hstack((ptr, np.array([1]))))[-1][0]
       x = pt[0] - cx_l * z/fx_l
       y = pt[1] - cy_l * z/fy_l
       # if (z*0.001 > 1.0 and z*0.001 < 2.4):
@@ -199,21 +200,12 @@ def getEpipolarLines (img1, img2, pt, F, data):
       return img1, img2, data
 
 def drawMinMaxBox (data, img, box):
-   print("RAH")
    dict_mask = edge.getEdgeMask(img, box)
    data = np.array([row for row in data.T if dict_mask.get((row[0], row[1]), 0) == 255]).T
-
    for pt in data.T:
       img = cv2.circle(img, (int(pt[0]), int(pt[1])), 5, (255, 255, 0), -1)
-   fig = plt.figure()
-   ax = fig.add_subplot(111, projection='3d')
-   ax.scatter(data[0,:], data[1,:], data[2,:], label="original data")
-   plt.show()
    cv2.imwrite("check.png", img)
 
-
-   # edge returns points within box and 0 (background) or 1 (foreground)
-   # cv2.imwrite("RAH.png", data)
    xmin, xmax, ymin, ymax = box[0], box[0]+box[2], box[1], box[1]+box[3]
    data = data[:, np.abs(data[-1, :] - np.median(data, axis = 1)[-1])/np.std(data[-1]) < 3]
    means = np.mean(data, axis = 1)
@@ -305,6 +297,8 @@ def drawMinMaxBox (data, img, box):
    return img
 
 def drawOrientedBox (data, img, box):
+   dict_mask = edge.getEdgeMask(img, box)
+   data = np.array([row for row in data.T if dict_mask.get((row[0], row[1]), 0) == 255]).T
    xmin, xmax, ymin, ymax = box[0], box[0]+box[2], box[1], box[1]+box[3]
    data = data[:, np.abs(data[-1, :] - np.median(data, axis = 1)[-1])/np.std(data[-1]) < 3]
    means = np.mean(data, axis = 1)
@@ -334,22 +328,23 @@ def drawOrientedBox (data, img, box):
    # print(xmin)
    # print(xmin, xmax, xmin_b-(np.abs(xmin-xmin_b))*math.sin(yaw%(math.pi/2)), xmax_b)
    # print(((xmax_b-xmin_b))*math.cos(yaw%(math.pi/2)))
-   # Positive yaw is counter-clockwise, get projection of x-axis onto yaw degree vector, assume origin is xmax:
-   if yaw > 0:
+   # Positive yaw is clockwise, get projection of x-axis onto yaw degree vector, assume origin is xmax:
+   if yaw < 0:
       # Shifts center of back box to the left proportional to yaw, subtract by half of the original width of the back
       # box to get new [xmin_b].
-      xmin_b = max(xmin, int((xmin+xmax)/2 - (xmax-(xmin+xmax)/2)*math.sin(yaw%(math.pi/2)) - (xmax_b-xmin_b)/2))
+      xmin_b = max(xmin, int((xmin+xmax)/2 - (xmax-(xmin+xmax)/2)*math.sin(-yaw) - (xmax_b-xmin_b)/2))
       # xmin_b = (int(xmin_b-(np.abs(xmax-xmin))*math.sin(yaw%(math.pi/2))))
       # Shifts center of front box to the right proportional to yaw, subtract by half of the original width of the front
       # box to get new [xmax_f].
-      xmax_f = min(xmax, int((xmin+xmax)/2 + (xmax-(xmin+xmax)/2)*math.sin(yaw%(math.pi/2)) + (xmax_f-xmin_f)/2))
-      xmax_b = (int(xmax_b-(np.abs(xmax-xmin))*math.sin(yaw%(math.pi/2))))
-      xmin_f = int(xmin_f+(np.abs(xmax-xmin))*math.sin(yaw%(math.pi/2)))
+      xmax_f = min(xmax, int((xmin+xmax)/2 + (xmax-(xmin+xmax)/2)*math.sin(-yaw) + (xmax_f-xmin_f)/2))
+      xmax_b = (int(xmax_b-(np.abs(xmax-xmin))*math.sin(-yaw)))
+      xmin_f = int(xmin_f+(np.abs(xmax-xmin))*math.sin(-yaw))
 
-   elif yaw < 0:
+   elif yaw > 0:
       xmin_f, xmin_b = xmin_f, xmax_b - int((xmax_b-xmin_b)*math.cos(yaw%(math.pi/2)))
       xmax_f, xmax_b = xmin_f + int((xmax_f-xmin_f)*math.cos(yaw%(math.pi/2))), xmax_b
       
+   # positive pitch points upwards
    if pitch > 0:
       # ymax is the bottom horizontal of the box.
       ymin_f, ymin_b = ymin_f, ymax_b - int((ymax_b-ymin_b)*math.cos(pitch))
@@ -367,16 +362,13 @@ def drawOrientedBox (data, img, box):
    img = cv2.line(img, (xmax_f, ymin_f), (xmax_b, ymin_b), (0, 0, 255), 2)
    img = cv2.line(img, (xmax_f, ymax_f), (xmax_b, ymax_b), (0, 0, 255), 2)
    return img
-
-print("HEH")
 F = np.linalg.inv(K_L).T @ E @ np.linalg.inv(K_R)
 E = K_R.T @ F @ K_L
 U, S, V = np.linalg.svd(E)
 
 print("RUN")
 img1, img2 = cv2.imread(lefti), cv2.imread(righti)
-# left = non_dups_left[1]
-left = np.array([746, 398, 153, 163])
+left = non_dups_left[2]
 data = np.array([[], [], []])
 for x in range(left[0], left[0]+left[2], 10):
    for y in range(left[1], left[1]+left[3], 10):
@@ -384,8 +376,8 @@ for x in range(left[0], left[0]+left[2], 10):
       img1, img2, data = getEpipolarLines(img1, img2, (pt, "LEFT"), F, data)
 
 cv2.imwrite("lil.png", img1)
-img = drawMinMaxBox(data, img1, left)
 # img = drawOrientedBox(data, img1, left)
+img = drawMinMaxBox(data, img1, left)
 cv2.imwrite(os.path.join("data", "3dbox.png"), img)
 
 
