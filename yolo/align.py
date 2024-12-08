@@ -20,7 +20,8 @@ import threading
 import matplotlib.pyplot as plt
 import scipy as sp
 from scipy.linalg import svd
-import YOLO
+# import YOLO
+import edge
 from mpl_toolkits.mplot3d import Axes3D
 
 np.set_printoptions(suppress=True)
@@ -69,7 +70,7 @@ righti = "right0.png"
 
 # Use this to get points to draw epipolar lines. Not for 8-point algorithm.
 # Make YOLO async.
-non_dups_left, non_dups_right = YOLO.get_pair([lefti, righti])
+# non_dups_left, non_dups_right = YOLO.get_pair([lefti, righti])
 
 # Given the bounding boxes for each image: do 8 point algorithm for corresponding images in each bounding box.
 def eightPoint ():
@@ -197,29 +198,153 @@ def getEpipolarLines (img1, img2, pt, F, data):
       # im2 = cv2.putText(img2, str(round(z[0],3)), (int(ptr[0]), int(ptr[1])+30), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 0), 2)
       return img1, img2, data
 
-def drawOrientedBox (data, img, box):
-   # xmin, xmax, ymin, ymax = box[0], box[0]+box[2], box[1], box[1]+box[3]
+def drawMinMaxBox (data, img, box):
+   print("RAH")
+   dict_mask = edge.getEdgeMask(img, box)
+   data = np.array([row for row in data.T if dict_mask.get((row[0], row[1]), 0) == 255]).T
+
+   for pt in data.T:
+      img = cv2.circle(img, (int(pt[0]), int(pt[1])), 5, (255, 255, 0), -1)
+   fig = plt.figure()
+   ax = fig.add_subplot(111, projection='3d')
+   ax.scatter(data[0,:], data[1,:], data[2,:], label="original data")
+   plt.show()
+   cv2.imwrite("check.png", img)
+
+
+   # edge returns points within box and 0 (background) or 1 (foreground)
+   # cv2.imwrite("RAH.png", data)
+   xmin, xmax, ymin, ymax = box[0], box[0]+box[2], box[1], box[1]+box[3]
    data = data[:, np.abs(data[-1, :] - np.median(data, axis = 1)[-1])/np.std(data[-1]) < 3]
    means = np.mean(data, axis = 1)
    data = data[:, (data[-1, :] > means[-1]-np.std(data[-1])) & ((data[-1, :] < means[-1]+np.std(data[-1])))]
    means = np.mean(data, axis = 1)
    median = np.median(data, axis = 1)
 
-   front_data = data
-   back_data = data[:, np.abs(data[-1, :] - np.median(data, axis = 1)[-1])/np.std(data[-1]) < 3]
+   front_data = data[:, data[-1, :] < median[-1]]
+   back_data = data[:, data[-1, :] >= median[-1]]
+
+   means = np.mean(data, axis = 1)
+   cov = np.cov(data)
+   eigval, eigvec = np.linalg.eig(cov)
+   centered_data = data - means[:,np.newaxis]
+   xmin, xmax, ymin, ymax, zmin, zmax = np.min(centered_data[0, :]), np.max(centered_data[0, :]), np.min(centered_data[1, :]), np.max(centered_data[1, :]), np.min(centered_data[2, :]), np.max(centered_data[2, :])
+   fig = plt.figure()
+   ax = fig.add_subplot(111, projection='3d')
+   ax.scatter(centered_data[0,:], centered_data[1,:], centered_data[2,:], label="original data")
+   # ax.scatter(centered_data[0,:], centered_data[1,:], centered_data[2,:], label="centered data")
+   ax.legend()
+   # eigen basis
+   aligned_coords = np.matmul(eigvec.T, centered_data)
+   xmin, xmax, ymin, ymax, zmin, zmax = np.min(aligned_coords[0, :]), np.max(aligned_coords[0, :]), np.min(aligned_coords[1, :]), np.max(aligned_coords[1, :]), np.min(aligned_coords[2, :]), np.max(aligned_coords[2, :])
+
+   fig = plt.figure()
+   ax = fig.add_subplot(111, projection='3d')
+   ax.scatter(aligned_coords[0,:], aligned_coords[1,:], aligned_coords[2,:], color='g', label="rotated/aligned data")
+   ax.legend()
+   ax.set_xlabel('x')
+   ax.set_ylabel('y')
+   ax.set_zlabel('z')
+   # cartesian basis
+   ax.plot([0, 1],  [0, 0], [0, 0], color='b', linewidth=4)
+   ax.plot([0, 0],  [0, 1], [0, 0], color='b', linewidth=4)
+   ax.plot([0, 0],  [0, 0], [0, 1], color='b', linewidth=4)
+   # eigen basis
+   ax.plot([0, eigvec[0, 0]],  [0, eigvec[1, 0]], [0, eigvec[2, 0]], color='r', linewidth=4)
+   ax.plot([0, eigvec[0, 1]],  [0, eigvec[1, 1]], [0, eigvec[2, 1]], color='g', linewidth=4)
+   ax.plot([0, eigvec[0, 2]],  [0, eigvec[1, 2]], [0, eigvec[2, 2]], color='k', linewidth=4)
+
+   rectCoords = lambda x1, y1, z1, x2, y2, z2: np.array([[x1, x1, x2, x2, x1, x1, x2, x2],
+                                                      [y1, y2, y2, y1, y1, y2, y2, y1],
+                                                      [z1, z1, z1, z1, z2, z2, z2, z2]])
+
+   realigned_coords = np.matmul(eigvec, aligned_coords)
+   realigned_coords += means[:, np.newaxis]
+
+   rrc = np.matmul(eigvec, rectCoords(xmin, ymin, zmin, xmax, ymax, zmax))
+   rrc += means[:, np.newaxis] 
+   fig = plt.figure()
+   ax = fig.add_subplot(111, projection='3d')
+   ax.scatter(realigned_coords[0,:], realigned_coords[1,:], realigned_coords[2,:], label="rotation and translation undone")
+   ax.legend()
+
+   # z1 plane boundary
+   print(rrc[0, 0:2], rrc[1, 0:2], rrc[2, 0:2])
+   print(rrc[0, 1:3], rrc[1, 1:3], rrc[2, 1:3])
+   print(rrc[0, 2:4], rrc[1, 2:4], rrc[2, 2:4])
+   print(rrc[0, [3,0]], rrc[1, [3,0]], rrc[2, [3,0]])
+   ax.plot(rrc[0, 0:2], rrc[1, 0:2], rrc[2, 0:2], color='b')
+   ax.plot(rrc[0, 1:3], rrc[1, 1:3], rrc[2, 1:3], color='b')
+   ax.plot(rrc[0, 2:4], rrc[1, 2:4], rrc[2, 2:4], color='b')
+   ax.plot(rrc[0, [3,0]], rrc[1, [3,0]], rrc[2, [3,0]], color='b')
+
+   # # z2 plane boundary
+   # ax.plot(rrc[0, 4:6], rrc[1, 4:6], rrc[2, 4:6], color='b')
+   # ax.plot(rrc[0, 5:7], rrc[1, 5:7], rrc[2, 5:7], color='b')
+   # ax.plot(rrc[0, 6:], rrc[1, 6:], rrc[2, 6:], color='b')
+   # ax.plot(rrc[0, [7, 4]], rrc[1, [7, 4]], rrc[2, [7, 4]], color='b')
+
+   # # z1 and z2 connecting boundaries
+   ax.plot(rrc[0, [0, 4]], rrc[1, [0, 4]], rrc[2, [0, 4]], color='b')
+   ax.plot(rrc[0, [1, 5]], rrc[1, [1, 5]], rrc[2, [1, 5]], color='b')
+   ax.plot(rrc[0, [2, 6]], rrc[1, [2, 6]], rrc[2, [2, 6]], color='b')
+   ax.plot(rrc[0, [3, 7]], rrc[1, [3, 7]], rrc[2, [3, 7]], color='b')
+   img = cv2.line(img, (int(rrc[0, 0:2][0]), int(rrc[1, 0:2][0])), (int(rrc[0, 0:2][1]), int(rrc[1, 0:2][1])), (0, 0, 255), 2)
+   img = cv2.line(img, (int(rrc[0, 1:3][0]), int(rrc[1, 1:3][0])), (int(rrc[0, 1:3][1]), int(rrc[1, 1:3][1])), (0, 0, 255), 2)
+   img = cv2.line(img, (int(rrc[0, 2:4][0]), int(rrc[1, 2:4][0])), (int(rrc[0, 2:4][1]), int(rrc[1, 2:4][1])), (0, 0, 255), 2)
+   img = cv2.line(img, (int(rrc[0, [3,0]][0]), int(rrc[1, [3,0]][0])), (int(rrc[0, [3,0]][1]), int(rrc[1, [3,0]][1])), (0, 0, 255), 2)
+   img = cv2.line(img, (int(rrc[0, 4:6][0]), int(rrc[1, 4:6][0])), (int(rrc[0, 4:6][1]), int(rrc[1, 4:6][1])), (0, 0, 255), 2)
+   img = cv2.line(img, (int(rrc[0, 5:7][0]), int(rrc[1, 5:7][0])), (int(rrc[0, 5:7][1]), int(rrc[1, 5:7][1])), (0, 0, 255), 2)
+   img = cv2.line(img, (int(rrc[0, 6:][0]), int(rrc[1, 6:][0])), (int(rrc[0, 6:][1]), int(rrc[1, 6:][1])), (0, 0, 255), 2)
+   img = cv2.line(img, (int(rrc[0, [7, 4]][0]), int(rrc[1, [7, 4]][0])), (int(rrc[0, [7, 4]][1]), int(rrc[1, [7, 4]][1])), (0, 0, 255), 2)
+   xmin, xmax, ymin, ymax = box[0], box[0]+box[2], box[1], box[1]+box[3]
+   img = cv2.rectangle(img, (int(xmin),int(ymin)), (int(xmax),int(ymax)), (0, 0, 255), 2)
+   img = cv2.circle(img, (int((xmin+xmax)/2), int((ymin+ymax)/2)), 5, (255, 255, 0), -1)
+
+   plt.show()
+   return img
+
+def drawOrientedBox (data, img, box):
+   xmin, xmax, ymin, ymax = box[0], box[0]+box[2], box[1], box[1]+box[3]
+   data = data[:, np.abs(data[-1, :] - np.median(data, axis = 1)[-1])/np.std(data[-1]) < 3]
+   means = np.mean(data, axis = 1)
+   data = data[:, (data[-1, :] > means[-1]-np.std(data[-1])) & ((data[-1, :] < means[-1]+np.std(data[-1])))]
+   means = np.mean(data, axis = 1)
+   median = np.median(data, axis = 1)
+
+   front_data = data[:, data[-1, :] < means[-1]]
+   back_data = data[:, data[-1, :] > means[-1]]
    xmin_f, xmax_f, ymin_f, ymax_f = int(np.min(front_data[0, :])), int(np.max(front_data[0, :])), int(np.min(front_data[1, :])), int(np.max(front_data[1, :]))
    xmin_b, xmax_b, ymin_b, ymax_b = int(np.min(back_data[0, :])), int(np.max(back_data[0, :])), int(np.min(back_data[1, :])), int(np.max(back_data[1, :]))
    cov = np.cov(back_data)
    eigval, eigvec = np.linalg.eig(cov)
+   # img = cv2.line(img, (int((xmin+xmax)/2), int((ymin+ymax)/2)), (int(eigvec[0][0]*eigval[0])+int((xmin+xmax)/2), int(eigvec[0][1]*eigval[0])+int((ymin+ymax)/2)), (0, 0, 255), 2)
+   # img = cv2.line(img, (int((xmin+xmax)/2), int((ymin+ymax)/2)), (int(eigvec[1][0]*eigval[1])+int((xmin+xmax)/2), int(eigvec[1][1]*eigval[1])+int((ymin+ymax)/2)), (0, 0, 255), 2)
+   # img = cv2.line(img, (int((xmin+xmax)/2), int((ymin+ymax)/2)), (int(eigvec[2][0]*eigval[2])+int((xmin+xmax)/2), int(eigvec[2][1]*eigval[2])+int((ymin+ymax)/2)), (0, 0, 255), 2)
+   # img = cv2.line(img, (xmin_f, ymax_f), (xmin_b, ymax_b), (0, 0, 255), 2)
+   # img = cv2.line(img, (xmax_f, ymin_f), (xmax_b, ymin_b), (0, 0, 255), 2)
+   # img = cv2.line(img, (xmax_f, ymax_f), (xmax_b, ymax_b), (0, 0, 255), 2)
    major_axis = eigvec[:, np.argmax(eigval)]
    yaw = np.arctan2(major_axis[1], major_axis[0])
    pitch = np.arctan2(-major_axis[1], np.sqrt(major_axis[1]**2 + major_axis[2]**2))
    roll = np.arctan2(eigvec[0][1], eigvec[0][2])
-
+   print(np.degrees(yaw))
+   print(np.degrees(pitch))
+   print(np.degrees(roll))
+   # print(xmin)
+   # print(xmin, xmax, xmin_b-(np.abs(xmin-xmin_b))*math.sin(yaw%(math.pi/2)), xmax_b)
+   # print(((xmax_b-xmin_b))*math.cos(yaw%(math.pi/2)))
    # Positive yaw is counter-clockwise, get projection of x-axis onto yaw degree vector, assume origin is xmax:
    if yaw > 0:
-      xmin_f, xmin_b = xmax_f - int((xmax_f-xmin_f)*math.cos(yaw%(math.pi/2))), xmin_b
-      xmax_f, xmax_b = xmax_f, xmin_b + int((xmax_b-xmin_b)*math.cos(yaw%(math.pi/2)))
+      # Shifts center of back box to the left proportional to yaw, subtract by half of the original width of the back
+      # box to get new [xmin_b].
+      xmin_b = max(xmin, int((xmin+xmax)/2 - (xmax-(xmin+xmax)/2)*math.sin(yaw%(math.pi/2)) - (xmax_b-xmin_b)/2))
+      # xmin_b = (int(xmin_b-(np.abs(xmax-xmin))*math.sin(yaw%(math.pi/2))))
+      # Shifts center of front box to the right proportional to yaw, subtract by half of the original width of the front
+      # box to get new [xmax_f].
+      xmax_f = min(xmax, int((xmin+xmax)/2 + (xmax-(xmin+xmax)/2)*math.sin(yaw%(math.pi/2)) + (xmax_f-xmin_f)/2))
+      xmax_b = (int(xmax_b-(np.abs(xmax-xmin))*math.sin(yaw%(math.pi/2))))
+      xmin_f = int(xmin_f+(np.abs(xmax-xmin))*math.sin(yaw%(math.pi/2)))
 
    elif yaw < 0:
       xmin_f, xmin_b = xmin_f, xmax_b - int((xmax_b-xmin_b)*math.cos(yaw%(math.pi/2)))
@@ -231,35 +356,36 @@ def drawOrientedBox (data, img, box):
       ymax_f, ymax_b = ymin_f + int((ymax_f-ymin_f)*math.cos(pitch)), ymax_b
 
    elif pitch < 0:
-      ymin_f, ymin_b = ymax_f - int((ymax_f-ymin_f)*math.cos(pitch)), ymin_b
-      ymax_f, ymax_b = ymax_f, ymin_b + int((ymax_b-ymin_b)*math.cos(pitch))
+      # int((xmin+xmax)/2 + (xmax-(xmin+xmax)/2)*math.sin(yaw%(math.pi/2)) + (xmax_f-xmin_f)/2)
+      ymin_f, ymin_b = ymin_f + int((ymax_f-ymin_f)*math.cos(pitch)), ymin_b
+      ymax_f, ymax_b = ymax_f, ymax_b - int((ymax_b-ymin_b)*math.cos(pitch))
 
    img = cv2.rectangle(img, (xmin_f,ymin_f), (xmax_f,ymax_f), (0, 0, 255), 2)
-   img = cv2.rectangle(img, (xmin_b,ymin_b), (xmax_b,ymax_b), (0, 0, 255), 2)
+   img = cv2.rectangle(img, (xmin_b,ymin_b), (xmax_b,ymax_b), (255, 255, 0), 2)
    img = cv2.line(img, (xmin_f, ymin_f), (xmin_b, ymin_b), (0, 0, 255), 2)
    img = cv2.line(img, (xmin_f, ymax_f), (xmin_b, ymax_b), (0, 0, 255), 2)
    img = cv2.line(img, (xmax_f, ymin_f), (xmax_b, ymin_b), (0, 0, 255), 2)
    img = cv2.line(img, (xmax_f, ymax_f), (xmax_b, ymax_b), (0, 0, 255), 2)
    return img
 
-# left_P, right_P = eightPoint()
-# left_ = np.hstack((left_P, np.ones((left_P.shape[0], 1))))
-# right_ = np.hstack((right_P, np.ones((right_P.shape[0], 1))))
-# F = fundamentalMatrix(left_P, right_P)
-# F, mask = cv2.findFundamentalMat(left_P, right_P, method=cv2.RANSAC)
+print("HEH")
 F = np.linalg.inv(K_L).T @ E @ np.linalg.inv(K_R)
 E = K_R.T @ F @ K_L
 U, S, V = np.linalg.svd(E)
 
+print("RUN")
 img1, img2 = cv2.imread(lefti), cv2.imread(righti)
-left = non_dups_left[4]
+# left = non_dups_left[1]
+left = np.array([746, 398, 153, 163])
 data = np.array([[], [], []])
 for x in range(left[0], left[0]+left[2], 10):
    for y in range(left[1], left[1]+left[3], 10):
       pt = np.array([x, y, 1])
       img1, img2, data = getEpipolarLines(img1, img2, (pt, "LEFT"), F, data)
 
-img = drawOrientedBox(data, img1, left)
+cv2.imwrite("lil.png", img1)
+img = drawMinMaxBox(data, img1, left)
+# img = drawOrientedBox(data, img1, left)
 cv2.imwrite(os.path.join("data", "3dbox.png"), img)
 
 
