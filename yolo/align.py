@@ -209,7 +209,7 @@ def drawMinMaxBox (data, img, box):
    xmin, xmax, ymin, ymax = box[0], box[0]+box[2], box[1], box[1]+box[3]
    data = data[:, np.abs(data[-1, :] - np.median(data, axis = 1)[-1])/np.std(data[-1]) < 3]
    means = np.mean(data, axis = 1)
-   data = data[:, (data[-1, :] > means[-1]-np.std(data[-1])) & ((data[-1, :] < means[-1]+np.std(data[-1])))]
+   data = data[:, (data[-1, :] > means[-1]-3*np.std(data[-1])) & ((data[-1, :] < means[-1]+3*np.std(data[-1])))]
    means = np.mean(data, axis = 1)
    median = np.median(data, axis = 1)
 
@@ -219,6 +219,13 @@ def drawMinMaxBox (data, img, box):
    means = np.mean(data, axis = 1)
    cov = np.cov(data)
    eigval, eigvec = np.linalg.eig(cov)
+   sorted_indices = np.argsort(eigval)[::-1]
+   eigval = eigval[sorted_indices]
+   eigvec = eigvec[:, sorted_indices]
+   print(eigvec)
+   print(eigval)
+   # eigvec = np.array([eigval[0]*eigvec[0], eigval[1]*eigvec[1], eigval[2]*eigvec[2]])
+   print(eigvec)
    centered_data = data - means[:,np.newaxis]
    xmin, xmax, ymin, ymax, zmin, zmax = np.min(centered_data[0, :]), np.max(centered_data[0, :]), np.min(centered_data[1, :]), np.max(centered_data[1, :]), np.min(centered_data[2, :]), np.max(centered_data[2, :])
    fig = plt.figure()
@@ -281,6 +288,7 @@ def drawMinMaxBox (data, img, box):
    ax.plot(rrc[0, [1, 5]], rrc[1, [1, 5]], rrc[2, [1, 5]], color='b')
    ax.plot(rrc[0, [2, 6]], rrc[1, [2, 6]], rrc[2, [2, 6]], color='b')
    ax.plot(rrc[0, [3, 7]], rrc[1, [3, 7]], rrc[2, [3, 7]], color='b')
+   print((int(rrc[0, 0:2][0]), int(rrc[1, 0:2][0])), (int(rrc[0, 0:2][1]), int(rrc[1, 0:2][1])))
    img = cv2.line(img, (int(rrc[0, 0:2][0]), int(rrc[1, 0:2][0])), (int(rrc[0, 0:2][1]), int(rrc[1, 0:2][1])), (0, 0, 255), 2)
    img = cv2.line(img, (int(rrc[0, 1:3][0]), int(rrc[1, 1:3][0])), (int(rrc[0, 1:3][1]), int(rrc[1, 1:3][1])), (0, 0, 255), 2)
    img = cv2.line(img, (int(rrc[0, 2:4][0]), int(rrc[1, 2:4][0])), (int(rrc[0, 2:4][1]), int(rrc[1, 2:4][1])), (0, 0, 255), 2)
@@ -312,6 +320,8 @@ def drawOrientedBox (data, img, box):
    xmin_b, xmax_b, ymin_b, ymax_b = int(np.min(back_data[0, :])), int(np.max(back_data[0, :])), int(np.min(back_data[1, :])), int(np.max(back_data[1, :]))
    cov = np.cov(back_data)
    eigval, eigvec = np.linalg.eig(cov)
+   sorted_indices = np.argsort(eigval)[::-1]
+   eigval, eigvec = eigval[sorted_indices], eigvec[:, sorted_indices]
    # img = cv2.line(img, (int((xmin+xmax)/2), int((ymin+ymax)/2)), (int(eigvec[0][0]*eigval[0])+int((xmin+xmax)/2), int(eigvec[0][1]*eigval[0])+int((ymin+ymax)/2)), (0, 0, 255), 2)
    # img = cv2.line(img, (int((xmin+xmax)/2), int((ymin+ymax)/2)), (int(eigvec[1][0]*eigval[1])+int((xmin+xmax)/2), int(eigvec[1][1]*eigval[1])+int((ymin+ymax)/2)), (0, 0, 255), 2)
    # img = cv2.line(img, (int((xmin+xmax)/2), int((ymin+ymax)/2)), (int(eigvec[2][0]*eigval[2])+int((xmin+xmax)/2), int(eigvec[2][1]*eigval[2])+int((ymin+ymax)/2)), (0, 0, 255), 2)
