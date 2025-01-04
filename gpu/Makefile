@@ -5,8 +5,10 @@ LD_FLAGS := -L${CONDA_LIB_DIR} \
             -lopencv_core \
             -lopencv_highgui \
             -lopencv_imgproc \
-            -lopencv_imgcodecs
-CPP_FLAGS := -std=c++11 --expt-relaxed-constexpr
+            -lopencv_imgcodecs \
+			-lopencv_stereo \
+			-lopencv_calib3d
+CPP_FLAGS := -std=c++17 --expt-relaxed-constexpr
 EXEC_NAME := main
 
 .PHONY: build
