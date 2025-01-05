@@ -5,6 +5,8 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
+// #define USE_SHARED
+
 static const int DEVICE_ID = 0;
 
 static const Eigen::Matrix3f K_l{{699.41, 0.0, 652.8}, {0.0, 699.365, 358.133}, {0.0, 0.0, 1.0}};
@@ -30,12 +32,13 @@ static const float MAX_DISPLAY_DEPTH = 10000.0;
 
 __global__ void calculateDepth(const uchar3* left, const uchar3* right, float* depth, int32_t rows,
     int32_t cols, Eigen::Matrix3f F) {
-    extern __shared__ uchar3 shared[];
-
     int32_t id = blockIdx.x * blockDim.x + threadIdx.x;
 
     int32_t row = id / cols;
     int32_t col = id % cols;
+
+#ifdef USE_SHARED
+    extern __shared__ uchar3 shared[];
 
     for (int32_t i = 0; i < SAD_KERNEL_SIZE; i++) {
         int32_t s_idx = blockDim.x * i + threadIdx.x;
@@ -50,6 +53,7 @@ __global__ void calculateDepth(const uchar3* left, const uchar3* right, float* d
     }
 
     __syncthreads();
+#endif
 
     Eigen::Vector3f l_pixel{col, row, 1.0};
     Eigen::Vector3f epipolar_line = F * l_pixel;
@@ -60,9 +64,6 @@ __global__ void calculateDepth(const uchar3* left, const uchar3* right, float* d
 
     uint32_t min_sad = UINT32_MAX;
     int32_t best_r_col = search_start;
-
-    uint64_t shared_count = 0;
-    uint64_t global_count = 0;
 
     for (int32_t r_col = search_start; r_col <= search_end; r_col++) {
         uint32_t sad = 0;
@@ -85,13 +86,15 @@ __global__ void calculateDepth(const uchar3* left, const uchar3* right, float* d
 
                 uchar3 l_pixel = left[l_ker_row * cols + l_ker_col];
                 uchar3 r_pixel;
+#ifdef USE_SHARED
                 if (s_r_j >= 0 && s_r_j < blockDim.x) {
                     r_pixel = shared[s_idx];
-                    shared_count++;
                 } else {
                     r_pixel = right[r_ker_row * cols + r_ker_col];
-                    global_count++;
                 }
+#else
+                r_pixel = right[r_ker_row * cols + r_ker_col];
+#endif
 
                 sad += abs(l_pixel.x - r_pixel.x) + abs(l_pixel.y - r_pixel.y)
                        + abs(l_pixel.z - r_pixel.z);
@@ -109,9 +112,14 @@ __global__ void calculateDepth(const uchar3* left, const uchar3* right, float* d
     depth[id] = 119.905 * 699.41 / disparity;  // mm
 }
 
-int main() {
+int main(int argc, char** argv) {
     cudaSetDevice(DEVICE_ID);
+
+#ifdef USE_SHARED
     cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
+#else
+    cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
+#endif
 
     cv::Mat3b left = cv::imread("../left/left1.png", cv::IMREAD_COLOR);
     cv::Mat3b right = cv::imread("../right/right1.png", cv::IMREAD_COLOR);
@@ -134,17 +142,24 @@ int main() {
     cudaMemcpy(d_right, right.data, stereo_bytes, cudaMemcpyHostToDevice);
 
     int32_t threads = left.rows * left.cols;
-    int32_t threads_per_block = 1024;
+    int32_t threads_per_block = 768;
     int32_t blocks_per_grid = (threads + threads_per_block - 1) / threads_per_block;
     int32_t shared_mem = threads_per_block * SAD_KERNEL_SIZE * sizeof(uchar3);
 
     std::cout << "Using " << threads_per_block << " threads per block and " << blocks_per_grid
               << " blocks\n";
-    std::cout << "Using " << shared_mem / 1024.0 << "kiB of shared memory per block\n";
+    std::cout << "Using " << shared_mem / (float)threads_per_block
+              << "kiB of shared memory per block\n";
 
     auto start_kernel = std::chrono::high_resolution_clock::now();
+
+#ifdef USE_SHARED
     calculateDepth<<<blocks_per_grid, threads_per_block, shared_mem>>>(d_left, d_right, d_depth,
         left.rows, left.cols, F);
+#else
+    calculateDepth<<<blocks_per_grid, threads_per_block>>>(d_left, d_right, d_depth, left.rows,
+        left.cols, F);
+#endif
 
     cudaDeviceSynchronize();
     auto end_kernel = std::chrono::high_resolution_clock::now();
@@ -194,8 +209,10 @@ int main() {
     cv::imwrite("output/depth.png", depth_8u);
     cv::imwrite("output/depth_cv.png", depth_cv_8u);
 
-    cv::imshow("Depth", depth_8u);
-    cv::waitKey(0);
+    if (argc > 1 && std::string(argv[1]) == "display") {
+        cv::imshow("Depth", depth_8u);
+        cv::waitKey(0);
+    }
 
     cudaFree(d_left);
     cudaFree(d_right);
