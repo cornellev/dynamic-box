@@ -5,7 +5,7 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
-// #define USE_SHARED
+#define ASSERT_CUDA(call) assert(call == cudaSuccess)
 
 static const int DEVICE_ID = 0;
 
@@ -26,41 +26,28 @@ static_assert(SAD_KERNEL_SIZE % 2 == 1, "SAD kernel size must be odd");
 
 static const int32_t MIN_DISPARITY = 0;
 static const int32_t MAX_DISPARITY = 128;
+static_assert(MAX_DISPARITY > MIN_DISPARITY, "Max disparity must be greater than min disparity");
 
 static const float MIN_DISPLAY_DEPTH = 0.0;
 static const float MAX_DISPLAY_DEPTH = 10000.0;
 
-__global__ void calculateDepth(const uchar3* left, const uchar3* right, float* depth, int32_t rows,
+__global__ void calculateDepth(const uchar* left, const uchar* right, float* depth, int32_t rows,
     int32_t cols, Eigen::Matrix3f F) {
     int32_t id = blockIdx.x * blockDim.x + threadIdx.x;
 
     int32_t row = id / cols;
     int32_t col = id % cols;
 
-#ifdef USE_SHARED
-    extern __shared__ uchar3 shared[];
-
-    for (int32_t i = 0; i < SAD_KERNEL_SIZE; i++) {
-        int32_t s_idx = blockDim.x * i + threadIdx.x;
-        int32_t row_offset = i - SAD_KERNEL_SIZE / 2;
-
-        int32_t r_row = (int32_t)row + row_offset;
-        if (r_row < 0 || r_row >= rows) {
-            shared[s_idx] = {0, 0, 0};
-        } else {
-            shared[s_idx] = right[r_row * cols + col];
-        }
+    if (row >= rows || col >= cols) {
+        return;
     }
-
-    __syncthreads();
-#endif
 
     Eigen::Vector3f l_pixel{col, row, 1.0};
     Eigen::Vector3f epipolar_line = F * l_pixel;
-    int32_t r_row = round(-epipolar_line(2) / epipolar_line(1));
+    int32_t r_row = std::round(-epipolar_line(2) / epipolar_line(1));
 
-    int32_t search_start = max(0, col - MAX_DISPARITY);
-    int32_t search_end = max(0, min(col, col - MIN_DISPARITY));
+    int32_t search_start = std::max(0, col - MAX_DISPARITY);
+    int32_t search_end = std::max(-1, col - MIN_DISPARITY);  // -1 because inclusive
 
     uint32_t min_sad = UINT32_MAX;
     int32_t best_r_col = search_start;
@@ -80,28 +67,17 @@ __global__ void calculateDepth(const uchar3* left, const uchar3* right, float* d
                     continue;
                 }
 
-                int32_t s_r_i = i;
-                int32_t s_r_j = threadIdx.x - (col - r_ker_col);
-                int32_t s_idx = blockDim.x * s_r_i + s_r_j;
+                // two problems:
+                // 1. we generate small accesses (to individual bytes) (is this bad?)
+                // 2. are these accesses coallesced when they're offset by 1 byte for each thread?
+                // can we even avoid this?
+                uchar l_pixel = left[l_ker_row * cols + l_ker_col];
+                uchar r_pixel = right[r_ker_row * cols + r_ker_col];
 
-                uchar3 l_pixel = left[l_ker_row * cols + l_ker_col];
-                uchar3 r_pixel;
-#ifdef USE_SHARED
-                if (s_r_j >= 0 && s_r_j < blockDim.x) {
-                    r_pixel = shared[s_idx];
-                } else {
-                    r_pixel = right[r_ker_row * cols + r_ker_col];
-                }
-#else
-                r_pixel = right[r_ker_row * cols + r_ker_col];
-#endif
-
-                sad += abs(l_pixel.x - r_pixel.x) + abs(l_pixel.y - r_pixel.y)
-                       + abs(l_pixel.z - r_pixel.z);
+                sad += std::abs(l_pixel - r_pixel);
             }
         }
 
-        // TODO: branchless?
         if (sad < min_sad) {
             min_sad = sad;
             best_r_col = r_col;
@@ -113,97 +89,82 @@ __global__ void calculateDepth(const uchar3* left, const uchar3* right, float* d
 }
 
 int main(int argc, char** argv) {
-    cudaSetDevice(DEVICE_ID);
-
-#ifdef USE_SHARED
-    cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
-#else
-    cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
-#endif
+    ASSERT_CUDA(cudaSetDevice(DEVICE_ID));
+    ASSERT_CUDA(cudaDeviceSetCacheConfig(cudaFuncCachePreferL1));
 
     cv::Mat3b left = cv::imread("../left/left1.png", cv::IMREAD_COLOR);
     cv::Mat3b right = cv::imread("../right/right1.png", cv::IMREAD_COLOR);
     assert(left.rows == right.rows && left.cols == right.cols);
-
-    auto start = std::chrono::high_resolution_clock::now();
-    cv::Mat1f depth(left.rows, left.cols);
-
-    int32_t stereo_bytes = left.total() * left.elemSize();
-    int32_t depth_bytes = depth.total() * depth.elemSize();
-
-    uchar3* d_left;
-    uchar3* d_right;
-    float* d_depth;
-    cudaMalloc(&d_left, stereo_bytes);
-    cudaMalloc(&d_right, stereo_bytes);
-    cudaMalloc(&d_depth, depth_bytes);
-
-    cudaMemcpy(d_left, left.data, stereo_bytes, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_right, right.data, stereo_bytes, cudaMemcpyHostToDevice);
-
-    int32_t threads = left.rows * left.cols;
-    int32_t threads_per_block = 768;
-    int32_t blocks_per_grid = (threads + threads_per_block - 1) / threads_per_block;
-    int32_t shared_mem = threads_per_block * SAD_KERNEL_SIZE * sizeof(uchar3);
-
-    std::cout << "Using " << threads_per_block << " threads per block and " << blocks_per_grid
-              << " blocks\n";
-    std::cout << "Using " << shared_mem / (float)threads_per_block
-              << "kiB of shared memory per block\n";
-
-    auto start_kernel = std::chrono::high_resolution_clock::now();
-
-#ifdef USE_SHARED
-    calculateDepth<<<blocks_per_grid, threads_per_block, shared_mem>>>(d_left, d_right, d_depth,
-        left.rows, left.cols, F);
-#else
-    calculateDepth<<<blocks_per_grid, threads_per_block>>>(d_left, d_right, d_depth, left.rows,
-        left.cols, F);
-#endif
-
-    cudaDeviceSynchronize();
-    auto end_kernel = std::chrono::high_resolution_clock::now();
-    std::cout
-        << "Kernel execution took "
-        << std::chrono::duration_cast<std::chrono::milliseconds>(end_kernel - start_kernel).count()
-        << " ms" << std::endl;
-
-    cudaMemcpy(depth.data, d_depth, depth_bytes, cudaMemcpyDeviceToHost);
-
-    cv::Mat1b depth_8u;
-    depth.convertTo(depth_8u, CV_8U, 255.0 / (MAX_DISPLAY_DEPTH - MIN_DISPLAY_DEPTH),
-        -255.0 * MIN_DISPLAY_DEPTH / (MAX_DISPLAY_DEPTH - MIN_DISPLAY_DEPTH));
-
-    auto end = std::chrono::high_resolution_clock::now();
-    std::cout << "Depth calculation took "
-              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms"
-              << std::endl;
-
-    start = std::chrono::high_resolution_clock::now();
-
-    cv::Ptr<cv::StereoBM> stereo = cv::StereoBM::create();
-    stereo->setBlockSize(SAD_KERNEL_SIZE);
-    stereo->setMinDisparity(MIN_DISPARITY);
-    stereo->setNumDisparities(MAX_DISPARITY - MIN_DISPARITY);
 
     cv::Mat1b left_gray;
     cv::cvtColor(left, left_gray, cv::COLOR_BGR2GRAY);
     cv::Mat1b right_gray;
     cv::cvtColor(right, right_gray, cv::COLOR_BGR2GRAY);
 
+    auto start = std::chrono::high_resolution_clock::now();
+    cv::Mat1f depth(left_gray.rows, left_gray.cols);
+
+    size_t stereo_bytes = left_gray.total() * left_gray.elemSize();
+    size_t depth_bytes = depth.total() * depth.elemSize();
+
+    uchar* d_left;
+    uchar* d_right;
+    float* d_depth;
+    ASSERT_CUDA(cudaMalloc(&d_left, stereo_bytes));
+    ASSERT_CUDA(cudaMalloc(&d_right, stereo_bytes));
+    ASSERT_CUDA(cudaMalloc(&d_depth, depth_bytes));
+
+    ASSERT_CUDA(cudaMemcpy(d_left, left_gray.data, stereo_bytes, cudaMemcpyHostToDevice));
+    ASSERT_CUDA(cudaMemcpy(d_right, right_gray.data, stereo_bytes, cudaMemcpyHostToDevice));
+
+    size_t threads = left_gray.rows * left_gray.cols;
+    size_t threads_per_block = 128;
+    size_t blocks_per_grid = (threads + threads_per_block - 1) / threads_per_block;
+
+    std::cout << "Using " << threads_per_block << " threads per block and " << blocks_per_grid
+              << " blocks\n";
+
+    calculateDepth<<<blocks_per_grid, threads_per_block>>>(d_left, d_right, d_depth, left_gray.rows,
+        left_gray.cols, F);
+
+    ASSERT_CUDA(cudaDeviceSynchronize());
+
+    ASSERT_CUDA(cudaMemcpy(depth.data, d_depth, depth_bytes, cudaMemcpyDeviceToHost));
+
+    ASSERT_CUDA(cudaFree(d_left));
+    ASSERT_CUDA(cudaFree(d_right));
+    ASSERT_CUDA(cudaFree(d_depth));
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::cout << "Depth calculation took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms"
+              << std::endl;
+
+    auto start_cv = std::chrono::high_resolution_clock::now();
+
+    cv::Ptr<cv::StereoBM> stereo = cv::StereoBM::create();
+    stereo->setBlockSize(SAD_KERNEL_SIZE);
+    stereo->setMinDisparity(MIN_DISPARITY);
+    stereo->setNumDisparities(MAX_DISPARITY - MIN_DISPARITY);
+
     cv::Mat disparity_cv;
     stereo->compute(left_gray, right_gray, disparity_cv);
     cv::Mat1f depth_cv;
     disparity_cv.convertTo(depth_cv, CV_32F);
     depth_cv = 119.905 * 699.41 / (depth_cv / 16.0);
+
+    auto end_cv = std::chrono::high_resolution_clock::now();
+    std::cout << "OpenCV depth calculation took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(end_cv - start_cv).count()
+              << " ms" << std::endl;
+
+    cv::Mat1b depth_8u;
+    depth.convertTo(depth_8u, CV_8U, 255.0 / (MAX_DISPLAY_DEPTH - MIN_DISPLAY_DEPTH),
+        -255.0 * MIN_DISPLAY_DEPTH / (MAX_DISPLAY_DEPTH - MIN_DISPLAY_DEPTH));
+
     cv::Mat1b depth_cv_8u;
     depth_cv.convertTo(depth_cv_8u, CV_8U, 255.0 / (MAX_DISPLAY_DEPTH - MIN_DISPLAY_DEPTH),
         -255.0 * MIN_DISPLAY_DEPTH / (MAX_DISPLAY_DEPTH - MIN_DISPLAY_DEPTH));
-
-    end = std::chrono::high_resolution_clock::now();
-    std::cout << "OpenCV depth calculation took "
-              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms"
-              << std::endl;
 
     std::filesystem::create_directory("output");
     cv::imwrite("output/depth.png", depth_8u);
@@ -213,10 +174,6 @@ int main(int argc, char** argv) {
         cv::imshow("Depth", depth_8u);
         cv::waitKey(0);
     }
-
-    cudaFree(d_left);
-    cudaFree(d_right);
-    cudaFree(d_depth);
 
     return 0;
 }
