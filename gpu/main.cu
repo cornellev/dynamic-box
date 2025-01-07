@@ -21,71 +21,84 @@ static const Eigen::Matrix3f R =
 static const Eigen::Matrix3f E = R * T;
 static const Eigen::Matrix3f F = K_r.transpose().inverse() * E * K_l.inverse();
 
-static const int32_t SAD_KERNEL_SIZE = 11;
+__device__ static const int32_t SAD_KERNEL_SIZE = 11;
 static_assert(SAD_KERNEL_SIZE % 2 == 1, "SAD kernel size must be odd");
 
-static const int32_t MIN_DISPARITY = 0;
-static const int32_t MAX_DISPARITY = 128;
+__device__ static const int32_t MIN_DISPARITY = 1;    // inclusive
+__device__ static const int32_t MAX_DISPARITY = 128;  // inclusive
+static_assert(MIN_DISPARITY >= 0, "Min disparity must be at least 0");
 static_assert(MAX_DISPARITY > MIN_DISPARITY, "Max disparity must be greater than min disparity");
+static_assert((MAX_DISPARITY - MIN_DISPARITY + 1) % 16 == 0,
+    "Num disparities must be divisble by 16 for OpenCV");
 
 static const float MIN_DISPLAY_DEPTH = 0.0;
 static const float MAX_DISPLAY_DEPTH = 10000.0;
 
 __global__ void calculateDepth(const uchar* left, const uchar* right, float* depth, int32_t rows,
     int32_t cols, Eigen::Matrix3f F) {
-    int32_t id = blockIdx.x * blockDim.x + threadIdx.x;
+    int32_t thread_id = blockIdx.x * blockDim.x + threadIdx.x;
 
-    int32_t row = id / cols;
-    int32_t col = id % cols;
+    int32_t pixel_row = thread_id / cols;
+    int32_t pixel_col = thread_id % cols;
 
-    if (row >= rows || col >= cols) {
+    if (pixel_row >= rows || pixel_col >= cols) {
         return;
     }
 
-    Eigen::Vector3f l_pixel{col, row, 1.0};
-    Eigen::Vector3f epipolar_line = F * l_pixel;
-    int32_t r_row = std::round(-epipolar_line(2) / epipolar_line(1));
+    Eigen::Vector3f pixel_homogenous{pixel_col, pixel_row, 1.0};
+    Eigen::Vector3f epipolar_line = F * pixel_homogenous;
+    int32_t epipolar_r_row = std::round(-epipolar_line(2) / epipolar_line(1));
+    if (epipolar_r_row < 0 || epipolar_r_row >= rows) {
+        return;
+    }
 
-    int32_t search_start = std::max(0, col - MAX_DISPARITY);
-    int32_t search_end = std::max(-1, col - MIN_DISPARITY);  // -1 because inclusive
+    // inclusive
+    int32_t block_start = std::clamp(pixel_col - MAX_DISPARITY - SAD_KERNEL_SIZE / 2, 0, cols);
+    // exclusive
+    int32_t block_end = std::clamp(pixel_col - MIN_DISPARITY + SAD_KERNEL_SIZE / 2 + 1, 0, cols);
 
-    uint32_t min_sad = UINT32_MAX;
-    int32_t best_r_col = search_start;
+    int32_t max_disparity_here = std::min(pixel_col, MAX_DISPARITY);
 
-    for (int32_t r_col = search_start; r_col <= search_end; r_col++) {
-        uint32_t sad = 0;
+    // [0] -> MIN_DISPARITY
+    // [len(sads) - 1] -> MAX_DISPARITY
+    uint16_t sads[MAX_DISPARITY - MIN_DISPARITY];
 
-        for (int32_t i = 0; i < SAD_KERNEL_SIZE; i++) {
-            for (int32_t j = 0; j < SAD_KERNEL_SIZE; j++) {
-                int32_t l_ker_row = row + i - SAD_KERNEL_SIZE / 2;
-                int32_t l_ker_col = col + j - SAD_KERNEL_SIZE / 2;
-                int32_t r_ker_row = r_row + i - SAD_KERNEL_SIZE / 2;
-                int32_t r_ker_col = r_col + j - SAD_KERNEL_SIZE / 2;
+    for (int32_t ker_row = 0; ker_row < SAD_KERNEL_SIZE; ker_row++) {
+        int32_t l_row = pixel_row + ker_row - SAD_KERNEL_SIZE / 2;
+        int32_t r_row = epipolar_r_row + ker_row - SAD_KERNEL_SIZE / 2;
 
-                if (l_ker_row < 0 || l_ker_row >= rows || l_ker_col < 0 || l_ker_col >= cols
-                    || r_ker_row < 0 || r_ker_row >= rows || r_ker_col < 0 || r_ker_col >= cols) {
-                    continue;
+        if (l_row < 0 || l_row >= rows || r_row < 0 || r_row >= rows) continue;
+
+        for (int32_t r_col = block_start; r_col < block_end; r_col++) {
+            int32_t r = right[r_row * cols + r_col];
+
+            for (int32_t ker_col = 0; ker_col < SAD_KERNEL_SIZE / 2; ker_col++) {
+                int32_t corresponding_center = r_col + SAD_KERNEL_SIZE / 2 + ker_col;
+                int32_t corresponding_disparity = pixel_col - corresponding_center;
+
+                if (corresponding_disparity >= MIN_DISPARITY
+                    && corresponding_disparity <= max_disparity_here) {
+                    int32_t l_col = pixel_col + ker_col - SAD_KERNEL_SIZE / 2;
+                    int32_t l = left[l_row * cols + l_col];
+
+                    int32_t sad_idx = corresponding_disparity - MIN_DISPARITY;
+                    sads[sad_idx] += std::abs(r - l);
                 }
-
-                // two problems:
-                // 1. we generate small accesses (to individual bytes) (is this bad?)
-                // 2. are these accesses coallesced when they're offset by 1 byte for each thread?
-                // can we even avoid this?
-                uchar l_pixel = left[l_ker_row * cols + l_ker_col];
-                uchar r_pixel = right[r_ker_row * cols + r_ker_col];
-
-                sad += std::abs(l_pixel - r_pixel);
             }
-        }
-
-        if (sad < min_sad) {
-            min_sad = sad;
-            best_r_col = r_col;
         }
     }
 
-    float disparity = col - best_r_col;
-    depth[id] = 119.905 * 699.41 / disparity;  // mm
+    uint16_t min_sad = UINT16_MAX;
+    int32_t best_disp = MIN_DISPARITY;
+
+    for (int32_t disp = MIN_DISPARITY; disp <= max_disparity_here; disp++) {
+        if (sads[disp] < min_sad) {
+            min_sad = sads[disp];
+            best_disp = disp;
+        }
+    }
+
+    depth[thread_id] = 119.905 * 699.41 / best_disp;
 }
 
 int main(int argc, char** argv) {
@@ -145,7 +158,7 @@ int main(int argc, char** argv) {
     cv::Ptr<cv::StereoBM> stereo = cv::StereoBM::create();
     stereo->setBlockSize(SAD_KERNEL_SIZE);
     stereo->setMinDisparity(MIN_DISPARITY);
-    stereo->setNumDisparities(MAX_DISPARITY - MIN_DISPARITY);
+    stereo->setNumDisparities(MAX_DISPARITY - MIN_DISPARITY + 1);
 
     cv::Mat disparity_cv;
     stereo->compute(left_gray, right_gray, disparity_cv);
