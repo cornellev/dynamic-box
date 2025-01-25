@@ -5,6 +5,12 @@
 The better dynamic-box.
 
 ## Installation:
+### OpenCV:
+Run:
+```
+pip3 install opencv-python
+```
+
 ### Conda: 
 https://docs.anaconda.com/anaconda/install/linux/:
 Download in Ubuntu home directory:
