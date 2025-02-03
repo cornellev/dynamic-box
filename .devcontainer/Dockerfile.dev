@@ -87,7 +87,12 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y ros-humble-pcl-conversions ros-humble-pcl-ros
-    
+RUN apt-get update && apt-get install pcl-tools 
+
+RUN apt-get update && apt-get install -y python3-opencv
+
+RUN apt-get update && apt-get install -y python3-matplotlib
+
 # Install PCL
 RUN apt-get update && apt-get install -y libpcl-dev
 
