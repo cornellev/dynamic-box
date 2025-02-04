@@ -14,6 +14,22 @@ with open("point_cloud.json", "r") as f:
 # Convert to NumPy array
 cloud = np.array(data["points"])
 
+cloud_rad = np.sqrt(cloud[:, 0]**2 + cloud[:, 1]**2 + cloud[:, 2]**2)
+cloud_theta = np.arctan(cloud[:, 1]/cloud[:, 0])
+cloud_phi = np.arccos(cloud[:, 2]/cloud_rad)
+
+# Point cloud in spherical coordinates, rad = depth.
+cloud_sphr = np.array([cloud_rad, cloud_theta, cloud_phi]).T
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(cloud[:,0], cloud[:,1], cloud[:,2], c = 'r', marker = 'o')
+
+ax.set_xlabel('X Label')
+ax.set_ylabel('Y Label')
+ax.set_zlabel('Z Label')
+
+plt.show()
 
 np.set_printoptions(suppress=True)
 
@@ -127,7 +143,7 @@ E = K_R.T @ F @ K_L
 U, S, V = np.linalg.svd(E)
 
 image = cv2.imread("left0.png")
-proj_img = projectTo2DB(cloud, image)
-# cv2.imshow("Projected Lidar Points", proj_img)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+proj_img = projectTo2D(cloud, image)
+cv2.imshow("Projected Lidar Points", proj_img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
