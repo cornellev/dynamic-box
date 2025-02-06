@@ -11,19 +11,48 @@ import matplotlib.pyplot as plt
 with open("point_cloud.json", "r") as f:
     data = json.load(f)
 
-# Convert to NumPy array
+# Z IS Y (map from 0 to 720), Y IS X (map from 0 to 1280)
 cloud = np.array(data["points"])
+cloud = cloud[cloud[:, 2] < 1.0]
+# cloud[:, 0] = 1
+# cloud[:, 1] = cloud[:, 1] + (np.max(cloud[:, 1] - np.min(cloud[:, 1])) / 2)
+# cloud[:, 2] = cloud[:, 2] + (np.max(cloud[:, 2] - np.min(cloud[:, 1])) / 2)
 
-cloud_rad = np.sqrt(cloud[:, 0]**2 + cloud[:, 1]**2 + cloud[:, 2]**2)
+cloud_rho = np.sqrt(cloud[:, 0]**2 + cloud[:, 1]**2 + cloud[:, 2]**2)
+# tmp = cloud[:, 0]
+# cloud[:, 2] = cloud_rad
+# cloud_rho = np.sqrt(cloud[:, 0]**2 + cloud[:, 1]**2)
+
 cloud_theta = np.arctan(cloud[:, 1]/cloud[:, 0])
-cloud_phi = np.arccos(cloud[:, 2]/cloud_rad)
+cloud_phi = np.arccos(cloud[:, 2]/cloud_rho)
+# cloud_phi = np.arctan(cloud[:, 1]/cloud[:, 0])
+# cloud_z = cloud[:, 2]
+print(cloud_phi.shape)
 
 # Point cloud in spherical coordinates, rad = depth.
-cloud_sphr = np.array([cloud_rad, cloud_theta, cloud_phi]).T
+cloud_sphr = np.array([cloud_rho, cloud_theta, cloud_phi]).T
+cloud_sphr = cloud_sphr[cloud_sphr[:, 0] < 1.5]
+cloud_sphr = cloud_sphr[cloud_sphr[:, 0] > 0.5]
+cloud_sphr = cloud_sphr[cloud_sphr[:, 1] > -math.pi/4]
+cloud_sphr = cloud_sphr[cloud_sphr[:, 1] < math.pi/4]
+cloud_sphr = cloud_sphr[cloud_sphr[:, 2] < math.pi/2]
+
+# cloud_cyl = np.array([cloud_rho, cloud_phi, cloud_z]).T
+# cloud_cyl = cloud_cyl[cloud_cyl[:, 0] < 3.0]
+# cloud_cyl = cloud_cyl[cloud_cyl[:, 1] > -math.pi/4]
+# cloud_cyl = cloud_cyl[cloud_cyl[:, 1] < math.pi/4]
+# cloud_cyl = cloud_cyl[cloud_cyl[:, 2] < 1.0]
+
+
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.scatter(cloud[:,0], cloud[:,1], cloud[:,2], c = 'r', marker = 'o')
+ax.scatter(cloud_sphr[:, 0]*np.sin(cloud_sphr[:, 2])*np.cos(cloud_sphr[:, 1]), 
+           cloud_sphr[:, 0]*np.sin(cloud_sphr[:, 2])*np.sin(cloud_sphr[:, 1]), 
+           cloud_sphr[:, 0]*np.cos(cloud_sphr[:, 2]), c = 'r', marker = 'o')
+# ax.scatter(cloud_cyl[:, 0]*np.cos(cloud_cyl[:, 1]), 
+#            cloud_cyl[:, 0]*np.sin(cloud_cyl[:, 2]), 
+#            cloud_cyl[:, 2], c = 'r', marker = 'o')
 
 ax.set_xlabel('X Label')
 ax.set_ylabel('Y Label')
@@ -80,33 +109,33 @@ def projectTo2D (cloud, image):
     for point in cloud:
         x, y, z = point
         points.append([x,y,z,1])
+    points_2d = cloud
 
-    points = np.array(points).T
-    M_intL = np.append(K_L, np.array([[0], [0], [0]]), axis = 1)
-    M_intR = np.append(K_R, np.array([[0], [0], [0]]), axis = 1)
+    # points = np.array(points).T
+    # M_intL = np.append(K_L, np.array([[0], [0], [0]]), axis = 1)
+    # M_intR = np.append(K_R, np.array([[0], [0], [0]]), axis = 1)
 
-    M_L = np.array([[M_intL[0][0], M_intL[0][1], M_intL[0][2], M_intL[0][3]],
-                    [M_intL[1][0], M_intL[1][1], M_intL[1][2], M_intL[1][3]],
-                    [M_intL[2][0], M_intL[2][1], M_intL[2][2], M_intL[2][3]]])
-    M_R = np.array([[M_intR[0][0], M_intR[0][1], M_intR[0][2], M_intR[0][3]],
-                    [M_intR[1][0], M_intR[1][1], M_intR[1][2], M_intR[1][3]],
-                    [M_intR[2][0], M_intR[2][1], M_intR[2][2], M_intR[2][3]]])
-    pt = np.array([x, y, z, 1])
+    # M_L = np.array([[M_intL[0][0], M_intL[0][1], M_intL[0][2], M_intL[0][3]],
+    #                 [M_intL[1][0], M_intL[1][1], M_intL[1][2], M_intL[1][3]],
+    #                 [M_intL[2][0], M_intL[2][1], M_intL[2][2], M_intL[2][3]]])
+    # M_R = np.array([[M_intR[0][0], M_intR[0][1], M_intR[0][2], M_intR[0][3]],
+    #                 [M_intR[1][0], M_intR[1][1], M_intR[1][2], M_intR[1][3]],
+    #                 [M_intR[2][0], M_intR[2][1], M_intR[2][2], M_intR[2][3]]])
+    # pt = np.array([x, y, z, 1])
 
-    points_2d = np.dot(M_L, points)
-    with open("image_cloud.json", "w") as f:
-                json.dump({"x":points_2d[0].tolist(),
-                           "y":points_2d[1].tolist(),
-                           "z":points_2d[2].tolist()}, f)
+    # points_2d = np.dot(M_L, points)
+    # with open("image_cloud.json", "w") as f:
+    #             json.dump({"x":points_2d[0].tolist(),
+    #                        "y":points_2d[1].tolist(),
+    #                        "z":points_2d[2].tolist()}, f)
     
     depth = 255 * (points_2d[2] - np.min(points_2d[2])) / (np.max(points_2d[2]) - np.min(points_2d[2])) 
     depth = np.clip(depth, 0, 255).astype(np.uint8)
     depth_color = cv2.applyColorMap(depth, cv2.COLORMAP_JET)
-    for i, color in zip(range(points_2d.shape[1]), depth_color):
-        u, v = int(points_2d[0, i]), int(points_2d[1, i])
-        cv2.circle(image, (u, v), 2, color[0].tolist(), -1)  # Draw green dot
+    for i in range(points_2d.shape[0]):
+        u, v = 1280 - int(points_2d[i, 0]), 720 - int(points_2d[i, 1])
+        cv2.circle(image, (u, v), 2, (0, 0, 255), -1)  # Draw green dot
 
-    print(points_2d)
     return image
 
 def projectTo2DB (cloud, image):
