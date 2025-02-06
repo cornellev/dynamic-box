@@ -25,22 +25,21 @@ cloud_rho = np.sqrt(cloud[:, 0]**2 + cloud[:, 1]**2 + cloud[:, 2]**2)
 
 cloud_theta = np.arctan(cloud[:, 1]/cloud[:, 0])
 cloud_phi = np.arccos(cloud[:, 2]/cloud_rho)
-# cloud_phi = np.arctan(cloud[:, 1]/cloud[:, 0])
-# cloud_z = cloud[:, 2]
-print(cloud_phi.shape)
+cloud_z = cloud[:, 2]
 
 # Point cloud in spherical coordinates, rad = depth.
 cloud_sphr = np.array([cloud_rho, cloud_theta, cloud_phi]).T
 cloud_sphr = cloud_sphr[cloud_sphr[:, 0] < 1.5]
 cloud_sphr = cloud_sphr[cloud_sphr[:, 0] > 0.5]
-cloud_sphr = cloud_sphr[cloud_sphr[:, 1] > -math.pi/4]
-cloud_sphr = cloud_sphr[cloud_sphr[:, 1] < math.pi/4]
-cloud_sphr = cloud_sphr[cloud_sphr[:, 2] < math.pi/2]
+cloud_sphr = cloud_sphr[cloud_sphr[:, 1] > -math.pi/3]
+cloud_sphr = cloud_sphr[cloud_sphr[:, 1] < math.pi/3]
+cloud_sphr = cloud_sphr[cloud_sphr[:, 2] > math.pi/4]
 
-# cloud_cyl = np.array([cloud_rho, cloud_phi, cloud_z]).T
-# cloud_cyl = cloud_cyl[cloud_cyl[:, 0] < 3.0]
-# cloud_cyl = cloud_cyl[cloud_cyl[:, 1] > -math.pi/4]
-# cloud_cyl = cloud_cyl[cloud_cyl[:, 1] < math.pi/4]
+# cloud_cyl = np.array([cloud_rho, cloud_theta, cloud_z]).T
+# cloud_cyl = cloud_cyl[cloud_cyl[:, 0] < 1.5]
+# cloud_cyl = cloud_cyl[cloud_cyl[:, 0] > 0.5]
+# cloud_cyl = cloud_cyl[cloud_cyl[:, 1] > -math.pi/3]
+# cloud_cyl = cloud_cyl[cloud_cyl[:, 1] < math.pi/3]
 # cloud_cyl = cloud_cyl[cloud_cyl[:, 2] < 1.0]
 
 
@@ -51,7 +50,7 @@ ax.scatter(cloud_sphr[:, 0]*np.sin(cloud_sphr[:, 2])*np.cos(cloud_sphr[:, 1]),
            cloud_sphr[:, 0]*np.sin(cloud_sphr[:, 2])*np.sin(cloud_sphr[:, 1]), 
            cloud_sphr[:, 0]*np.cos(cloud_sphr[:, 2]), c = 'r', marker = 'o')
 # ax.scatter(cloud_cyl[:, 0]*np.cos(cloud_cyl[:, 1]), 
-#            cloud_cyl[:, 0]*np.sin(cloud_cyl[:, 2]), 
+#            cloud_cyl[:, 0]*np.sin(cloud_cyl[:, 1]), 
 #            cloud_cyl[:, 2], c = 'r', marker = 'o')
 
 ax.set_xlabel('X Label')
