@@ -4,6 +4,7 @@ import numpy as np
 import math
 import json
 import matplotlib.pyplot as plt
+import open3d as o3d
 
 # THIS IS ALL WRONG: Z IS NOT DEPTH, NEED RADIUS FOR DEPTH
 
@@ -13,6 +14,7 @@ with open("point_cloud.json", "r") as f:
 
 # Z IS Y (map from 0 to 720), Y IS X (map from 0 to 1280)
 cloud = np.array(data["points"])
+
 cloud = cloud[cloud[:, 2] < 1.0]
 # cloud[:, 0] = 1
 # cloud[:, 1] = cloud[:, 1] + (np.max(cloud[:, 1] - np.min(cloud[:, 1])) / 2)
@@ -44,20 +46,20 @@ cloud_sphr = cloud_sphr[cloud_sphr[:, 2] > math.pi/4]
 
 
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.scatter(cloud_sphr[:, 0]*np.sin(cloud_sphr[:, 2])*np.cos(cloud_sphr[:, 1]), 
-           cloud_sphr[:, 0]*np.sin(cloud_sphr[:, 2])*np.sin(cloud_sphr[:, 1]), 
-           cloud_sphr[:, 0]*np.cos(cloud_sphr[:, 2]), c = 'r', marker = 'o')
-# ax.scatter(cloud_cyl[:, 0]*np.cos(cloud_cyl[:, 1]), 
-#            cloud_cyl[:, 0]*np.sin(cloud_cyl[:, 1]), 
-#            cloud_cyl[:, 2], c = 'r', marker = 'o')
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
+# ax.scatter(cloud_sphr[:, 0]*np.sin(cloud_sphr[:, 2])*np.cos(cloud_sphr[:, 1]), 
+#            cloud_sphr[:, 0]*np.sin(cloud_sphr[:, 2])*np.sin(cloud_sphr[:, 1]), 
+#            cloud_sphr[:, 0]*np.cos(cloud_sphr[:, 2]), c = 'r', marker = 'o')
+# # ax.scatter(cloud_cyl[:, 0]*np.cos(cloud_cyl[:, 1]), 
+# #            cloud_cyl[:, 0]*np.sin(cloud_cyl[:, 1]), 
+# #            cloud_cyl[:, 2], c = 'r', marker = 'o')
 
-ax.set_xlabel('X Label')
-ax.set_ylabel('Y Label')
-ax.set_zlabel('Z Label')
+# ax.set_xlabel('X Label')
+# ax.set_ylabel('Y Label')
+# ax.set_zlabel('Z Label')
 
-plt.show()
+# plt.show()
 
 np.set_printoptions(suppress=True)
 
@@ -104,13 +106,17 @@ dist = np.array([k1_r, k2_r, p1_r, p2_r, k3_r])
 RT = np.vstack((np.hstack((R, [[Baseline], [TY], [TZ]])), [0,0,0,1]))
 
 def projectTo2D (cloud, image):
-    points = []
-    for point in cloud:
-        x, y, z = point
-        points.append([x,y,z,1])
-    points_2d = cloud
+    # graph cut: where vertex = points, edge weights = 1/distance between points (larger distance, lower edge weight)
+    z, x, y = cloud[:, 0]*np.sin(cloud[:, 2])*np.cos(cloud[:, 1]), cloud[:, 0]*np.sin(cloud[:, 2])*np.sin(cloud[:, 1]), cloud[:, 0]*np.cos(cloud[:, 2])
+    x = np.max(x) - x
+    y = np.max(y) - y
+    x = x/np.max(x) * 1280
+    y = y/np.max(y) * 720/2
+    points = np.array([[x],[y],[z]])
 
-    # points = np.array(points).T
+    points_2d = np.array(points).T
+    points, _ = cv2.projectPoints(points_2d, R, T, K_L, dist)
+
     # M_intL = np.append(K_L, np.array([[0], [0], [0]]), axis = 1)
     # M_intR = np.append(K_R, np.array([[0], [0], [0]]), axis = 1)
 
@@ -120,49 +126,58 @@ def projectTo2D (cloud, image):
     # M_R = np.array([[M_intR[0][0], M_intR[0][1], M_intR[0][2], M_intR[0][3]],
     #                 [M_intR[1][0], M_intR[1][1], M_intR[1][2], M_intR[1][3]],
     #                 [M_intR[2][0], M_intR[2][1], M_intR[2][2], M_intR[2][3]]])
-    # pt = np.array([x, y, z, 1])
+    
 
-    # points_2d = np.dot(M_L, points)
-    # with open("image_cloud.json", "w") as f:
-    #             json.dump({"x":points_2d[0].tolist(),
-    #                        "y":points_2d[1].tolist(),
-    #                        "z":points_2d[2].tolist()}, f)
+    # points_4d = np.vstack((points, np.full(shape=points_2d.shape[0], fill_value=1, dtype=np.int)))
+
+    # points_2d = np.dot(M_L, points_4d)
+
+    # x, y, z = points_2d
+    # x = x/np.max(x) * 1280
+    # y = y/np.max(y) * 720/2
+    x, y = points.T
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(x, y, z, c = 'r', marker = 'o')
+
+    ax.set_xlabel('X Label')
+    ax.set_ylabel('Y Label')
+    ax.set_zlabel('Z Label')
+
+    plt.show()
     
     depth = 255 * (points_2d[2] - np.min(points_2d[2])) / (np.max(points_2d[2]) - np.min(points_2d[2])) 
     depth = np.clip(depth, 0, 255).astype(np.uint8)
     depth_color = cv2.applyColorMap(depth, cv2.COLORMAP_JET)
     for i in range(points_2d.shape[0]):
-        u, v = 1280 - int(points_2d[i, 0]), 720 - int(points_2d[i, 1])
+        u, v = int(x[i]), int(y[i])
         cv2.circle(image, (u, v), 2, (0, 0, 255), -1)  # Draw green dot
 
     return image
 
-def projectTo2DB (cloud, image):
-    d = np.array([[9.999239e-01, 9.837760e-03, -7.445048e-03, 0.0],
-                          [-9.869795e-03, 9.999421e-01, -4.278459e-03, 0.0],
-                          [7.402527e-03, 4.351614e-03, 9.999631e-01, 0.0],
-                          [0.0, 0.0, 0.0, 1.0]])
-    for point in cloud:
-        x, y, z = point
+def minCutCluster (cloud, image):
+    # 0) initialize empty array of clusters C
+    C = np.array([])
 
-        if point[0] > 25.0 or point[0] < 0.0 or abs(point[1]) > 6.0 or point[2] < -1.4:
-            continue
-        
-        X = np.array([point[0], point[1], point[2], 1]).reshape((4, 1))
-        Y = np.dot(np.dot(np.dot(np.hstack((K_L, [[0],[0],[0]])), d), RT), X)
-        pt = (int(Y[0, 0] / Y[2, 0]), int(Y[1, 0] / Y[2, 0]))
+    # 1) convert spherical to cartesian
+    z, x, y = cloud[:, 0]*np.sin(cloud[:, 2])*np.cos(cloud[:, 1]), cloud[:, 0]*np.sin(cloud[:, 2])*np.sin(cloud[:, 1]), cloud[:, 0]*np.cos(cloud[:, 2])
+    cloud = np.array([x, y, z]).T
 
-        val = point[0]
-        max_val = 20.0
-        red = min(255, int(255 * abs((val - max_val) / max_val)))
-        green = min(255, int(255 * (1 - abs((val - max_val) / max_val))))
-        
-        cv2.circle(image, pt, 5, (0, green, red), -1)
+    # 2) downsample point cloud with voxel grid
+    o3d_pcd = o3d.geometry.PointCloud()
+    o3d_pcd.points = o3d.utility.Vector3dVector(cloud)
+    downsamp = o3d_pcd.voxel_down_sample(0.05)
+    cloud = np.asarray(downsamp.points)
+    
+    # Uncomment to visualize voxel grid
+    # o3d.visualization.draw_geometries([downsamp])
 
-    # Display the image
-    cv2.imshow("LiDAR data on image overlay", image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # 3) graph cut: where vertex = points, edge weights = 1/distance between points (larger distance, lower edge weight)
+    
+    
+
+
 
 
 
@@ -171,7 +186,8 @@ E = K_R.T @ F @ K_L
 U, S, V = np.linalg.svd(E)
 
 image = cv2.imread("left0.png")
-proj_img = projectTo2D(cloud, image)
-cv2.imshow("Projected Lidar Points", proj_img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+minCutCluster(cloud_sphr, image)
+# proj_img = projectTo2D(cloud_sphr, image)
+# cv2.imshow("Projected Lidar Points", proj_img)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
