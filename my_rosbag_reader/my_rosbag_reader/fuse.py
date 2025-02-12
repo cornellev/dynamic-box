@@ -115,7 +115,6 @@ def projectTo2D (cloud, image):
     points = np.array([[x],[y],[z]])
 
     points_2d = np.array(points).T
-    points, _ = cv2.projectPoints(points_2d, R, T, K_L, dist)
 
     # M_intL = np.append(K_L, np.array([[0], [0], [0]]), axis = 1)
     # M_intR = np.append(K_R, np.array([[0], [0], [0]]), axis = 1)
@@ -135,7 +134,6 @@ def projectTo2D (cloud, image):
     # x, y, z = points_2d
     # x = x/np.max(x) * 1280
     # y = y/np.max(y) * 720/2
-    x, y = points.T
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -167,27 +165,59 @@ def minCutCluster (cloud, image):
     # 2) downsample point cloud with voxel grid
     o3d_pcd = o3d.geometry.PointCloud()
     o3d_pcd.points = o3d.utility.Vector3dVector(cloud)
-    downsamp = o3d_pcd.voxel_down_sample(0.05)
+    downsamp = o3d_pcd.voxel_down_sample(0.1)
     cloud = np.asarray(downsamp.points)
     
     # Uncomment to visualize voxel grid
     # o3d.visualization.draw_geometries([downsamp])
 
-    # 3) graph cut: where vertex = points, edge weights = 1/distance between points (larger distance, lower edge weight)
+    # 3) graph cut: where vertex = points, edge weights = 1/distance between points (larger distance, lower edge weight) :((
+    # 3) KD tree: 
+    # makeKDTree(cloud, 0)
+
+
     
-    
+class Node(object):
+    def __init__(self, data=None, axis=None, left=None, right=None):
+        self.data = data
+        self.axis = axis
+        self.left = left
+        self.right = right
+
+    # def add(self, point):
+
+    def makeKDTree (self, points, axis, dim, dir=""):
+        # print("NEW axis =" + str(axis) + " shape " + dir)
+        # print(points[np.argsort(points[:, 0])])
+        # Return the root node.
+        if (points.shape[0] <= 3):
+            return self.__init__()
+
+        points = points[np.argsort(points[:, axis])]
+        median = np.median(points[:, axis])
+        left = points[points[:, axis] < median]
+        right = points[points[:, axis] >= median]
+
+        return self.__init__(data = points, axis = axis, 
+                            left = self.makeKDTree(points = left, axis = (axis + 1) % dim, dim = dim, dir = "L"),
+                            right = self.makeKDTree(points = right, axis = (axis + 1) % dim, dim = dim, dir = "R"))
 
 
-
-
-
-F = np.linalg.inv(K_L).T @ E @ np.linalg.inv(K_R)
-E = K_R.T @ F @ K_L
-U, S, V = np.linalg.svd(E)
+# F = np.linalg.inv(K_L).T @ E @ np.linalg.inv(K_R)
+# E = K_R.T @ F @ K_L
+# U, S, V = np.linalg.svd(E)
 
 image = cv2.imread("left0.png")
-minCutCluster(cloud_sphr, image)
+# minCutCluster(cloud_sphr, image)
 # proj_img = projectTo2D(cloud_sphr, image)
-# cv2.imshow("Projected Lidar Points", proj_img)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+# cv2.imwrite("flatten.png", proj_img)
+
+
+# cloud = np.array([[1,9],[2,3],[4,1],[3,7],[5,4],[6,8],[7,2],[8,8],[7,9],[9,6]])
+axis = 0
+median = np.median(cloud[:, axis])
+left = cloud[cloud[:, axis] <= median]
+right = cloud[cloud[:, axis] > median]
+
+pointTree = Node()
+pointTree.makeKDTree(cloud, 0, 3)
