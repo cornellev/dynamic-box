@@ -5,29 +5,19 @@ import math
 import json
 import matplotlib.pyplot as plt
 import open3d as o3d
-
-# THIS IS ALL WRONG: Z IS NOT DEPTH, NEED RADIUS FOR DEPTH
+import timeit
 
 # Load JSON file
 with open("point_cloud.json", "r") as f:
     data = json.load(f)
 
 # Z IS Y (map from 0 to 720), Y IS X (map from 0 to 1280)
+# POINT CLOUD PREPROCESSING
 cloud = np.array(data["points"])
-
 cloud = cloud[cloud[:, 2] < 1.0]
-# cloud[:, 0] = 1
-# cloud[:, 1] = cloud[:, 1] + (np.max(cloud[:, 1] - np.min(cloud[:, 1])) / 2)
-# cloud[:, 2] = cloud[:, 2] + (np.max(cloud[:, 2] - np.min(cloud[:, 1])) / 2)
-
 cloud_rho = np.sqrt(cloud[:, 0]**2 + cloud[:, 1]**2 + cloud[:, 2]**2)
-# tmp = cloud[:, 0]
-# cloud[:, 2] = cloud_rad
-# cloud_rho = np.sqrt(cloud[:, 0]**2 + cloud[:, 1]**2)
-
 cloud_theta = np.arctan(cloud[:, 1]/cloud[:, 0])
 cloud_phi = np.arccos(cloud[:, 2]/cloud_rho)
-cloud_z = cloud[:, 2]
 
 # Point cloud in spherical coordinates, rad = depth.
 cloud_sphr = np.array([cloud_rho, cloud_theta, cloud_phi]).T
@@ -37,20 +27,12 @@ cloud_sphr = cloud_sphr[cloud_sphr[:, 1] > -math.pi/3]
 cloud_sphr = cloud_sphr[cloud_sphr[:, 1] < math.pi/3]
 cloud_sphr = cloud_sphr[cloud_sphr[:, 2] > math.pi/4]
 
-# cloud_cyl = np.array([cloud_rho, cloud_theta, cloud_z]).T
-# cloud_cyl = cloud_cyl[cloud_cyl[:, 0] < 1.5]
-# cloud_cyl = cloud_cyl[cloud_cyl[:, 0] > 0.5]
-# cloud_cyl = cloud_cyl[cloud_cyl[:, 1] > -math.pi/3]
-# cloud_cyl = cloud_cyl[cloud_cyl[:, 1] < math.pi/3]
-# cloud_cyl = cloud_cyl[cloud_cyl[:, 2] < 1.0]
-
-
-
+# cloud_sphr = cloud
 # fig = plt.figure()
 # ax = fig.add_subplot(111, projection='3d')
 # ax.scatter(cloud_sphr[:, 0]*np.sin(cloud_sphr[:, 2])*np.cos(cloud_sphr[:, 1]), 
-#            cloud_sphr[:, 0]*np.sin(cloud_sphr[:, 2])*np.sin(cloud_sphr[:, 1]), 
-#            cloud_sphr[:, 0]*np.cos(cloud_sphr[:, 2]), c = 'r', marker = 'o')
+#         cloud_sphr[:, 0]*np.sin(cloud_sphr[:, 2])*np.sin(cloud_sphr[:, 1]), 
+#         cloud_sphr[:, 0]*np.cos(cloud_sphr[:, 2]), c = 'r', marker = 'o')
 # # ax.scatter(cloud_cyl[:, 0]*np.cos(cloud_cyl[:, 1]), 
 # #            cloud_cyl[:, 0]*np.sin(cloud_cyl[:, 1]), 
 # #            cloud_cyl[:, 2], c = 'r', marker = 'o')
@@ -105,7 +87,7 @@ dist = np.array([k1_r, k2_r, p1_r, p2_r, k3_r])
 
 RT = np.vstack((np.hstack((R, [[Baseline], [TY], [TZ]])), [0,0,0,1]))
 
-def projectTo2D (cloud, image):
+def project_to_2d (cloud, image):
     # graph cut: where vertex = points, edge weights = 1/distance between points (larger distance, lower edge weight)
     z, x, y = cloud[:, 0]*np.sin(cloud[:, 2])*np.cos(cloud[:, 1]), cloud[:, 0]*np.sin(cloud[:, 2])*np.sin(cloud[:, 1]), cloud[:, 0]*np.cos(cloud[:, 2])
     x = np.max(x) - x
@@ -153,8 +135,36 @@ def projectTo2D (cloud, image):
         cv2.circle(image, (u, v), 2, (0, 0, 255), -1)  # Draw green dot
 
     return image
+ 
+class Node(object):
+    def __init__(self, data=None, axis=None, left=None, right=None):
+        self.data = data
+        self.axis = axis
+        self.left = left
+        self.right = right
 
-def minCutCluster (cloud, image):
+    # def add(self, point):
+
+    def make_kdtree (self, points, axis, dim):
+        if (points.shape[0] <= 10):
+            # left = None, right = None is a Leaf
+            return Node(data = points, axis = axis)
+
+        points = points[np.argsort(points[:, axis])]
+        median = np.median(points[:, axis])
+        left = points[points[:, axis] < median]
+        right = points[points[:, axis] >= median]
+
+        return Node(data = points, axis = axis, 
+                    left = self.make_kdtree(points = left, axis = (axis + 1) % dim, dim = dim),
+                    right = self.make_kdtree(points = right, axis = (axis + 1) % dim, dim = dim))
+    
+    # def traverse_tree (self):
+    #     # TODO:
+    #     return 0
+
+# Takes in [cloud] in spherical coordinates.
+def euclidian_cluster (cloud, image):
     # 0) initialize empty array of clusters C
     C = np.array([])
 
@@ -168,56 +178,31 @@ def minCutCluster (cloud, image):
     downsamp = o3d_pcd.voxel_down_sample(0.1)
     cloud = np.asarray(downsamp.points)
     
-    # Uncomment to visualize voxel grid
+    # 2.5) uncomment to visualize voxel grid
     # o3d.visualization.draw_geometries([downsamp])
 
-    # 3) graph cut: where vertex = points, edge weights = 1/distance between points (larger distance, lower edge weight) :((
     # 3) KD tree: 
-    # makeKDTree(cloud, 0)
+    point_tree = Node()
+    kd_tree = point_tree.make_kdtree(cloud, 0, 2)
 
+    # 4) Initialize and create clusters: the number of clusters is given by # bounding boxes from YOLO
 
-    
-class Node(object):
-    def __init__(self, data=None, axis=None, left=None, right=None):
-        self.data = data
-        self.axis = axis
-        self.left = left
-        self.right = right
+    return kd_tree
 
-    # def add(self, point):
-
-    def makeKDTree (self, points, axis, dim, dir=""):
-        # print("NEW axis =" + str(axis) + " shape " + dir)
-        # print(points[np.argsort(points[:, 0])])
-        # Return the root node.
-        if (points.shape[0] <= 3):
-            return self.__init__()
-
-        points = points[np.argsort(points[:, axis])]
-        median = np.median(points[:, axis])
-        left = points[points[:, axis] < median]
-        right = points[points[:, axis] >= median]
-
-        return self.__init__(data = points, axis = axis, 
-                            left = self.makeKDTree(points = left, axis = (axis + 1) % dim, dim = dim, dir = "L"),
-                            right = self.makeKDTree(points = right, axis = (axis + 1) % dim, dim = dim, dir = "R"))
-
-
-# F = np.linalg.inv(K_L).T @ E @ np.linalg.inv(K_R)
-# E = K_R.T @ F @ K_L
-# U, S, V = np.linalg.svd(E)
 
 image = cv2.imread("left0.png")
-# minCutCluster(cloud_sphr, image)
-# proj_img = projectTo2D(cloud_sphr, image)
+# euclidian_cluster(cloud_sphr, image)
+# proj_img = project_to_2d(cloud_sphr, image)
 # cv2.imwrite("flatten.png", proj_img)
 
 
+# uncomment to test 2d point cloud
 # cloud = np.array([[1,9],[2,3],[4,1],[3,7],[5,4],[6,8],[7,2],[8,8],[7,9],[9,6]])
-axis = 0
-median = np.median(cloud[:, axis])
-left = cloud[cloud[:, axis] <= median]
-right = cloud[cloud[:, axis] > median]
 
-pointTree = Node()
-pointTree.makeKDTree(cloud, 0, 3)
+# point_tree = Node()
+# time = timeit.timeit(lambda: point_tree.make_kdtree(cloud, 0, 3), number = 1)
+# time = timeit.timeit(lambda: euclidian_cluster(cloud, image), number = 100)
+
+kd_root = euclidian_cluster(cloud_sphr, image)
+split_axis = np.median(kd_root.data[:, kd_root.axis])
+# print(f"{time/100} seconds")
