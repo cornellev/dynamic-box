@@ -136,7 +136,16 @@ def project_to_2d (cloud, image):
 
     return image
  
+global Q 
+Q = []
+unexplored = np.array([[0.2,8.3,-0.5],[1.1,9,0],[3,7,-1],[2,8.12,0],[1.75,6.5,0.3],
+                      [2,3,0],[4,1,-1],[4,4,-1],[6,1,0],[7,0,-1],[3,2.75,-1.5],[5,2.5,-1.3],
+                      [8,8,-0.5],[7,9,1],[9,6,-1],[6,8,2],[5.5,10,2.5],[5,7,3],[4,7.5,3.5],[5,9,1],[4.5,9.3,1.2],[7,7,2],
+                      [0,8,4],[1,9,4.2],[0.5,7,3.5],[1,8,3.7],[0.5,8.5,3.2]])
+
 class Node(object):
+    unexplored = unexplored
+
     def __init__(self, data=None, axis=None, left=None, right=None):
         self.data = data
         self.axis = axis
@@ -159,14 +168,35 @@ class Node(object):
                     left = self.make_kdtree(points = left, axis = (axis + 1) % dim, dim = dim),
                     right = self.make_kdtree(points = right, axis = (axis + 1) % dim, dim = dim))
     
-    # def traverse_tree (self):
-    #     # TODO:
-    #     return 0
+    def search_tree (self, root, point, radius, C):
+        global unexplored
+        # if point[:, self.axis] is within some distance [radius] away from the splitting plane, search left and right
+        # else, search only subtree with p
+        split_axis = np.median(self.data[:, self.axis])
+        if (self.left == None and self.right == None):
+            neighbors = self.data[np.sqrt(np.sum((self.data - point)**2, axis = 1)) <= radius]
+            neighbors = neighbors[np.any(np.all(neighbors[:, None] == Node.unexplored, axis=2), axis=1)]
+            for point in neighbors:
+                if (point in Node.unexplored):
+                    if (not any(np.array_equal(point, c) for c in C[-1])):
+                        C[-1] = C[-1] + [point]
+                    Node.unexplored = Node.unexplored[~np.all(Node.unexplored == point, axis=1)]
+                    root.search_tree(root, point, radius, C)
+            return Node.unexplored
+        
+        if (abs(point[self.axis] - int(split_axis)) <= radius):
+            self.left.search_tree(root, point, radius, C)
+            self.right.search_tree(root, point, radius, C)
+        elif (point[self.axis] < int(split_axis)):
+            self.left.search_tree(root, point, radius, C)
+        elif (point[self.axis] >= int(split_axis)):
+            self.right.search_tree(root, point, radius, C)
+        return Node.unexplored
 
 # Takes in [cloud] in spherical coordinates.
 def euclidian_cluster (cloud, image):
     # 0) initialize empty array of clusters C
-    C = np.array([])
+    C = []
 
     # 1) convert spherical to cartesian
     z, x, y = cloud[:, 0]*np.sin(cloud[:, 2])*np.cos(cloud[:, 1]), cloud[:, 0]*np.sin(cloud[:, 2])*np.sin(cloud[:, 1]), cloud[:, 0]*np.cos(cloud[:, 2])
@@ -177,17 +207,49 @@ def euclidian_cluster (cloud, image):
     o3d_pcd.points = o3d.utility.Vector3dVector(cloud)
     downsamp = o3d_pcd.voxel_down_sample(0.1)
     cloud = np.asarray(downsamp.points)
+    print(cloud.shape)
     
     # 2.5) uncomment to visualize voxel grid
     # o3d.visualization.draw_geometries([downsamp])
 
+    # cloud = np.array([[0.2,8.3,-0.5],[1.1,9,0],[3,7,-1],[2,8.12,0],[1.75,6.5,0.3],
+    #                   [2,3,0],[4,1,-1],[4,4,-1],[6,1,0],[7,0,-1],[3,2.75,-1.5],[5,2.5,-1.3],
+    #                   [8,8,-0.5],[7,9,1],[9,6,-1],[6,8,2],[5.5,10,2.5],[5,7,3],[4,7.5,3.5],[5,9,1],[4.5,9.3,1.2],[7,7,2],
+    #                   [0,8,4],[1,9,4.2],[0.5,7,3.5],[1,8,3.7],[0.5,8.5,3.2]])
+
     # 3) KD tree: 
     point_tree = Node()
-    kd_tree = point_tree.make_kdtree(cloud, 0, 2)
+    kd_tree = point_tree.make_kdtree(cloud, 0, 1)
 
-    # 4) Initialize and create clusters: the number of clusters is given by # bounding boxes from YOLO
+    # given points in point cloud -> pop first point: explore -> all points within the radius are removed from point cloud (unexplored) ->
+    # while in one call of search_tree: all points discovered are added (if still unexplored) to the same cluster.
+    # each call to search_tree generates a new cluster.
+    # [search_tree]: explores all neighboring points within radius [radius] of given point [point]
+    # visited points are removed from [unexplored], only points still in [unexplroed] can have search_tree called on them
+    # add discovered cluster points to cluster C
+    while (kd_tree.unexplored.shape[0] != 0):
+        next_point = np.array(kd_tree.unexplored[0])
+        C.append([next_point])
+        kd_tree.unexplored = kd_tree.unexplored[np.all(kd_tree.unexplored[:, None] != next_point, axis=2).all(axis=1)]
+        kd_tree.unexplored = kd_tree.search_tree(kd_tree, next_point, 3, C)
 
-    return kd_tree
+    print(C.shape)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(np.array(C[0])[:, 0], np.array(C[0])[:, 1], np.array(C[0])[:, 2], c = 'r', marker = 'o')
+    ax.scatter(np.array(C[1])[:, 0], np.array(C[1])[:, 1], np.array(C[1])[:, 2], c = 'b', marker = 'o')
+    ax.scatter(np.array(C[2])[:, 0], np.array(C[2])[:, 1], np.array(C[2])[:, 2], c = 'k', marker = 'o')
+    ax.scatter(np.array(C[3])[:, 0], np.array(C[3])[:, 1], np.array(C[3])[:, 2], c = 'g', marker = 'o')
+
+    ax.set_xlabel('X Label')
+    ax.set_ylabel('Y Label')
+    ax.set_zlabel('Z Label')
+
+    plt.show()
+
+
+    return C
 
 
 image = cv2.imread("left0.png")
@@ -204,5 +266,4 @@ image = cv2.imread("left0.png")
 # time = timeit.timeit(lambda: euclidian_cluster(cloud, image), number = 100)
 
 kd_root = euclidian_cluster(cloud_sphr, image)
-split_axis = np.median(kd_root.data[:, kd_root.axis])
 # print(f"{time/100} seconds")
