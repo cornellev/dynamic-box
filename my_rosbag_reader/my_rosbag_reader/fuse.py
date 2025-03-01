@@ -129,7 +129,7 @@ class Node(object):
         self.right = right
 
     def make_kdtree (self, points, axis, dim):
-        if (points.shape[0] <= 3):
+        if (points.shape[0] <= 10):
             # left = None, right = None is a Leaf
             return Node(data = points, axis = axis)
 
@@ -161,7 +161,6 @@ class Node(object):
         while stack:
             point = stack.pop()
             neighbors = np.vstack(self.search_point([point], radius)[1:])
-            
             neighbors = [tuple(p) for p in neighbors if tuple(p) in unexplored_set]
             
             for neighbor in neighbors:
@@ -199,7 +198,7 @@ def euclidean_cluster(cloud, radius, MIN_CLUSTER_SIZE = 1, mode = "cartesian"):
         Node.unexplored = kd_tree.search_tree(kd_tree, next_point, radius, C)
 
     clusters = np.array([np.array(cluster) for cluster in C], dtype = object)
-    return np.array([cluster for cluster in clusters if cluster.shape[0] > MIN_CLUSTER_SIZE])
+    return np.array([cluster for cluster in clusters if cluster.shape[0] > MIN_CLUSTER_SIZE], dtype = object)
 
 def display_clusters(clusters):
     colors = plt.cm.tab10(np.linspace(0, 1, len(clusters)))
@@ -215,6 +214,79 @@ def display_clusters(clusters):
 
     plt.show()
 
+def pca (data):
+    means = np.mean(data, axis = 0)
+    var = np.var(data, axis = 0)
+    centered_data = (data - means) / np.sqrt(var)
+
+    cov = np.cov(centered_data, rowvar = False)
+    eigval, eigvec = np.linalg.eig(cov)
+
+    sorted_indices = np.argsort(eigval)[::-1]
+    eigval = eigval[sorted_indices]
+    # print(eigval)
+    eigvec = eigvec[:, sorted_indices]
+
+    xmin, xmax = np.min(centered_data[:, 0]), np.max(centered_data[:, 0])
+    ymin, ymax = np.min(centered_data[:, 1]), np.max(centered_data[:, 1])
+    zmin, zmax = np.min(centered_data[:, 2]), np.max(centered_data[:, 2])
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    # ax.scatter(data[:,0], data[:,1], data[:,2], label="original data")
+    # ax.scatter(centered_data[:,0], centered_data[:,1], centered_data[:,2], label="centered data")
+    # ax.legend()
+    # eigen basis
+    # aligned_coords = np.matmul(eigvec.T, centered_data)
+    # xmin, xmax, ymin, ymax, zmin, zmax = np.min(aligned_coords[0, :]), np.max(aligned_coords[0, :]), np.min(aligned_coords[1, :]), np.max(aligned_coords[1, :]), np.min(aligned_coords[2, :]), np.max(aligned_coords[2, :])
+    # ax.scatter(aligned_coords[:,0], aligned_coords[:,1], aligned_coords[:,2], color='g', label="rotated/aligned data")
+    # ax.legend()
+    # ax.set_xlabel('x')
+    # ax.set_ylabel('y')
+    # ax.set_zlabel('z')
+    # cartesian basis
+    ax.plot([0, 1],  [0, 0], [0, 0], color='b', linewidth=4)
+    ax.plot([0, 0],  [0, 1], [0, 0], color='b', linewidth=4)
+    ax.plot([0, 0],  [0, 0], [0, 1], color='b', linewidth=4)
+    # eigen basis
+
+    ax.plot([0, eigvec[0,:][0]], [0, eigvec[0,:][1]], [0, eigvec[0,:][2]], color='r', linewidth=4)
+    ax.plot([0, eigvec[1,:][0]],  [0, eigvec[1,:][1]], [0, eigvec[1,:][2]], color='g', linewidth=4)
+    ax.plot([0, eigvec[2,:][0]],  [0, eigvec[2,:][1]], [0, eigvec[2,:][2]], color='k', linewidth=4)
+    plt.show()
+
+    # rectCoords = lambda x1, y1, z1, x2, y2, z2: np.array([[x1, x1, x2, x2, x1, x1, x2, x2],
+    #                                                     [y1, y2, y2, y1, y1, y2, y2, y1],
+    #                                                     [z1, z1, z1, z1, z2, z2, z2, z2]])
+
+    # realigned_coords = np.matmul(eigvec, aligned_coords)
+    # realigned_coords += means
+
+    # rrc = np.matmul(eigvec, rectCoords(xmin, ymin, zmin, xmax, ymax, zmax))
+    # rrc += means
+    # fig = plt.figure()
+    # # ax = fig.add_subplot(111, projection='3d')
+    # ax.scatter(realigned_coords[0,:], realigned_coords[1,:], realigned_coords[2,:], label="rotation and translation undone")
+    # # ax.legend()
+
+    # ax.plot(rrc[0, 0:2], rrc[1, 0:2], rrc[2, 0:2], color='b')
+    # ax.plot(rrc[0, 1:3], rrc[1, 1:3], rrc[2, 1:3], color='b')
+    # ax.plot(rrc[0, 2:4], rrc[1, 2:4], rrc[2, 2:4], color='b')
+    # ax.plot(rrc[0, [3,0]], rrc[1, [3,0]], rrc[2, [3,0]], color='b')
+
+    # # # z2 plane boundary
+    # # ax.plot(rrc[0, 4:6], rrc[1, 4:6], rrc[2, 4:6], color='b')
+    # # ax.plot(rrc[0, 5:7], rrc[1, 5:7], rrc[2, 5:7], color='b')
+    # # ax.plot(rrc[0, 6:], rrc[1, 6:], rrc[2, 6:], color='b')
+    # # ax.plot(rrc[0, [7, 4]], rrc[1, [7, 4]], rrc[2, [7, 4]], color='b')
+
+    # # # z1 and z2 connecting boundaries
+    # ax.plot(rrc[0, [0, 4]], rrc[1, [0, 4]], rrc[2, [0, 4]], color='b')
+    # ax.plot(rrc[0, [1, 5]], rrc[1, [1, 5]], rrc[2, [1, 5]], color='b')
+    # ax.plot(rrc[0, [2, 6]], rrc[1, [2, 6]], rrc[2, [2, 6]], color='b')
+    # ax.plot(rrc[0, [3, 7]], rrc[1, [3, 7]], rrc[2, [3, 7]], color='b')
+
+    # plt.show()
+#    return img
 
 image = cv2.imread("left0.png")
 # euclidian_cluster(cloud_sphr, image)
@@ -227,8 +299,13 @@ image = cv2.imread("left0.png")
 #                       [8,8,-0.5],[7,9,1],[9,6,-1],[6,8,2],[5.5,10,2.5],[5,7,3],[4,7.5,3.5],[5,9,1],[4.5,9.3,1.2],[7,7,2],
 #                       [0,8,4],[1,9,4.2],[0.5,7,3.5],[1,8,3.7],[0.5,8.5,3.2]])
 
-# time = timeit.timeit(lambda: euclidean_cluster(cloud = cloud_sphr, mode = "spherical"), number = 1) 
+# time = timeit.timeit(lambda: euclidean_cluster(cloud = cloud_sphr, radius = 0.15, mode = "spherical"), number = 1) 
 C = euclidean_cluster(cloud = cloud_sphr, radius = 0.15, MIN_CLUSTER_SIZE = 10, mode = "spherical")
-display_clusters(C)
+# display_clusters(C)
+pca(C[1])
+
+
+
+
 
 # print(f"{time/100} seconds")
