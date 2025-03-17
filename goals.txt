@@ -1,0 +1,39 @@
+1) Algorithm that matches 3d lidar point cloud to given image
+2) or algorithm that matches sequences of a video to a given image
+3) algorithm to synchronize 3d lidar point cloud and zed camera stereo image
+
+4) use point cloud depth as ground truth and try PCA again
+
+5) if that works: make into a react project thing where passing in images will see 
+like bounding box
+
+6) make it work for video 
+
+IF YOU CANNOT FIND MY_ROSBAG_READER AS A PACKAGE RUN: source install/setup.bash
+
+
+WIRE IS BACK OF THE LIDAR.
+IN the rviz2 representation of a coordinate: (x = red, y = green, z = blue)
+FROM TOP DOWN: as in blue axis to out of the page, 
+RED IS THE FRONT OF THE CAMERA: lets call it x-axis: anything with x < 0 is back of the car and we don't care.
+GREEN is the left of the camera: lets call it y-axis: left of the car is +, right of the car is -y
+BLUE is top of the car: lets call it z-axis: anything z > 0.5 is ignored (FOR NOW)
+need spherical coordinates conversion to calculate depth (or maybe map from intensity / color of point cloud)
+
+
+CRAZY IDEA TO KEEP CONSISTENT CLUSTERING COUNT:
+so between lidar iterations, euclidean point cluster may return different number of clusters:
+or like merge two clusters that were previously in separate clusters.
+want a way to use previous cluster data to impact the clustering decision of current iteration:
+so like keep store previous cluster centroids in C_prev: when finding point of current cluster C, keep recomputing
+centroid of current cluster and like say that centroid in C_prev that is closest to this current centroid
+describes same cluster between past and current iteration,
+determing whether there is some other centroid in C_prev different from matched centroid in C_prev (like 2nd closest
+cluster to C current) that is closer in euclidean distance to the point / set of points that we are adding
+to C_curr.
+if set of points being added is closer to different centroid, do not add to C_curr:
+hopefully this will keep consistent clustering
+
+can also use ICP to track similarity between clusters of different iterations, do ICP on separate clusters:
+in current clustering iteration: if ICP matches points being added to C to a different previous cluster, do not add
+points to C.
