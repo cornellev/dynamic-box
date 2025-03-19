@@ -160,30 +160,31 @@ class Node(object):
             # current cluster formation
             size_lim = np.infty
             centroids = np.array([np.mean(C, axis = 0)[:3] for C in C_prev])
-            if (centroids.shape[0] != 0):
+            try:
                 # match current point to closest centroid in cluster: 
-                i = np.argmin(np.sum((centroids - np.array(point)[0, :3]) ** 2, axis = 1))
-                centroid = centroids[i]
+                curr_centroid = np.mean(C[-1], axis = 0)[:3]
+                i = np.argmin(np.sum((centroids - curr_centroid) ** 2, axis = 1))
+                past_centroid = centroids[i]
+                past_cluster = C_prev[i][:, :3]
 
+                # HOW TO PROCESS POINTS WHEN WE EXCEED SIZE_LIMIT
                 # use the max radius of the filtered closest previous cluster as update parameter
-                centroid = np.mean(C_prev[i][:, :3], axis=0)
-                cen_radius = np.mean(np.sqrt(np.sum((C_prev[i][:, :3] - centroid)**2, axis = 1)))
-
-                size_lim = C_prev[i].shape[0] * (np.pi * C_prev[i].shape[0]) / (C_prev[i].shape[0] ** 1.2) * (1 + 1/np.sqrt(np.sum(point[0][:3]**2)))
+                cen_radius = np.mean(np.sqrt(np.sum((past_cluster - past_centroid)**2, axis = 1)))
+                # cen_radius = (cen_radius + np.max(np.sqrt(np.sum((past_cluster - past_centroid)**2, axis = 1))))/2
+                size_lim = past_cluster.shape[0] * (np.pi * past_cluster.shape[0]) / (past_cluster.shape[0] ** 1.2) * (1 + 1/np.sqrt(np.sum(point[0][:3]**2)))
                 # split into colors only if the change in cardinality of in_radius and the masked array is large
-                # np.sqrt(np.sum((curr_mean - centroid)**2)) < 0.2
-                curr_mean = np.mean(np.array(C[-1])[:, :3], axis = 0)
 
                 # if over size limit, we stop growing based off of neighbors, instead only take points that are within radius of current 
                 # cluster's (the one being updated) centroid,
-                # where the radius is defined by the size of the closests previous cluster
+                # where the radius is defined by the size of the closest previous cluster
                 if (len(C[-1]) + self.data[np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius].shape[0] > size_lim):
-                    centroid = np.mean(C[-1], axis = 0)[:3]
-                    in_radius = self.data[np.linalg.norm(self.data[:,:3] - centroid, axis=1) <= cen_radius]
-                    # in_radius = self.data[np.linalg.norm(self.data[:,:3] - centroid, axis=1) <= -1]
+                    # translation between previous and current centroid:
+                    t = np.sqrt(np.sum((curr_centroid - past_centroid) ** 2))
+                    # closest_data = past_cluster[np.argmin(np.sqrt(np.sum((self.data[:,:3][:, np.newaxis, :] - past_cluster) ** 2, axis = 2)), axis = 1)]
+                    in_radius = self.data[np.sqrt(np.sum((self.data[:,:3] - curr_centroid)**2, axis = 1)) <= cen_radius]
                 else: 
                     in_radius = self.data[np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius]
-            else:
+            except:
                 in_radius = self.data[np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius]
                     
             return point + [in_radius[np.abs(in_radius[:,3] - point[0][3]) < scaled_thres]]
@@ -246,10 +247,11 @@ def euclidean_cluster(cloud, radius, intensity_threshold, MIN_CLUSTER_SIZE = 1, 
         
     return np.array([cluster for cluster in clusters if cluster.shape[0] > MIN_CLUSTER_SIZE], dtype = object)
 
-def display_clusters(clusters):
+def display_clusters(ax, clusters):
+    elev = ax.elev
+    azim = ax.azim
+    ax.clear()
     colors = plt.cm.cool(np.linspace(0, 0.8, len(clusters)))
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
     
     # sort by closest cluster for visualization purposes
     sorted_indices = np.argsort([np.mean(arr) for arr in clusters])
@@ -258,7 +260,6 @@ def display_clusters(clusters):
     for i, _ in enumerate(clusters):
         data = clusters[i][:, :3]
         ax.scatter(np.array(data)[:, 2], np.array(data)[:, 0], np.array(data)[:, 1], color = colors[i], marker = 'o', label=f'Cluster {i+1}')
-        ax.legend()
         means = np.mean(data, axis = 0)[:3]
         # var = np.var(data, axis = 0)
         # centered_data = (data - means) / np.sqrt(var)
@@ -280,13 +281,16 @@ def display_clusters(clusters):
         # ax.plot([means[0] * np.sqrt(var)[0], (means[0] + eigvec[1,:][0]) * np.sqrt(var)[0]],  [means[1] * np.sqrt(var)[1], (means[1] + eigvec[1,:][1]) * np.sqrt(var)[1]], [means[2] * np.sqrt(var)[2], (means[2] + eigvec[1,:][2]) * np.sqrt(var)[2]], color='g', linewidth=4)
         # ax.plot([means[0] * np.sqrt(var)[0], (means[0] + eigvec[2,:][0]) * np.sqrt(var)[0]],  [means[1] * np.sqrt(var)[1], (means[1] + eigvec[2,:][1]) * np.sqrt(var)[1]], [means[2] * np.sqrt(var)[2], (means[2] + eigvec[2,:][2]) * np.sqrt(var)[2]], color='b', linewidth=4)
 
-        ax.set_xlabel('X Label')
-        ax.set_ylabel('Y Label')
-        ax.set_zlabel('Z Label')
-        # plt.show()
-
-
-    plt.show()
+    ax.legend()
+    ax.set_xlim([0, 3])  # X-axis range
+    ax.set_ylim([-1, 2])  # Y-axis range
+    ax.set_zlim([0, 1])
+    ax.set_xlabel('X Label')
+    ax.set_ylabel('Y Label')
+    ax.set_zlabel('Z Label')
+    ax.view_init(elev=elev, azim=azim)
+    plt.draw()
+    plt.pause(0.05)
 
 def pca (data):
     # PCA between same clusters of different time frames to calc motion of object

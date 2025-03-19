@@ -8,9 +8,25 @@ from std_msgs.msg import String
 from sensor_msgs.msg import PointCloud2
 import sensor_msgs_py.point_cloud2 as pc2
 
+import math
+import sys
+import matplotlib.pyplot as plt
+import open3d as o3d
+import timeit
+from my_rosbag_reader import fuse 
+
+np.set_printoptions(suppress=True)
+plt.ion()
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+
 class MinimalSubscriber(Node):
     def __init__(self):
         super().__init__('rosbag_subscriber')
+        self.iter = 0
+        self.C_prev = np.array([])
+        self.data = np.array([])
         self.subscription = self.create_subscription(
             PointCloud2,
             'unilidar/cloud',  # Topic name
@@ -19,15 +35,40 @@ class MinimalSubscriber(Node):
         )
 
     def listener_callback(self, msg):
-        cloud_points = pc2.read_points(msg, field_names=("x", "y", "z"), reshape_organized_cloud=True, skip_nans=True)
-        if cloud_points.size > 0:
-            self.get_logger().info(f"Received {len(cloud_points)} points")
+        # Z IS Y (map from 0 to 720), Y IS X (map from 0 to 1280)
+        # POINT CLOUD PREPROCESSING
+        cloud = pc2.read_points(msg, field_names=("x", "y", "z", "intensity"), skip_nans=True)
+        cloud = np.array(cloud.tolist())
+        cloud = cloud[cloud[:, 2] < 1.0]
+        cloud_rho = np.sqrt(cloud[:, 0]**2 + cloud[:, 1]**2 + cloud[:, 2]**2)
+        cloud_theta = np.arctan(cloud[:, 1]/cloud[:, 0])
+        cloud_phi = np.arccos(cloud[:, 2]/cloud_rho)
 
-            with open(os.path.join("src/ackermann_kf/my_rosbag_reader", "point_cloud.json"), "w") as f:
-                json.dump({"points":cloud_points.tolist()}, f)
+        # Point cloud in spherical coordinates, rad = depth.
+        cloud_sphr = np.array([cloud_rho, cloud_theta, cloud_phi, cloud[:, 3]]).T
+        cloud_sphr = cloud_sphr[cloud_sphr[:, 0] < 4.0]
+        cloud_sphr = cloud_sphr[cloud_sphr[:, 0] > 0.5]
+        cloud_sphr = cloud_sphr[cloud_sphr[:, 1] > -math.pi/3]
+        cloud_sphr = cloud_sphr[cloud_sphr[:, 1] < math.pi/3]
+        cloud_sphr = cloud_sphr[cloud_sphr[:, 2] > math.pi/4]
 
+        if cloud.size > 0:
+            if (self.iter % 2 == 0):
+                if (self.iter):
+                    # cluster every 3 iteration-overlayed point clouds
+                    C = fuse.euclidean_cluster(cloud = self.data, radius = 0.2, intensity_threshold = 20, MIN_CLUSTER_SIZE = 10, mode = "spherical", cloud_prev = self.C_prev)
+                    # update previous clustering with new C
+                    self.C_prev = C
+                    fuse.display_clusters(ax, C)
+                self.data = cloud_sphr
+            else:
+                self.data = np.vstack((self.data, cloud_sphr))      
+            self.iter += 1
+
+            # self.get_logger().info(f"Received {len(cloud)} points at iteration {self.iter-1}, data is {self.data.shape}")
         else:
             self.get_logger().warn("Received empty point cloud")
+
 
 def main(args=None):
     rclpy.init(args=args)
