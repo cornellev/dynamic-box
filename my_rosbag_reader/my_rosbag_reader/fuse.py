@@ -127,6 +127,8 @@ class Node(object):
         self.axis = axis
         self.left = left
         self.right = right
+        self.prev = np.array([0,0,0])
+        self.C_prev = np.array([], dtype=object)
 
     def make_kdtree (self, points, axis, dim):
         if (points.shape[0] <= 10):
@@ -142,7 +144,7 @@ class Node(object):
                     left = self.make_kdtree(points = left, axis = (axis + 1) % dim, dim = dim),
                     right = self.make_kdtree(points = right, axis = (axis + 1) % dim, dim = dim))
     
-    def search_point(self, point, radius, thres, C, C_prev):
+    def search_point(self, ax, point, radius, thres, C, C_prev):
         split_axis = np.median(self.data[:, self.axis])
         # weighted radius: radius = radius if distance 1.0 from camera -> scale accordingly
         #   c      scaled threshold: closer objects need to have smaller threshold for difference in intensity
@@ -151,7 +153,8 @@ class Node(object):
         #/__|    | actual distance (d) : scaling is 1/(e^(d-1)) = radius/scaled_radius
         #                                0.5/(log(d+(1-0.6))+1) = thres/scaled_thres
         # print(point[0][:3], np.sqrt(np.sum(point[0][:3]**2)))
-        scaled_radius = radius * math.pow(2, (np.sqrt(np.sum(point[0][:3]**2)) - 1.0))
+        # scaled_radius = radius * math.pow(2, (np.sqrt(np.sum(point[0][:3]**2)) - 1.0))
+        scaled_radius = max(radius, radius / 1.5 * np.sqrt(np.sum(point[0][:3]**2)))
         scaled_thres = (thres * (math.log(np.sum(point[0][:3]**2) + 0.5, 2) + 1))
         # scaled_thres = (thres * math.exp(np.sum(point[0][:3]**2) - 0.5))
 
@@ -166,43 +169,42 @@ class Node(object):
                 i = np.argmin(np.sum((centroids - curr_centroid) ** 2, axis = 1))
                 past_centroid = centroids[i]
                 past_cluster = C_prev[i][:, :3]
-
-                # HOW TO PROCESS POINTS WHEN WE EXCEED SIZE_LIMIT
+                self.C_prev = centroids
+                self.prev = past_centroid
+                
                 # use the max radius of the filtered closest previous cluster as update parameter
                 cen_radius = np.mean(np.sqrt(np.sum((past_cluster - past_centroid)**2, axis = 1)))
-                # cen_radius = (cen_radius + np.max(np.sqrt(np.sum((past_cluster - past_centroid)**2, axis = 1))))/2
                 size_lim = past_cluster.shape[0] * (np.pi * past_cluster.shape[0]) / (past_cluster.shape[0] ** 1.2) * (1 + 1/np.sqrt(np.sum(point[0][:3]**2)))
                 # split into colors only if the change in cardinality of in_radius and the masked array is large
 
-                # if over size limit, we stop growing based off of neighbors, instead only take points that are within radius of current 
-                # cluster's (the one being updated) centroid,
-                # where the radius is defined by the size of the closest previous cluster
-                if (len(C[-1]) + self.data[np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius].shape[0] > size_lim):
-                    # translation between previous and current centroid:
-                    t = np.sqrt(np.sum((curr_centroid - past_centroid) ** 2))
-                    # closest_data = past_cluster[np.argmin(np.sqrt(np.sum((self.data[:,:3][:, np.newaxis, :] - past_cluster) ** 2, axis = 2)), axis = 1)]
-                    in_radius = self.data[np.sqrt(np.sum((self.data[:,:3] - curr_centroid)**2, axis = 1)) <= cen_radius]
-                else: 
-                    in_radius = self.data[np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius]
+                # update if in scaled_radius or in centroid radius in x, y, z directions.
+                dist = np.mean((past_cluster - past_centroid)**2, axis = 0)
+                dist += np.std((past_cluster - past_centroid)**2, axis = 0)
+
+                return point + [self.data[(
+                                        (np.abs(in_radius[:, 3] - point[0][3]) < thres) & 
+                                        ((np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius) |
+                                        ((self.data[:,:3] - curr_centroid)**2 <= dist).all(axis = 1))
+                                    )]]
             except:
                 in_radius = self.data[np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius]
                     
-            return point + [in_radius[np.abs(in_radius[:,3] - point[0][3]) < scaled_thres]]
+            return point + [in_radius[np.abs(in_radius[:,3] - point[0][3]) < thres]]
         
         if (point[0][:3][self.axis] - scaled_radius < split_axis):
-            point = self.left.search_point(point, radius, thres, C, C_prev)
+            point = self.left.search_point(ax, point, radius, thres, C, C_prev)
         elif (point[0][:3][self.axis] + scaled_radius >= split_axis):
-            point = self.right.search_point(point, radius, thres, C, C_prev)
+            point = self.right.search_point(ax, point, radius, thres, C, C_prev)
 
         return point
 
-    def search_tree(self, root, start_point, radius, thres, C, C_prev):
+    def search_tree(self, ax, root, start_point, radius, thres, C, C_prev):
         stack = [start_point]
         unexplored_set = {tuple(p) for p in Node.unexplored}
 
         while stack:
             point = stack.pop()
-            neighbors = np.vstack(self.search_point([point], radius, thres, C, C_prev)[1:])
+            neighbors = np.vstack(self.search_point(ax, [point], radius, thres, C, C_prev)[1:])
             neighbors = [tuple(p) for p in neighbors if tuple(p) in unexplored_set]
             
             for neighbor in neighbors:
@@ -214,8 +216,9 @@ class Node(object):
         Node.unexplored = np.array(list(unexplored_set)) if unexplored_set else np.empty((0, 3))
         return Node.unexplored
 
-def euclidean_cluster(cloud, radius, intensity_threshold, MIN_CLUSTER_SIZE = 1, mode = "cartesian", cloud_prev = np.array([])):
+def euclidean_cluster(ax, cloud, radius, intensity_threshold, MIN_CLUSTER_SIZE = 1, mode = "cartesian", cloud_prev = np.array([])):
     C = []
+    prev = []
 
     if (mode == "spherical"):
         z, x, y = cloud[:, 0]*np.sin(cloud[:, 2])*np.cos(cloud[:, 1]), cloud[:, 0]*np.sin(cloud[:, 2])*np.sin(cloud[:, 1]), cloud[:, 0]*np.cos(cloud[:, 2])
@@ -237,30 +240,33 @@ def euclidean_cluster(cloud, radius, intensity_threshold, MIN_CLUSTER_SIZE = 1, 
         C.append([tuple(next_point)])
 
         Node.unexplored = Node.unexplored[1:]
-        Node.unexplored = kd_tree.search_tree(kd_tree, next_point, radius, intensity_threshold, C, cloud_prev)
+        Node.unexplored = kd_tree.search_tree(ax, kd_tree, next_point, radius, intensity_threshold, C, cloud_prev)
+        prev.append(kd_tree.prev)
 
     clusters = np.array([np.array(cluster) for cluster in C], dtype = object)
 
-    # IDEA: for larger clusters, chance that we can actually split the cluster: if mean of the cluster is on sparse bridge
-    # cut.
-    # for cluster in [cluster for cluster in clusters if len(cluster) > 30]:
-        
-    return np.array([cluster for cluster in clusters if cluster.shape[0] > MIN_CLUSTER_SIZE], dtype = object)
+    clusters = np.array([cluster for cluster in np.column_stack((clusters, prev)) if cluster[0].shape[0] > MIN_CLUSTER_SIZE], dtype = object)
+    return clusters[:,0], clusters[:,1:]
 
-def display_clusters(ax, clusters):
+def display_clusters(ax, clusters, prev): 
     elev = ax.elev
     azim = ax.azim
     ax.clear()
     colors = plt.cm.cool(np.linspace(0, 0.8, len(clusters)))
     
+    # clusters, prev_centroids = clusters[:, 0], clusters[:, 1]
     # sort by closest cluster for visualization purposes
     sorted_indices = np.argsort([np.mean(arr) for arr in clusters])
     clusters = clusters[sorted_indices]
+    prev_centroids = np.array(prev)[sorted_indices]
 
     for i, _ in enumerate(clusters):
         data = clusters[i][:, :3]
-        ax.scatter(np.array(data)[:, 2], np.array(data)[:, 0], np.array(data)[:, 1], color = colors[i], marker = 'o', label=f'Cluster {i+1}')
-        means = np.mean(data, axis = 0)[:3]
+        ax.scatter(np.array(data)[:, 2], np.array(data)[:, 0], np.array(data)[:, 1], color = colors[i], marker = 'o', alpha = 0.25, label=f'Cluster {i+1}')
+        centroid = np.array(np.mean(data, axis = 0))
+        ax.scatter(centroid[2], centroid[0], centroid[1], color = colors[i]*0.75, s = 20, marker = 'D')
+        ax.scatter(prev_centroids[i, 2], prev_centroids[i, 0], prev_centroids[i, 1], color = colors[i]*0.75, s = 30, marker = '*')
+        # means = np.mean(data, axis = 0)[:3]
         # var = np.var(data, axis = 0)
         # centered_data = (data - means) / np.sqrt(var)
 
@@ -290,7 +296,7 @@ def display_clusters(ax, clusters):
     ax.set_zlabel('Z Label')
     ax.view_init(elev=elev, azim=azim)
     plt.draw()
-    plt.pause(0.05)
+    plt.pause(0.5)
 
 def pca (data):
     # PCA between same clusters of different time frames to calc motion of object
@@ -350,4 +356,5 @@ def pca (data):
 #                   [0,1.5],[0.5,0.25],[0.5,1],[0.25,0.5],[-0.5,0.75],
 #                   [0,1],[0.5,1.75],[-1,1],[-0.5,1.5],[-1,-0.5],[-1,0],
 #                   [-0.5,0.25],[0,-0.5]])
+                  
 # print(np.mean(split, axis = 0))
