@@ -266,6 +266,9 @@ def display_clusters(ax, clusters, prev):
         centroid = np.array(np.mean(data, axis = 0))
         ax.scatter(centroid[2], centroid[0], centroid[1], color = colors[i]*0.75, s = 20, marker = 'D')
         ax.scatter(prev_centroids[i, 2], prev_centroids[i, 0], prev_centroids[i, 1], color = colors[i]*0.75, s = 30, marker = '*')
+        ax.quiver(prev_centroids[i, 2], prev_centroids[i, 0], prev_centroids[i, 1],
+                    centroid[2] - prev_centroids[i, 2], centroid[0] - prev_centroids[i, 0], centroid[1] - prev_centroids[i, 1],
+                    colors[i]*0.5)
         # means = np.mean(data, axis = 0)[:3]
         # var = np.var(data, axis = 0)
         # centered_data = (data - means) / np.sqrt(var)
