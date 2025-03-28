@@ -179,12 +179,12 @@ class Node(object):
 
                 # update if in scaled_radius or in centroid radius in x, y, z directions.
                 dist = np.mean((past_cluster - past_centroid)**2, axis = 0)
-                dist += np.std((past_cluster - past_centroid)**2, axis = 0)
+                # dist -= np.std((past_cluster - past_centroid)**2, axis = 0)
 
                 return point + [self.data[(
                                         (np.abs(in_radius[:, 3] - point[0][3]) < thres) & 
-                                        ((np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius) |
-                                        ((self.data[:,:3] - curr_centroid)**2 <= dist).all(axis = 1))
+                                        ((np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius) &
+                                        ((self.data[:,:3] - curr_centroid)**2 <= dist*0.75).all(axis = 1))
                                     )]]
             except:
                 in_radius = self.data[np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius]
