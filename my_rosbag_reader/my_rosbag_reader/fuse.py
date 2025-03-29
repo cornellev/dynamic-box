@@ -127,7 +127,7 @@ class Node(object):
         self.axis = axis
         self.left = left
         self.right = right
-        self.prev = np.array([0,0,0])
+        self.prev = np.array([0,0,0,0])
         self.C_prev = np.array([], dtype=object)
 
     def make_kdtree (self, points, axis, dim):
@@ -164,15 +164,17 @@ class Node(object):
             size_lim = np.infty
             centroids = np.array([np.mean(C, axis = 0)[:3] for C in C_prev])
             try:
+                # print(np.hstack((centroids, np.array([[np.median(C, axis = 0)[3] for C in C_prev]]).T)))
                 # match current point to closest centroid in cluster: 
                 curr_centroid = np.mean(C[-1], axis = 0)[:3]
                 curr_int = np.median(C[-1], axis = 0)[3]
                 i = np.argmin(np.sum((centroids - curr_centroid) ** 2, axis = 1))
+                # print(np.array([np.median(C, axis = 0)[3] for C in C_prev])[i])
                 past_centroid = centroids[i]
                 past_cluster = C_prev[i][:, :3]
                 past_var = np.var(past_cluster, axis = 0)[:3]
                 self.C_prev = centroids
-                self.prev = past_centroid
+                self.prev = np.hstack((past_centroid, np.array([np.array([np.median(C, axis = 0)[3] for C in C_prev])[i]])))
                 
                 # use the max radius of the filtered closest previous cluster as update parameter
                 cen_radius = np.mean(np.sqrt(np.sum((past_cluster - past_centroid)**2, axis = 1)))
@@ -180,25 +182,27 @@ class Node(object):
                 # split into colors only if the change in cardinality of in_radius and the masked array is large
 
                 # update if in scaled_radius or in centroid radius in x, y, z directions.
-                dist = np.percentile((past_cluster - past_centroid)**2, 90, axis = 0)
+                dist = np.percentile((past_cluster - past_centroid)**2, 85, axis = 0)
 
                 # print(np.max((past_cluster - past_centroid)**2, axis = 0))
                 # print(np.percentile((past_cluster - past_centroid)**2, 85, axis = 0))
 
-                N = lambda x, i : np.e ** (-(x-curr_centroid[i])**2/(2*(past_var[i])**2 + 1e-07))
-                gauss_thres = lambda x, y, z : thres * N(x, 0) * N(y, 1) * N(z, 2)
-
+                N = lambda x, i : (x-curr_centroid[i])**2/(2*(3*past_var[i])**2 + 1e-07)
+                gauss_thres = lambda x, y, z : thres * (np.e ** -np.min(np.array([N(x, 0), N(y, 1), N(z, 2)]), axis = 0))
                 # be in scaled_radius of neighbor AND be in intensity threshold
                 # AND be within the boundaries of the past centroid + translation to current centroid
                 point = point + [self.data[(
-                                        ((np.abs(self.data[:,3] - np.median(C[-1], axis = 0)[3]) < max(0.5*thres, gauss_thres(self.data[:,0], self.data[:,1], self.data[:,2])))
+                                        (np.abs(self.data[:,3] - np.median(C[-1], axis = 0)[3]) < np.array([max(0.5*thres, gauss) for gauss in gauss_thres(self.data[:,0], self.data[:,1], self.data[:,2])]))
                                         &                        
-                                        (np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius)) 
+                                        (((np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius) & 
+                                        ((self.data[:,:3] - np.mean(np.array([curr_centroid, past_centroid]), axis = 0))**2 <= 2*dist).all(axis = 1))
                                         |
-                                        ((self.data[:,:3] - np.mean(np.array([curr_centroid, past_centroid]), axis = 0))**2 <= dist).all(axis = 1)
+                                        ((self.data[:,:3] - np.mean(np.array([curr_centroid, past_centroid]), axis = 0))**2 <= dist).all(axis = 1))
                 )]]
+                # print("YAY")
                 return point
             except:
+                # print("WHAT")
                 in_radius = self.data[np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius]
                     
             return point + [in_radius[np.abs(in_radius[:,3] - point[0][3]) < thres]]
@@ -228,17 +232,19 @@ class Node(object):
         Node.unexplored = np.array(list(unexplored_set)) if unexplored_set else np.empty((0, 3))
         return Node.unexplored
 
-def merge(data):
+def merge(data, thres):
     merged_dict = defaultdict(list)
-    for arr, x, y, z in data:
-        # Extract the (x, y, z) part from coords, which are assumed to be the last three values
-        coords_tuple = (x,y,z)  # Using only x, y, z
-        # Append the first column (arr) to the corresponding coordinate key
-        merged_dict[coords_tuple].extend(arr)  # arr[:, 0] is the first column
+    for arr, x, y, z, I in data:
+        if (abs(np.median(arr[:, 3]) - I) < 100):
+            coords_tuple = (x,y,z,I) 
+            # Append the first column (arr) to the corresponding coordinate key
+            merged_dict[coords_tuple].extend(arr)
+        else:
+            coords_tuple = (x,y,z,np.median(arr[:, 3]))
+            merged_dict[coords_tuple].extend(arr)
 
     # Convert the merged values back to NumPy arrays
     merged_result = np.array([[np.array(values), coords[0], coords[1], coords[2]] for coords, values in merged_dict.items()], dtype=object)
-    
     return merged_result
 
 def euclidean_cluster(ax, cloud, radius, intensity_threshold, MIN_CLUSTER_SIZE = 1, mode = "cartesian", cloud_prev = np.array([])):
@@ -273,8 +279,8 @@ def euclidean_cluster(ax, cloud, radius, intensity_threshold, MIN_CLUSTER_SIZE =
     clusters = np.array([cluster for cluster in np.column_stack((clusters, prev)) if cluster[0].shape[0] > MIN_CLUSTER_SIZE], dtype = object)
 
     # if multiple clusters share the same past_centroid, merge
-    if (not np.array_equal(kd_tree.prev, np.array([0, 0, 0]))):
-        clusters = merge(clusters)
+    if (not np.array_equal(kd_tree.prev, np.array([0, 0, 0, 0]))):
+        clusters = merge(clusters, intensity_threshold)
     return clusters[:,0], clusters[:,1:]
 
 def display_clusters(ax, clusters, prev): 
@@ -291,13 +297,14 @@ def display_clusters(ax, clusters, prev):
 
     for i, _ in enumerate(clusters):
         data = clusters[i][:, :3]
-        ax.scatter(np.array(data)[:, 2], np.array(data)[:, 0], np.array(data)[:, 1], color = colors[i], marker = 'o', alpha = 0.25, label=f'Cluster {i+1}')
+        ax.scatter(np.array(data)[:, 2], np.array(data)[:, 0], np.array(data)[:, 1], color = colors[i], marker = 'o', alpha = 0.5, label=f'Cluster {i+1}')
         centroid = np.array(np.mean(data, axis = 0))
         ax.scatter(centroid[2], centroid[0], centroid[1], color = colors[i]*0.75, s = 20, marker = 'D')
         ax.scatter(prev_centroids[i, 2], prev_centroids[i, 0], prev_centroids[i, 1], color = colors[i]*0.75, s = 30, marker = '*')
         ax.quiver(prev_centroids[i, 2], prev_centroids[i, 0], prev_centroids[i, 1],
                     centroid[2] - prev_centroids[i, 2], centroid[0] - prev_centroids[i, 0], centroid[1] - prev_centroids[i, 1],
-                    colors[i]*0.5)
+                    color=colors[i]*0.5, arrow_length_ratio=0)
+
         # means = np.mean(data, axis = 0)[:3]
         # var = np.var(data, axis = 0)
         # centered_data = (data - means) / np.sqrt(var)
@@ -328,7 +335,7 @@ def display_clusters(ax, clusters, prev):
     ax.set_zlabel('Z Label')
     ax.view_init(elev=elev, azim=azim)
     plt.draw()
-    plt.pause(0.5)
+    plt.pause(0.1)
 
 def pca (data):
     # PCA between same clusters of different time frames to calc motion of object
@@ -388,6 +395,12 @@ def pca (data):
 #                   [0,1.5],[0.5,0.25],[0.5,1],[0.25,0.5],[-0.5,0.75],
 #                   [0,1],[0.5,1.75],[-1,1],[-0.5,1.5],[-1,-0.5],[-1,0],
 #                   [-0.5,0.25],[0,-0.5]])
+
+# split = np.array([[1,1], [1.5,2], [1,1.5]])
+# merge = np.array([[100, 200, 300]])
+# split = np.array(([1, 2, 3]))
+# print(np.hstack((split, np.array([2]))))
+# print(np.hstack((split, merge.T)))
                   
 # curr_centroid = np.mean(split, axis = 0)
 # print(curr_centroid)
@@ -398,4 +411,6 @@ def pca (data):
 # N = lambda x, i : np.e ** (-(x-curr_centroid[i])**2/(2*curr_var[i]**2))
 # gauss_thres = lambda x, y : thres * N(x, 0) * N(y, 1)
 # # print(curr_centroid 
-# print(split[split[:,0] < gauss_thres(split[:, 0], split[:, 1])])
+# print(np.array([max(1, elem) for elem in split[:,0]]))
+
+#  np.array([[np.array(values), coords[0], coords[1], coords[2]] for coords, values in merged_dict.items()]

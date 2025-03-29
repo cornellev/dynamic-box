@@ -56,9 +56,9 @@ class MinimalSubscriber(Node):
             if (self.iter % 2 == 0):
                 if (self.iter):
                     # cluster every 3 iteration-overlayed point clouds
-                    C = fuse.euclidean_cluster(ax = ax, cloud = self.data, radius = 0.2, intensity_threshold = 20, MIN_CLUSTER_SIZE = 10, mode = "spherical", cloud_prev = self.C_prev)
+                    C, prev = fuse.euclidean_cluster(ax = ax, cloud = self.data, radius = 0.15, intensity_threshold = 30, MIN_CLUSTER_SIZE = 10, mode = "spherical", cloud_prev = self.C_prev)
                     # update previous clustering with new C
-                    fuse.display_clusters(ax, C)
+                    fuse.display_clusters(ax, C, prev)
                     self.C_prev = C
                 self.data = cloud_sphr
             else:
