@@ -1,14 +1,59 @@
 # dynamic-box
-3rd times the charm
+3D point cloud segmentation algorithm for consecutive LiDAR scans using kd-tree-based euclidean cluster extraction.
 
-## Update Notes:
-The better dynamic-box.
+## Euclidean Cluster Extraction ROS2 Package:
+It is recommended that the ROS2-integrated Euclidean Cluster Extraction algorithm is run using ... Docker container, as the container contain all dependencies:
 
-## Installation:
+```
+ROS2 distro=Humble
+package_name=my_rosbag_reader
+```
+
+### ROS2 Package Architecture:
+UniTree LiDAR scans have message type: ```PointCloud2``` and publish to the ```unilidar/cloud``` topic.
+
+```my_rosbag_reader/my_rosbag_reader/live.py``` is a Subscriber node subscribed to the ```unilidar/cloud``` topic.
+
+When LiDAR scan data is published, ```my_rosbag_reader/my_rosbag_reader/live.py```'s callback function, ```listener_callback```, will run the Euclidean Cluster Extraction algorithm and return an array containing cluster partitions of the point cloud. 
+
+## Euclidean Cluster Extraction Implementation:
+For each scan published, we first initialize the set of unexplored points ```Node.unexplored``` as being all 3D points in such input LiDAR scan ```cloud```. 
+
+To optimize nearest neighbor search, a KD-Tree representation of ```cloud``` is used as input into the ```euclidean_cluster``` function, which implements Euclidean Cluster Extraction.
+
+Euclidean Cluster Extraction follows these general steps:
+1) We initially have an empty array of clusters ```C```. 
+2) We pop some arbitrary point $(x, y, z)$ from ```Node.unexplored``` that will be used as the first element in a stack of seeds ```stack``` for growing a new cluster ```c``` $\in$ ```C```.
+3) Starting from $(x, y, z)$ and leveraging the KD-Tree representation, we recursively search for neighbors in ```Node.unexplored``` around $(x, y, z)$ and add them ```stack```. 
+Nearest points of $(x, y, z)$ are found by traversing the KD-Tree until the leaf containing $(x, y, z)$ and its neighbors is reached. Then for arbitrary neighbor $(x', y', z')$, let us define the "neighbor" condition: $$ \bold{if} \text{ } \ell^2 \text{-distance between } (x, y, z) \text{ and } (x', y', z') < radius \text{, } \bold{then} \text{ add } (x', y', z') \text{ to } stack.$$
+If the previous condition is satisfied, also add $(x', y', z')$ to cluster ```c```.
+4) The recursion terminates when there are no more unexplored points that satisfy the "neighbor" condition, signalling that ```c``` has finished growing.
+5) If there exists another point from ```Node.unexplored```, repeat steps 2 to 5 to recursively grow new clusters until all points from ```cloud``` belong to some cluster in ```C```. 
+6) Before outliers are filtered out, Euclidean Cluster Extraction should return a partition of clusters {```c_1, ..., c_i```} s.t. $i \in$ [1, len(```cloud```)] and ```c_1``` $\cup$ ... $\cup$ ... ```c_i``` = ```C```.
+7) To filter out clusters formed by sparse, outlier points with very few to no neighbors, keep only clusters ```c'``` in ```C``` where the number of points in ```c'``` are greater than hyperparameter ```MIN_CLUSTER_SIZE```. Where default ```MIN_CLUSTER_SIZE``` = 1.
+
+NOTE: One critical assumption made for Euclidean Cluster Extraction is that input point clouds are relatively dense such that the maximum distance ```radius``` between two "adjacent" points in the same cluster is less than the minimum distance between two points belonging to different clusters. When this assumption does not hold, we can observe the algorithm merging clusters representing different objects together. 
+
+For the task of object tracking over different frames, we want to be able to observe some consistency in the shapes and numbers of clusters across consecutve LiDAR scans. Given consecutive LiDAR scans, we cannot assume that the number of clusters returned by Euclidean Cluster Extraction remains constant, as it is common for objects to enter and exist the LiDAR's range. 
+
+However, suppose we made the assumption that the time passed between two consecutive scans (```A, B```) is negligibly small enough that given:
+- some object ```O```,
+- cluster ```c_A``` corresponding to object ```O``` in scan ```A```,
+- cluster ```c_B``` corresponding to object ```O``` in scan ```B```, 
+
+there exists some spatial overlap between ```c_A``` and ```c_B``` s.t. for any other arbitary cluster ```c_B'``` in scan ```B```, the number of points in ```c_B``` that lie in ```c_A```'s boundary should be greater than the number of points in ```c_B'``` that lie in ```c_A```'s boundary. 
+
+We could also claim that the $\ell^2$-distance between ```c_A``` and ```c_B```'s centroids are less than the $\ell^2$-distance between ```c_A``` and ```c_B'```.
+
+Then, if we made the assumption that negligibly small amounts of time passed between two consecutive LiDAR scans, we could use the mentioned conditions to match previous and current clusters that correspond to the same object.
+
+
+
+## Installation (NEED TO UPDATE):
 ### OpenCV:
 Run:
 ```
-pip3 install opencv-python
+pip3 install requirements.txt
 ```
 
 ### Conda: 
@@ -38,7 +83,7 @@ conda install torchvision -c pytorch
 ```
 
 
-## How This Works (NEED TO UPDATE):
+## How Dynamic Box Works (NEED TO UPDATE):
 ZED camera captures stereo pairs of left (Il) and right (Ir) images -> run through a 2D detector that generates 2D boxes on regions of interest (ROIs) in Il and Ir:
 1) 2D detector that generates 2D boxes in Il and Ir:
    Given stereo image pair input: an Il, Ir pair from ZED -> identify left (l) and right (r) ROIs -> threshold -> aquire m, n ROIs in Il, Ir ->
@@ -69,9 +114,9 @@ ZED camera captures stereo pairs of left (Il) and right (Ir) images -> run throu
 
 ### Currently working on:
 1) Getting more accurate 3D bounding boxes that consider perspective, rotation of the object in 3D space, and its overall pose.
-   
-## Eventual ROS2 Package Implementation:
-...
+
+
+
 
 ## Important links:
 [An Introduction to 3D Computer Vision Techniques and Algorithms](https://ia801208.us.archive.org/12/items/an-introduction-to-3-d-computer-vision-techniques-and-algorithms-cyganek-siebert-2009-02-09/An%20Introduction%20to%203D%20Computer%20Vision%20Techniques%20and%20Algorithms%20%5BCyganek%20%26%20Siebert%202009-02-09%5D.pdf)
