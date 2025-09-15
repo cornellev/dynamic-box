@@ -4,19 +4,26 @@
 ## Euclidean Cluster Extraction ROS2 Package:
 It is recommended that the ROS2-integrated Euclidean Cluster Extraction algorithm is run using ... Docker container, as the container contain all dependencies:
 
+### ROS2 Package Architecture (Not Updated):
 ```
 ROS2 distro=Humble
 package_name=my_rosbag_reader
 ```
 
-### ROS2 Package Architecture:
 UniTree LiDAR scans have message type: ```PointCloud2``` and publish to the ```unilidar/cloud``` topic.
 
 ```my_rosbag_reader/my_rosbag_reader/live.py``` is a Subscriber node subscribed to the ```unilidar/cloud``` topic.
 
 When LiDAR scan data is published, ```my_rosbag_reader/my_rosbag_reader/live.py```'s callback function, ```listener_callback```, will run the Euclidean Cluster Extraction algorithm and return an array containing cluster partitions of the point cloud. 
 
-## Euclidean Cluster Extraction Implementation:
+## Euclidean Cluster Extraction Implementation (Not Updated, Look At Recent Updates):
+### Recent Updates:
+|  Date     | Changelog / Update Notes |
+|:----------|:-----------|
+| 9/14/25   | - Clusters with seed starting points are grown in parallel, where each ```cluster_cpp.euclidean_cluster``` call is limited to only one cluster grown. <br> - New obstacles and outlier points that are not captured in past centroid seeds are still grown sequentially from one random seed, no constraints on ```MAX_CLUSTER_NUM```. <br> - Clustering on the very first LiDAR scan is used to initialize the first set of seeds and is not parallelized. |
+| 9/13/25   | - Seeds act as starting points for cluster growing. For the centroid of past cluster, the closest point in the current scan to such centroid is initialized as a new seed. <br> - ```cluster_cpp.euclidean_cluster``` now takes in arguments ```seeds : Eigen::Vector4d``` and ```MAX_CLUSTER_NUM``` that represent fixed starting points and maximum number of clusters allowed to be grown, respectively. |
+| 9/12/25   | - ```cluster.cpp``` contains C++ implementations of Euclidean Cluster Extraction function ```euclidean_cluster``` and the ```Node``` class, which contains ```make_kdtree, search_point``` and ```search_tree``` functions. <br> - To speedup clustering, the C++ implementation of Euclidean Cluster Extraction ```cluster_cpp.euclidean_cluster``` is now used in place of the Python version. |
+
 For each scan published, we first initialize the set of unexplored points ```Node.unexplored``` as being all 3D points in such input LiDAR scan ```cloud```. 
 
 To optimize nearest neighbor search, a KD-Tree representation of ```cloud``` is used as input into the ```euclidean_cluster``` function, which implements Euclidean Cluster Extraction.
@@ -82,6 +89,9 @@ conda install cuda80 -c pytorch
 conda install torchvision -c pytorch
 ```
 
+## Euclidean Cluster Extraction Important links:
+[Fast Euclidean Cluster Extraction Using GPUs]
+(https://www.jstage.jst.go.jp/article/jrobomech/32/3/32_548/_pdf)
 
 ## How Dynamic Box Works (NEED TO UPDATE):
 ZED camera captures stereo pairs of left (Il) and right (Ir) images -> run through a 2D detector that generates 2D boxes on regions of interest (ROIs) in Il and Ir:
@@ -119,6 +129,7 @@ ZED camera captures stereo pairs of left (Il) and right (Ir) images -> run throu
 
 
 ## Important links:
+
 [An Introduction to 3D Computer Vision Techniques and Algorithms](https://ia801208.us.archive.org/12/items/an-introduction-to-3-d-computer-vision-techniques-and-algorithms-cyganek-siebert-2009-02-09/An%20Introduction%20to%203D%20Computer%20Vision%20Techniques%20and%20Algorithms%20%5BCyganek%20%26%20Siebert%202009-02-09%5D.pdf)
 
 [ZED Calibration File](https://support.stereolabs.com/hc/en-us/articles/360007497173-What-is-the-calibration-file)
