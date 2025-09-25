@@ -1,0 +1,10 @@
+msg/Obstacle.idl
+msg/Obstacle.msg
+msg/Obstacles.idl
+msg/Obstacles.msg
+msg/SensorCollect.idl
+msg/SensorCollect.msg
+msg/Trajectory.idl
+msg/Trajectory.msg
+msg/Waypoint.idl
+msg/Waypoint.msg

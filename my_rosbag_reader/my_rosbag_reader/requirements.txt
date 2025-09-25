@@ -1,0 +1,10 @@
+flask_cors
+google-cloud
+google-auth
+google-cloud-storage
+Flask==2.3.2
+gunicorn==20.1.0
+google-cloud-storage
+flask_socketio
+websocket-client
+pybind11
