@@ -32,10 +32,17 @@ RUN mkdir -p ${WS_DIR}/src
 
 ENV ROS_DISTRO=humble
 
-COPY . /home/dev/ws/src
+COPY . /home/dev/ws/src/dynamic-box
 
 USER root
 
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /etc/bash.bashrc
+
+RUN git clone https://github.com/RoboSense-LiDAR/rslidar_sdk.git /home/${USERNAME}/ws/src/rslidar_sdk \
+    && cd /home/dev/ws/src/rslidar_sdk \
+    && submodule init \
+    && submodule update
+
+RUN git clone https://github.com/RoboSense-LiDAR/rslidar_msg.git /home/${USERNAME}/ws/src/rslidar_msg
 
 CMD ["bash"]
