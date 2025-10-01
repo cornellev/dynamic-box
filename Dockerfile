@@ -63,7 +63,7 @@ RUN pip install --no-cache-dir \
     google-auth \
     google-cloud-storage \
     Flask==3.0.0 \
-    gunicorn==20.1.0 \
+    gunicorn \
     flask_socketio \
     websocket-client \
     pybind11 \
