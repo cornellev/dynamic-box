@@ -43,8 +43,7 @@ RUN git clone https://github.com/RoboSense-LiDAR/rslidar_sdk.git /home/${USERNAM
     && git submodule init \
     && git submodule update \
     && sudo apt-get update \
-    && sudo apt-get install -y libyaml-cpp-dev \
-    && sudo apt-get install -y libpcap-dev
+    && sudo apt-get install -y libyaml-cpp-dev libpcap-dev libgl1-mesa-glx libgl1-mesa-dev
     
 RUN git clone https://github.com/RoboSense-LiDAR/rslidar_msg.git /home/${USERNAME}/ws/src/rslidar_msg
 
@@ -53,5 +52,18 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash \
     && colcon build --packages-select rslidar_msg rslidar_sdk \
     && cd /home/dev/ws/src/dynamic-box/my_rosbag_reader \
     && colcon build --packages-select my_rosbag_reader 
+
+RUN pip install --no-cache-dir \
+    flask_cors \
+    google-cloud \
+    google-auth \
+    google-cloud-storage \
+    Flask==2.3.2 \
+    gunicorn==20.1.0 \
+    flask_socketio \
+    websocket-client \
+    pybind11 \
+    matplotlib \
+    open3d
 
 CMD ["bash"]
