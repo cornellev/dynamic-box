@@ -74,8 +74,8 @@ Then, $n'$ clusters are grown in parallel from these $n'$ seeds. Specifically, E
 
 In terms of speedup and optimization, the runtime of segmentation on fully parallelized Euclidean Cluster Extraction is constrained by the largest cluster, or the cluster with the most points. If there are no overlaps between two consecutive LiDAR scans, then only  sequential Euclidean Cluster Extraction will grow clusters.
 
-## Installation (NEED TO UPDATE):
-### [Recommended]: Building and Running the Provided Docker Image:
+## Installation:
+### [Recommended] Building and Running the Provided Docker Image:
 All Python and ROS2 dependencies in ```my_rosbag_reader``` will be automatically installed and built with the provided Docker image:
 ```
 git clone --branch improvements git@github.com:cornellev/dynamic-box.git --single-branch
