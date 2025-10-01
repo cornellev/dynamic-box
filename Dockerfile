@@ -45,7 +45,11 @@ RUN git clone https://github.com/RoboSense-LiDAR/rslidar_sdk.git /home/${USERNAM
     && sudo apt-get update \
     && sudo apt-get install -y libyaml-cpp-dev libpcap-dev libgl1-mesa-glx libgl1-mesa-dev
     
+RUN apt-get install ros-$ROS_DISTRO-rviz2 -y
+
 RUN git clone https://github.com/RoboSense-LiDAR/rslidar_msg.git /home/${USERNAME}/ws/src/rslidar_msg
+
+RUN git clone https://github.com/cornellev/cev_msgs.git src/cev_msgs
 
 RUN source /opt/ros/$ROS_DISTRO/setup.bash \
     && cd /home/dev/ws/src \
@@ -58,12 +62,14 @@ RUN pip install --no-cache-dir \
     google-cloud \
     google-auth \
     google-cloud-storage \
-    Flask==2.3.2 \
+    Flask==3.0.0 \
     gunicorn==20.1.0 \
     flask_socketio \
     websocket-client \
     pybind11 \
     matplotlib \
-    open3d --no-deps --trusted-host pypi.org --trusted-host files.pythonhosted.org
+    open3d[full] --no-deps --trusted-host pypi.org --trusted-host files.pythonhosted.org \
+    dash \
+    plotly
 
 CMD ["bash"]
