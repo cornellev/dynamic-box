@@ -64,6 +64,6 @@ RUN pip install --no-cache-dir \
     websocket-client \
     pybind11 \
     matplotlib \
-    open3d
+    open3d --no-deps --trusted-host pypi.org --trusted-host files.pythonhosted.org
 
 CMD ["bash"]
