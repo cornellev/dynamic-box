@@ -75,36 +75,42 @@ Then, $n'$ clusters are grown in parallel from these $n'$ seeds. Specifically, E
 In terms of speedup and optimization, the runtime of segmentation on fully parallelized Euclidean Cluster Extraction is constrained by the largest cluster, or the cluster with the most points. If there are no overlaps between two consecutive LiDAR scans, then only  sequential Euclidean Cluster Extraction will grow clusters.
 
 ## Installation (NEED TO UPDATE):
-### OpenCV:
-Run:
+### [Recommended]: Building and Running the Provided Docker Image:
+All Python and ROS2 dependencies in ```my_rosbag_reader``` will be automatically installed and built with the provided Docker image:
 ```
-pip3 install requirements.txt
+git clone --branch improvements git@github.com:cornellev/dynamic-box.git --single-branch
+docker build -t dbimage .
+docker run -it --name dbimage dbimage bash
 ```
-
-### Conda: 
-https://docs.anaconda.com/anaconda/install/linux/:
-Download in Ubuntu home directory:
-``` 
-Anaconda3-2024.06-1-Linux-x86_64.sh from https://repo.anaconda.com/archive/
+After building the docker image ```dbimage```, directories should appear in a layout similar to:
 ```
-
-Run:
+/home/dev/ws/src/
+├── ./
+├── ../
+├── dynamic-box/my_rosbag_reader/
+│   ├── my_rosbag_reader/ 
+│   │   ├── __init__.py
+│   │   ├── requirements.txt
+│   │   ├── cluster.cpp
+│   │   ├── live.py
+│   │   ├── setup.py        
+│   │   └── test_cloud.pcap
+│   ├── package.xml  
+│   ├── resource/ 
+│   │   └── my_rosbag_reader 
+│   ├── setup.cfg
+│   └── setup.py  
+├── rslidar_msg/
+└── rslidar_sdk/
 ```
-curl -O https://repo.anaconda.com/archive/Anaconda3-2024.06-1-Linux-x86_64.sh
-bash ~/<Wherever you downloaded it>/Anaconda3-2024.06-1-Linux-x86_64.sh
+Running the docker image will automatically build, but not source ```rslidar_msg, rslidar_sdk```, and ```my_rosbag_reader``` ROS2 packages.
+Source these packages by going to ```/home/dev/ws/src``` and running:
 ```
-
-Anaconda is now downloaded in ``` /home/<USER>/anaconda3 ``` in Ubuntu
-
-Refresh terminal: ``` source ~/.bashrc ```
-
-### Activate conda environment:
-``` python
-conda create -n env_stereo python=3.10
-conda activate env_stereo
-conda install pytorch
-conda install cuda80 -c pytorch
-conda install torchvision -c pytorch
+source install/setup.bash
+cd /dynamic-box/my_rosbag_reader
+source install/setup.bash
+cd /my_rosbag_reader
+python3 setup.py build_ext --inplace
 ```
 
 ## Euclidean Cluster Extraction Important links:
