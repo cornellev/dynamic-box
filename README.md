@@ -114,8 +114,7 @@ python3 setup.py build_ext --inplace
 ```
 
 ## Euclidean Cluster Extraction Important links:
-[Fast Euclidean Cluster Extraction Using GPUs]
-(https://www.jstage.jst.go.jp/article/jrobomech/32/3/32_548/_pdf)
+[Fast Euclidean Cluster Extraction Using GPUs](https://www.jstage.jst.go.jp/article/jrobomech/32/3/32_548/_pdf)
 
 ## How Dynamic Box Works (NEED TO UPDATE):
 ZED camera captures stereo pairs of left (Il) and right (Ir) images -> run through a 2D detector that generates 2D boxes on regions of interest (ROIs) in Il and Ir:
