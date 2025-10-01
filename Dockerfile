@@ -40,9 +40,18 @@ RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /etc/bash.bashrc
 
 RUN git clone https://github.com/RoboSense-LiDAR/rslidar_sdk.git /home/${USERNAME}/ws/src/rslidar_sdk \
     && cd /home/dev/ws/src/rslidar_sdk \
-    && submodule init \
-    && submodule update
-
+    && git submodule init \
+    && git submodule update \
+    && sudo apt-get update \
+    && sudo apt-get install -y libyaml-cpp-dev \
+    && sudo apt-get install -y libpcap-dev
+    
 RUN git clone https://github.com/RoboSense-LiDAR/rslidar_msg.git /home/${USERNAME}/ws/src/rslidar_msg
+
+RUN source /opt/ros/$ROS_DISTRO/setup.bash \
+    && cd /home/dev/ws/src \
+    && colcon build --packages-select rslidar_msg rslidar_sdk \
+    && cd /home/dev/ws/src/dynamic-box/my_rosbag_reader \
+    && colcon build --packages-select my_rosbag_reader 
 
 CMD ["bash"]
