@@ -106,6 +106,7 @@ After building the docker image ```dbimage```, directories should appear in a la
 Running the docker image will automatically build, but not source ```rslidar_msg, rslidar_sdk```, and ```my_rosbag_reader``` ROS2 packages.
 Source these packages by going to ```/home/dev/ws/src``` and running:
 ```
+colcon build --packages-select cev_msgs --cmake-clean-cache
 source install/setup.bash
 cd /dynamic-box/my_rosbag_reader
 source install/setup.bash
