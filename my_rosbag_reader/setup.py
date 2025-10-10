@@ -2,14 +2,14 @@ from setuptools import find_packages, setup, Extension
 import pybind11
 import os
 
-package_name = 'my_rosbag_reader'
+package_name = "my_rosbag_reader"
 
 ext_modules = [
     Extension(
-        "cluster_cpp",
+        "cluster.cpp",
         ["cluster.cpp"],
         include_dirs=[
-            pybind11.get_include(), 
+            pybind11.get_include(),
             pybind11.get_include(user=True),
             "/usr/include/eigen3",
         ],
@@ -20,20 +20,19 @@ ext_modules = [
 
 setup(
     name=package_name,
-    version='0.0.0',
+    version="0.0.0",
     packages=[package_name],
     data_files=[
-        ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
-        ('share/' + package_name, ['package.xml']),
+        ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
+        ("share/" + package_name, ["package.xml"]),
     ],
     ext_modules=ext_modules,
     install_requires=['setuptools', 'rclpy', 'std_msgs', 'cev_msgs'],
     zip_safe=True,
     entry_points={
-        'console_scripts': [
-            'listener = my_rosbag_reader.live:main',
-            'rs_listener = my_rosbag_reader.surface:main'
+        "console_scripts": [
+            "listener = my_rosbag_reader.live:main",
+            "rs_listener = my_rosbag_reader.surface:main",
         ],
     },
 )
