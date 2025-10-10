@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from setuptools import find_packages, setup, Extension
 import pybind11
 import os
@@ -19,12 +18,6 @@ ext_modules = [
     )
 ]
 
-=======
-from setuptools import find_packages, setup
-
-package_name = 'my_rosbag_reader'
-
->>>>>>> 73852507092b44cc445d3e1af79b72b3fa076d0f
 setup(
     name=package_name,
     version='0.0.0',
@@ -34,10 +27,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-<<<<<<< HEAD
     ext_modules=ext_modules,
-=======
->>>>>>> 73852507092b44cc445d3e1af79b72b3fa076d0f
     install_requires=['setuptools', 'rclpy', 'std_msgs', 'cev_msgs'],
     zip_safe=True,
     entry_points={
