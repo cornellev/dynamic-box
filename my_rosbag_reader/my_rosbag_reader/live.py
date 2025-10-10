@@ -26,6 +26,7 @@ import time
 
 # TURN THIS INTO A PUBLISHER THAT PUBLISHES COLMAP_MODEL.JSON
 
+print("???????")
 sio = socketio.Client()
 
 COLORS = {}
