@@ -5,7 +5,11 @@ import matplotlib.pyplot as plt
 import open3d as o3d
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import PointCloud2
+from cev_msgs.msg import Obstacle
+from cev_msgs.msg import Obstacles
+import sensor_msgs
+import struct
+from sensor_msgs.msg import PointCloud2, PointField
 import sensor_msgs_py.point_cloud2 as pc2
 from collections import defaultdict
 # from ouster.sdk import open_source, pcap, client, _bindings
@@ -22,18 +26,18 @@ import time
 
 # TURN THIS INTO A PUBLISHER THAT PUBLISHES COLMAP_MODEL.JSON
 
-sio = socketio.Client()
+# sio = socketio.Client()
 
 COLORS = {}
 BACKEND_URL = "http://localhost:5000" # Use localhost for development
 # BACKEND_URL = "https://im-map.onrender.com"
 
 # Connect the SocketIO client
-try:
-    sio.connect(BACKEND_URL, transports=["websocket"])
-except Exception as e:
-    print(f"Failed to connect to WebSocket server: {e}")
-    exit() # Exit if we can't connect
+# try:
+#     sio.connect(BACKEND_URL, transports=["websocket"])
+# except Exception as e:
+#     print(f"Failed to connect to WebSocket server: {e}")
+#     exit() # Exit if we can't connect
 
 
 # credentials = service_account.Credentials.from_service_account_info(CLOUD_KEY)
@@ -54,6 +58,12 @@ class MinimalSubscriber(Node):
             10  # Queue size
         )
 
+        self.publisher = self.create_publisher(
+            Obstacles, 
+            '/rslidar_obstacles',
+            10
+        )
+
     def listener_callback(self, msg):
         # Z IS Y (map from 0 to 720), Y IS X (map from 0 to 1280)
         # POINT CLOUD PREPROCESSING
@@ -64,7 +74,7 @@ class MinimalSubscriber(Node):
         pcd.points = o3d.utility.Vector3dVector(cloud[:, :3])
 
         # Downsample the point cloud
-        downsampled = pcd.voxel_down_sample(voxel_size=0.03)
+        downsampled = pcd.voxel_down_sample(voxel_size=0.05)
 
         # Convert back to numpy
         cloud = np.asarray(downsampled.points)
@@ -114,12 +124,110 @@ class MinimalSubscriber(Node):
                 C = np.hstack((C, remaining_C[mask]))
 
             # need to reorder here from x, y, z -> z, x, y
-            display_clusters(ax, np.array(C), [np.median(c, axis = 0) for c in C])
+            self.display_clusters(ax, np.array(C), [np.median(c, axis = 0) for c in C])
             self.C_prev = np.array([np.median(c, axis = 0) for c in C])
         else:
             self.get_logger().warn("Received empty point cloud")
 
         self.iter += 1
+
+    def display_clusters(self, ax, clusters, prev, reorder=True): 
+        global COLORS
+        new_points = []
+        colmap_model = {}
+
+        colors = plt.cm.hsv(np.linspace(0, 0.8, len(clusters)))
+        
+        sorted_indices = np.argsort([np.mean(arr) for arr in clusters])
+        clusters = clusters[sorted_indices]
+        prev_centroids = np.array(prev)[sorted_indices]
+
+        rgb_colors = (colors[:, :3] * 255)
+
+        if len(COLORS.keys()) != 0:
+            prev_rgb_colors = COLORS
+        else:
+            prev_rgb_colors = {}
+
+        COLORS = {}
+        
+        # ith key in rgb_colors should correspond to ith prev_centroid color
+        obstacles_arr = []
+
+        for i, _ in enumerate(clusters):
+            # DISPLAY PREVIOUS CENTROID ELLIPSOID
+            data = clusters[i][:, :3]
+                
+            pcd = o3d.geometry.PointCloud()
+            pcd.points = o3d.utility.Vector3dVector(data)
+
+            # Downsample the point cloud
+            downsampled = pcd.voxel_down_sample(voxel_size=0.1)
+
+            # Convert back to numpy
+            data = np.asarray(downsampled.points)
+            
+            if i < len(list(prev_rgb_colors.values())) and tuple(prev_centroids[i][:3]) in prev_rgb_colors:
+                COLORS[tuple(np.mean(clusters[i], axis=0)[:3])] = prev_rgb_colors[tuple(prev_centroids[i][:3])]
+            elif i % 2 == 0:
+                r, g, b = rgb_colors[i]
+                COLORS[tuple(np.mean(clusters[i], axis=0)[:3])] = [255 - r, 255 - g, 255 - b]
+            else:
+                COLORS[tuple(np.mean(clusters[i], axis=0)[:3])] = rgb_colors[i]
+                
+            color = COLORS[tuple(np.mean(clusters[i], axis=0)[:3])]
+            for _, points in enumerate(np.array(data)):
+                y, z, x = points
+                new_points = new_points + [{'id': i, 'x': x, 'y': y, 'z': z, 'r': color[0], 'g': color[1], 'b': color[2]}]
+            y, z, x = np.mean(clusters[i], axis=0)[:3]
+            new_points = new_points + [{'id': i, 'x': x, 'y': y, 'z': z, 'r': max(0, color[0] - 30), 'g': max(0, color[1] - 30), 'b': max(0, color[2] - 30)}]
+
+            pc_msg = PointCloud2()
+            pc_msg.fields = [
+                PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+                PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+                PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+                PointField(name='id', offset=12, datatype=PointField.INT32, count=1)
+            ]
+
+            pc_msg.is_bigendian = False
+            pc_msg.point_step = 16
+            pc_msg.row_step = pc_msg.point_step * data.shape[0]
+            pc_msg.is_dense = True
+
+            buffer = []
+            for p in data:
+                buffer.append(struct.pack('fffI', p[0], p[1], p[2], i))
+            pc_msg.data = b"".join(buffer)
+
+            # msg = Obstacle()
+            # msg.x, msg.y, msg.z = x, y, z
+            obstacles_arr.append(pc_msg)
+
+        obstacles_msg = Obstacles()
+        obstacles_msg.obstacles = obstacles_arr
+        self.publisher.publish(obstacles_msg)
+        self.get_logger().info(f'Published {len(obstacles_arr)} obstacles')
+        
+        colmap_model["points"] = new_points
+        colmap_model["cameras"] = []
+        colmap_model["median"] = [0,0,0]
+        colmap_model["mean"] = [0,0,0]
+
+        # bucket = g_client.get_bucket(f'public_matches')
+        with open(f"colmap_model.json", "w") as f:
+        #     try:
+        #         if sio.connected:
+        #             sio.emit('live_lidar_updates', colmap_model) # This is the key change
+        #             print(f"Successfully emitted 'live_lidar_updates' event: {len(colmap_model['points'])}")
+        #         else:
+        #             print("SocketIO client is not connected. Skipping emission.")
+        #     except Exception as e:
+        #         print(f"Error emitting WebSocket event: {e}")
+            colmap_model = json.dump(colmap_model, f, indent=4)
+
+        # blob = bucket.blob(f"Alexander_Nevsky_Cathedral,_Sofia/sparse/optical_flow/colmap_model.json")
+        # blob.upload_from_filename(f"colmap_model.json")
 
 class Node(object):
     def __init__(self, data=None, axis=None, left=None, right=None):
@@ -271,92 +379,6 @@ def euclidean_cluster_2d(ax, cloud, radius, intensity_threshold, MIN_CLUSTER_SIZ
     
     return clusters, prevs
 
-def display_clusters(ax, clusters, prev, reorder=True): 
-    global COLORS
-    new_points = []
-    colmap_model = {}
-
-    colors = plt.cm.hsv(np.linspace(0, 0.8, len(clusters)))
-    
-    sorted_indices = np.argsort([np.mean(arr) for arr in clusters])
-    clusters = clusters[sorted_indices]
-    prev_centroids = np.array(prev)[sorted_indices]
-
-    rgb_colors = (colors[:, :3] * 255)
-
-    if len(COLORS.keys()) != 0:
-        prev_rgb_colors = COLORS
-    else:
-        prev_rgb_colors = {}
-
-    COLORS = {}
-    
-    # ith key in rgb_colors should correspond to ith prev_centroid color
-
-    for i, _ in enumerate(clusters):
-        # DISPLAY PREVIOUS CENTROID ELLIPSOID
-        data = clusters[i][:, :3]
-            
-        pcd = o3d.geometry.PointCloud()
-        pcd.points = o3d.utility.Vector3dVector(data)
-
-        # Downsample the point cloud
-        downsampled = pcd.voxel_down_sample(voxel_size=0.1)
-
-        # Convert back to numpy
-        data = np.asarray(downsampled.points)
-        
-        if i < len(list(prev_rgb_colors.values())) and tuple(prev_centroids[i][:3]) in prev_rgb_colors:
-            COLORS[tuple(np.mean(clusters[i], axis=0)[:3])] = prev_rgb_colors[tuple(prev_centroids[i][:3])]
-        elif i % 2 == 0:
-            r, g, b = rgb_colors[i]
-            COLORS[tuple(np.mean(clusters[i], axis=0)[:3])] = [255 - r, 255 - g, 255 - b]
-        else:
-            COLORS[tuple(np.mean(clusters[i], axis=0)[:3])] = rgb_colors[i]
-            
-        color = COLORS[tuple(np.mean(clusters[i], axis=0)[:3])]
-        for j, points in enumerate(np.array(data)):
-            y, z, x = points
-            new_points = new_points + [{'id': i, 'x': x, 'y': y, 'z': z, 'r': color[0], 'g': color[1], 'b': color[2]}]
-        y, z, x = np.mean(clusters[i], axis=0)[:3]
-        new_points = new_points + [{'id': i, 'x': x, 'y': y, 'z': z, 'r': max(0, color[0] - 30), 'g': max(0, color[1] - 30), 'b': max(0, color[2] - 30)}]
-    
-    colmap_model["points"] = new_points
-    colmap_model["cameras"] = []
-    colmap_model["median"] = [0,0,0]
-    colmap_model["mean"] = [0,0,0]
-
-    # bucket = g_client.get_bucket(f'public_matches')
-    with open(f"colmap_model.json", "w") as f:
-        try:
-            if sio.connected:
-                sio.emit('live_lidar_updates', colmap_model) # This is the key change
-                print(f"Successfully emitted 'live_lidar_updates' event: {len(colmap_model['points'])}")
-            else:
-                print("SocketIO client is not connected. Skipping emission.")
-        except Exception as e:
-            print(f"Error emitting WebSocket event: {e}")
-        colmap_model = json.dump(colmap_model, f, indent=4)
-
-    # blob = bucket.blob(f"Alexander_Nevsky_Cathedral,_Sofia/sparse/optical_flow/colmap_model.json")
-    # blob.upload_from_filename(f"colmap_model.json")
-
-# pcap_path = '1024x10-dual.pcap'
-# metadata_path = '1024x10-dual.json'
-
-# source = open_source(pcap_path, meta = [metadata_path], index=True)
-# with open(metadata_path, 'r') as f:
-#     info = client.SensorInfo(f.read())
-
-# plt.ion()
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
-
-# C_prev = np.array([])
-
-# ctr = 0
-# source_iter = iter(source)
-
 def main(args=None):
     rclpy.init(args=args)
 
@@ -368,31 +390,4 @@ def main(args=None):
     rclpy.shutdown()
 
 if __name__ == "__main__":
-    
     main()
-
-    # for scan in source_iter:
-    #     ctr += 1
-    #     xyz = client.XYZLut(info)(scan)
-    #     pcd = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(xyz.reshape((-1, 3))))
-
-    #     # Extract point data
-    #     ros_cloud = np.asarray(pcd.points)
-    #     o3d_pcd = o3d.geometry.PointCloud()
-    #     o3d_pcd.points = o3d.utility.Vector3dVector(ros_cloud)
-    #     downsamp = o3d_pcd.voxel_down_sample(0.3)
-    #     cloud = np.asarray(downsamp.points)
-
-    #     # o3d.visualization.draw_geometries([downsamp])
-    #     cloud = np.vstack((cloud[:,0], cloud[:,1], cloud[:,2], cloud[:,2])).T
-
-    #     if cloud.size > 0:
-    #         C, prev = euclidean_cluster(ax = ax, cloud = cloud, radius = 0.3, intensity_threshold = 0.3, MIN_CLUSTER_SIZE = 10, mode = "cartesian", cloud_prev = C_prev)
-    #         # print(f"BEFORE {C.shape}")
-    #         # C_, prev_ = euclidean_cluster_2d(ax = ax, cloud = C, radius = 0.29, intensity_threshold = 0.3, MIN_CLUSTER_SIZE = 5, mode = "cartesian", cloud_prev = C)
-    #         # print(f"AFTER {C_.shape}")
-    #         # update previous clustering with new C
-    #         display_clusters(ax, C, prev)
-            
-    #         # display_clusters(ax, C_, prev_)
-    #         C_prev = C
