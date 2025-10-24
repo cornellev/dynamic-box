@@ -3,7 +3,7 @@ google-cloud
 google-auth
 google-cloud-storage
 Flask==2.3.2
-gunicorn==20.1.0
+gunicorn
 google-cloud-storage
 flask_socketio
 websocket-client
