@@ -26,19 +26,18 @@ import time
 
 # TURN THIS INTO A PUBLISHER THAT PUBLISHES COLMAP_MODEL.JSON
 
-print("???????")
-sio = socketio.Client()
+# sio = socketio.Client()
 
 COLORS = {}
 BACKEND_URL = "http://localhost:5000" # Use localhost for development
 # BACKEND_URL = "https://im-map.onrender.com"
 
 # Connect the SocketIO client
-try:
-    sio.connect(BACKEND_URL, transports=["websocket"])
-except Exception as e:
-    print(f"Failed to connect to WebSocket server: {e}")
-    exit() # Exit if we can't connect
+# try:
+#     sio.connect(BACKEND_URL, transports=["websocket"])
+# except Exception as e:
+#     print(f"Failed to connect to WebSocket server: {e}")
+#     exit() # Exit if we can't connect
 
 
 # credentials = service_account.Credentials.from_service_account_info(CLOUD_KEY)
@@ -187,17 +186,18 @@ class MinimalSubscriber(Node):
             pc_msg.fields = [
                 PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
                 PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
-                PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1)
+                PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+                PointField(name='id', offset=12, datatype=PointField.INT32, count=1)
             ]
 
             pc_msg.is_bigendian = False
-            pc_msg.point_step = 12  # 3 * 4 bytes
+            pc_msg.point_step = 16
             pc_msg.row_step = pc_msg.point_step * data.shape[0]
             pc_msg.is_dense = True
 
             buffer = []
             for p in data:
-                buffer.append(struct.pack('fff', p[0], p[1], p[2]))
+                buffer.append(struct.pack('fffI', p[0], p[1], p[2], i))
             pc_msg.data = b"".join(buffer)
 
             # msg = Obstacle()
@@ -216,14 +216,14 @@ class MinimalSubscriber(Node):
 
         # bucket = g_client.get_bucket(f'public_matches')
         with open(f"colmap_model.json", "w") as f:
-            try:
-                if sio.connected:
-                    sio.emit('live_lidar_updates', colmap_model) # This is the key change
-                    print(f"Successfully emitted 'live_lidar_updates' event: {len(colmap_model['points'])}")
-                else:
-                    print("SocketIO client is not connected. Skipping emission.")
-            except Exception as e:
-                print(f"Error emitting WebSocket event: {e}")
+        #     try:
+        #         if sio.connected:
+        #             sio.emit('live_lidar_updates', colmap_model) # This is the key change
+        #             print(f"Successfully emitted 'live_lidar_updates' event: {len(colmap_model['points'])}")
+        #         else:
+        #             print("SocketIO client is not connected. Skipping emission.")
+        #     except Exception as e:
+        #         print(f"Error emitting WebSocket event: {e}")
             colmap_model = json.dump(colmap_model, f, indent=4)
 
         # blob = bucket.blob(f"Alexander_Nevsky_Cathedral,_Sofia/sparse/optical_flow/colmap_model.json")
@@ -379,23 +379,6 @@ def euclidean_cluster_2d(ax, cloud, radius, intensity_threshold, MIN_CLUSTER_SIZ
     
     return clusters, prevs
 
-
-# pcap_path = '1024x10-dual.pcap'
-# metadata_path = '1024x10-dual.json'
-
-# source = open_source(pcap_path, meta = [metadata_path], index=True)
-# with open(metadata_path, 'r') as f:
-#     info = client.SensorInfo(f.read())
-
-# plt.ion()
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
-
-# C_prev = np.array([])
-
-# ctr = 0
-# source_iter = iter(source)
-
 def main(args=None):
     rclpy.init(args=args)
 
@@ -407,31 +390,4 @@ def main(args=None):
     rclpy.shutdown()
 
 if __name__ == "__main__":
-    
     main()
-
-    # for scan in source_iter:
-    #     ctr += 1
-    #     xyz = client.XYZLut(info)(scan)
-    #     pcd = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(xyz.reshape((-1, 3))))
-
-    #     # Extract point data
-    #     ros_cloud = np.asarray(pcd.points)
-    #     o3d_pcd = o3d.geometry.PointCloud()
-    #     o3d_pcd.points = o3d.utility.Vector3dVector(ros_cloud)
-    #     downsamp = o3d_pcd.voxel_down_sample(0.3)
-    #     cloud = np.asarray(downsamp.points)
-
-    #     # o3d.visualization.draw_geometries([downsamp])
-    #     cloud = np.vstack((cloud[:,0], cloud[:,1], cloud[:,2], cloud[:,2])).T
-
-    #     if cloud.size > 0:
-    #         C, prev = euclidean_cluster(ax = ax, cloud = cloud, radius = 0.3, intensity_threshold = 0.3, MIN_CLUSTER_SIZE = 10, mode = "cartesian", cloud_prev = C_prev)
-    #         # print(f"BEFORE {C.shape}")
-    #         # C_, prev_ = euclidean_cluster_2d(ax = ax, cloud = C, radius = 0.29, intensity_threshold = 0.3, MIN_CLUSTER_SIZE = 5, mode = "cartesian", cloud_prev = C)
-    #         # print(f"AFTER {C_.shape}")
-    #         # update previous clustering with new C
-    #         display_clusters(ax, C, prev)
-            
-    #         # display_clusters(ax, C_, prev_)
-    #         C_prev = C
