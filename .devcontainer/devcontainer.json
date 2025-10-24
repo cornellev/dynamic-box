@@ -1,0 +1,23 @@
+{
+	"name": "Existing Dockerfile",
+	"build": {
+		// Sets the run context to one level up instead of the .devcontainer folder.
+		"context": "..",
+		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+		"dockerfile": "../Dockerfile"
+	},
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/dev/ws/src/dynamic-box,type=bind",
+    "workspaceFolder": "/home/dev/ws/src/dynamic-box",
+	"runArgs": [
+        "--rm",
+        "--network=host",
+        "--ipc=host",
+        "--privileged"
+    ],
+    "containerEnv": {
+        "DISPLAY": "${localEnv:DISPLAY}"
+    },
+    "mounts": [
+        "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached"
+    ]
+}
