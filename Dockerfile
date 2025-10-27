@@ -45,29 +45,24 @@ RUN git clone https://github.com/RoboSense-LiDAR/rslidar_sdk.git /home/${USERNAM
   && apt-get update \
   && apt-get install -y libyaml-cpp-dev libpcap-dev libgl1-mesa-glx libgl1-mesa-dev
 
+RUN cp /home/dev/ws/src/dynamic-box/config.yaml /home/dev/ws/src/rslidar_sdk/config/config.yaml
+
 RUN apt-get install ros-$ROS_DISTRO-rviz2 -y
 
 RUN git clone https://github.com/RoboSense-LiDAR/rslidar_msg.git /home/${USERNAME}/ws/src/rslidar_msg && git clone https://github.com/cornellev/cev_msgs.git src/cev_msgs && source /opt/ros/$ROS_DISTRO/setup.bash
 
-RUN pip install --no-cache-dir \
-  flask_cors \
-  google-cloud \
-  google-auth \
-  google-cloud-storage \
-  Flask==3.0.0 \
-  gunicorn \
-  flask_socketio \
-  websocket-client \
-  pybind11 \
-  matplotlib \
-  open3d[full] --no-deps --trusted-host pypi.org --trusted-host files.pythonhosted.org \
-  dash \
-  plotly
+COPY /my_rosbag_reader/my_rosbag_reader/requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
   
 RUN source /opt/ros/$ROS_DISTRO/setup.bash \
     && cd /home/dev/ws/src \
-    && colcon build --packages-select rslidar_msg rslidar_sdk \
+    && colcon build --packages-select rslidar_msg rslidar_sdk cev_msgs \
+    && source install/setup.bash \
     && cd /home/dev/ws/src/dynamic-box/my_rosbag_reader \
-    && colcon build --packages-select my_rosbag_reader 
+    && colcon build --packages-select my_rosbag_reader \
+    && source install/setup.bash \
+    && cd /home/dev/ws/src/dynamic-box/my_rosbag_reader/my_rosbag_reader \
+    && python3 setup.py build_ext --inplace
 
 CMD ["bash"]
