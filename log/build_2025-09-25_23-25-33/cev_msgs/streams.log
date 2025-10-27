@@ -1,0 +1,234 @@
+[0.006s] Invoking command in '/home/dev/ws/src/dynamic-box/build/cev_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/build/cev_msgs -- -j10 -l10
+[0.037s] [  1%] Built target cev_msgs__cpp
+[0.046s] [ 12%] Built target cev_msgs__rosidl_generator_c
+[0.050s] [35m[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_cpp[0m
+[0.052s] [35m[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_fastrtps_cpp[0m
+[0.055s] [35m[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_introspection_cpp[0m
+[0.058s] [35m[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_c[0m
+[0.059s] [35m[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_introspection_c[0m
+[0.061s] [35m[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_fastrtps_c[0m
+[0.091s] [ 12%] Built target ament_cmake_python_copy_cev_msgs
+[0.099s] [ 23%] Built target cev_msgs__rosidl_typesupport_c
+[0.118s] [ 34%] Built target cev_msgs__rosidl_typesupport_introspection_c
+[0.177s] [ 50%] Built target cev_msgs__rosidl_typesupport_cpp
+[0.180s] [ 57%] Built target cev_msgs__rosidl_typesupport_introspection_cpp
+[0.186s] [ 73%] Built target cev_msgs__rosidl_typesupport_fastrtps_c
+[0.186s] running egg_info
+[0.187s] writing cev_msgs.egg-info/PKG-INFO
+[0.188s] writing dependency_links to cev_msgs.egg-info/dependency_links.txt
+[0.188s] [ 79%] Built target cev_msgs__rosidl_typesupport_fastrtps_cpp
+[0.188s] writing top-level names to cev_msgs.egg-info/top_level.txt
+[0.191s] reading manifest file 'cev_msgs.egg-info/SOURCES.txt'
+[0.192s] writing manifest file 'cev_msgs.egg-info/SOURCES.txt'
+[0.205s] [ 79%] Built target cev_msgs
+[0.206s] [ 79%] Built target ament_cmake_python_build_cev_msgs_egg
+[0.215s] [ 80%] Built target cev_msgs__py
+[0.221s] [35m[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_generator_py[0m
+[0.272s] [ 90%] Built target cev_msgs__rosidl_generator_py
+[0.278s] [35m[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_fastrtps_c__pyext[0m
+[0.279s] [35m[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_introspection_c__pyext[0m
+[0.279s] [35m[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_c__pyext[0m
+[0.320s] [ 93%] Built target cev_msgs__rosidl_typesupport_fastrtps_c__pyext
+[0.322s] [100%] Built target cev_msgs__rosidl_typesupport_c__pyext
+[0.322s] [100%] Built target cev_msgs__rosidl_typesupport_introspection_c__pyext
+[0.338s] Invoked command in '/home/dev/ws/src/dynamic-box/build/cev_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/build/cev_msgs -- -j10 -l10
+[0.344s] Invoking command in '/home/dev/ws/src/dynamic-box/build/cev_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dev/ws/src/dynamic-box/build/cev_msgs
+[0.347s] -- Install configuration: ""
+[0.347s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/ament_index/resource_index/rosidl_interfaces/cev_msgs
+[0.347s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs
+[0.348s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg
+[0.348s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/waypoint.h
+[0.349s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/rosidl_generator_c__visibility_control.h
+[0.349s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/sensor_collect.h
+[0.349s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/trajectory.h
+[0.349s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail
+[0.350s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__struct.h
+[0.350s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__struct.h
+[0.351s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__type_support.h
+[0.351s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__type_support.h
+[0.352s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__functions.c
+[0.352s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__functions.c
+[0.353s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__functions.h
+[0.353s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__functions.c
+[0.353s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__functions.c
+[0.354s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__struct.h
+[0.354s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__type_support.h
+[0.354s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__struct.h
+[0.355s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__functions.h
+[0.355s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__functions.c
+[0.356s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__type_support.h
+[0.356s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__functions.h
+[0.356s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__type_support.h
+[0.356s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__functions.h
+[0.357s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__functions.h
+[0.357s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__struct.h
+[0.358s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/obstacles.h
+[0.358s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/obstacle.h
+[0.358s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/library_path.sh
+[0.359s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/library_path.dsv
+[0.360s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_generator_c.so
+[0.360s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs
+[0.361s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg
+[0.361s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail
+[0.362s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__rosidl_typesupport_fastrtps_c.h
+[0.362s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__rosidl_typesupport_fastrtps_c.h
+[0.362s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__rosidl_typesupport_fastrtps_c.h
+[0.363s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__rosidl_typesupport_fastrtps_c.h
+[0.363s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__rosidl_typesupport_fastrtps_c.h
+[0.364s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[0.364s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_fastrtps_c.so
+[0.365s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs
+[0.365s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg
+[0.365s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail
+[0.366s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__type_support.c
+[0.366s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__rosidl_typesupport_introspection_c.h
+[0.367s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__type_support.c
+[0.367s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__rosidl_typesupport_introspection_c.h
+[0.368s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__type_support.c
+[0.368s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__type_support.c
+[0.368s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__rosidl_typesupport_introspection_c.h
+[0.368s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__type_support.c
+[0.368s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__rosidl_typesupport_introspection_c.h
+[0.369s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__rosidl_typesupport_introspection_c.h
+[0.369s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[0.370s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_introspection_c.so
+[0.371s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_c.so
+[0.371s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs
+[0.372s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg
+[0.372s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/trajectory.hpp
+[0.373s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/waypoint.hpp
+[0.373s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/sensor_collect.hpp
+[0.373s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/obstacles.hpp
+[0.374s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail
+[0.374s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__traits.hpp
+[0.374s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__type_support.hpp
+[0.375s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__builder.hpp
+[0.375s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__builder.hpp
+[0.375s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__traits.hpp
+[0.376s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__struct.hpp
+[0.376s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__type_support.hpp
+[0.376s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__builder.hpp
+[0.377s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__type_support.hpp
+[0.377s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__struct.hpp
+[0.377s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__traits.hpp
+[0.378s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__type_support.hpp
+[0.378s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__builder.hpp
+[0.378s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__traits.hpp
+[0.378s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__struct.hpp
+[0.379s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__struct.hpp
+[0.379s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__struct.hpp
+[0.380s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__traits.hpp
+[0.380s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__builder.hpp
+[0.381s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__type_support.hpp
+[0.381s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[0.381s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/obstacle.hpp
+[0.381s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs
+[0.382s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg
+[0.382s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[0.382s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail
+[0.383s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__rosidl_typesupport_fastrtps_cpp.hpp
+[0.383s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__rosidl_typesupport_fastrtps_cpp.hpp
+[0.384s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__rosidl_typesupport_fastrtps_cpp.hpp
+[0.384s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/dds_fastrtps
+[0.385s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__rosidl_typesupport_fastrtps_cpp.hpp
+[0.385s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__rosidl_typesupport_fastrtps_cpp.hpp
+[0.386s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_fastrtps_cpp.so
+[0.386s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs
+[0.387s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg
+[0.387s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail
+[0.388s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__type_support.cpp
+[0.388s] -- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__rosidl_typesupport_introspection_cpp.hpp
+[0.390s] -- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__rosidl_typesupport_introspection_cpp.hpp
+[0.392s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__rosidl_typesupport_introspection_cpp.hpp
+[0.392s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__type_support.cpp
+[0.393s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__type_support.cpp
+[0.393s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__type_support.cpp
+[0.393s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__type_support.cpp
+[0.393s] -- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__rosidl_typesupport_introspection_cpp.hpp
+[0.395s] -- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__rosidl_typesupport_introspection_cpp.hpp
+[0.397s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_introspection_cpp.so
+[0.397s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_cpp.so
+[0.398s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/pythonpath.sh
+[0.398s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/pythonpath.dsv
+[0.398s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs-0.0.0-py3.10.egg-info
+[0.399s] -- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs-0.0.0-py3.10.egg-info/PKG-INFO
+[0.400s] -- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs-0.0.0-py3.10.egg-info/SOURCES.txt
+[0.401s] -- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs-0.0.0-py3.10.egg-info/top_level.txt
+[0.403s] -- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs-0.0.0-py3.10.egg-info/dependency_links.txt
+[0.404s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs
+[0.404s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[0.405s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/_cev_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[0.405s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[0.405s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg
+[0.406s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_trajectory.py
+[0.406s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_trajectory_s.c
+[0.406s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_waypoint.py
+[0.406s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/__init__.py
+[0.406s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_waypoint_s.c
+[0.406s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_sensor_collect.py
+[0.407s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_obstacle.py
+[0.407s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_sensor_collect_s.c
+[0.407s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_obstacle_s.c
+[0.407s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_obstacles_s.c
+[0.408s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_obstacles.py
+[0.408s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/libcev_msgs__rosidl_generator_py.so
+[0.408s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[0.408s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/__init__.py
+[0.409s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/_cev_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[0.409s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/_cev_msgs_s.ep.rosidl_typesupport_c.c
+[0.429s] Listing '/home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs'...
+[0.429s] Listing '/home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg'...
+[0.429s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[0.430s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[0.430s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[0.431s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_generator_py.so
+[0.431s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Waypoint.idl
+[0.431s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/SensorCollect.idl
+[0.432s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Trajectory.idl
+[0.432s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Obstacle.idl
+[0.432s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Obstacles.idl
+[0.433s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Waypoint.msg
+[0.433s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/SensorCollect.msg
+[0.433s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Trajectory.msg
+[0.434s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Obstacle.msg
+[0.434s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Obstacles.msg
+[0.434s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/ament_index/resource_index/package_run_dependencies/cev_msgs
+[0.435s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/ament_index/resource_index/parent_prefix_path/cev_msgs
+[0.435s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/ament_prefix_path.sh
+[0.435s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/ament_prefix_path.dsv
+[0.436s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/path.sh
+[0.436s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/path.dsv
+[0.436s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/local_setup.bash
+[0.437s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/local_setup.sh
+[0.437s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/local_setup.zsh
+[0.437s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/local_setup.dsv
+[0.438s] -- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/package.dsv
+[0.439s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/ament_index/resource_index/packages/cev_msgs
+[0.440s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_generator_cExport.cmake
+[0.441s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_generator_cExport-noconfig.cmake
+[0.441s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[0.442s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[0.442s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_introspection_cExport.cmake
+[0.443s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[0.443s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_cExport.cmake
+[0.443s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[0.444s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_generator_cppExport.cmake
+[0.444s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[0.445s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[0.445s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[0.445s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[0.446s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_cppExport.cmake
+[0.446s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[0.446s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_generator_pyExport.cmake
+[0.447s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_generator_pyExport-noconfig.cmake
+[0.447s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/rosidl_cmake-extras.cmake
+[0.447s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.448s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.448s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[0.448s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[0.449s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[0.449s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[0.449s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgsConfig.cmake
+[0.450s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgsConfig-version.cmake
+[0.450s] -- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/package.xml
+[0.453s] Invoked command in '/home/dev/ws/src/dynamic-box/build/cev_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/dev/ws/src/dynamic-box/build/cev_msgs

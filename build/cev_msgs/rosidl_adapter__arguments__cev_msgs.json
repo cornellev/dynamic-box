@@ -1,0 +1,10 @@
+{
+  "package_name": "cev_msgs",
+  "non_idl_tuples": [
+    "/home/dev/ws/src/dynamic-box/cev_msgs:msg/Waypoint.msg",
+    "/home/dev/ws/src/dynamic-box/cev_msgs:msg/SensorCollect.msg",
+    "/home/dev/ws/src/dynamic-box/cev_msgs:msg/Trajectory.msg",
+    "/home/dev/ws/src/dynamic-box/cev_msgs:msg/Obstacle.msg",
+    "/home/dev/ws/src/dynamic-box/cev_msgs:msg/Obstacles.msg"
+  ]
+}

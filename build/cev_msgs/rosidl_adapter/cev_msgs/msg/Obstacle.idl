@@ -1,0 +1,25 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from cev_msgs/msg/Obstacle.msg
+// generated code does not contain a copyright notice
+
+
+module cev_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "Obstacle.msg" "\n"
+      "" "\n"
+      "float64 : x" "\n"
+      "float64 : y" "\n"
+      "float64 : z" "\n"
+      "float64 : max_radius")
+    struct Obstacle {
+      double x;
+
+      double y;
+
+      double z;
+
+      double max_radius;
+    };
+  };
+};

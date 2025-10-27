@@ -1,0 +1,23 @@
+[project]
+name = "dynamic-box"
+
+[build-system]
+requires = ["setuptools","wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["linux-64","linux-aarch64"]
+
+[tool.pixi.dependencies]
+flask_cors = "*"
+google-auth = "*"
+Flask = "*"
+gunicorn = "*"
+google-cloud-storage = "*"
+flask-socketio = "*"
+websocket-client = "*"
+pybind11 = "*"
+matplotlib = "*"
+open3d = "*"
+plotly = "*"
