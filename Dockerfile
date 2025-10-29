@@ -11,6 +11,11 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   python3-colcon-common-extensions python3-rosdep python3-vcstool \
   && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update \
+  && apt-get install -y git openssh-client \
+  && apt-get install libopencv-dev \
+  && apt-get install ros-humble-pcl-ros
+
 # ---- Non-root dev user ----
 ARG USERNAME=dev
 ARG UID=1000
@@ -49,7 +54,9 @@ RUN cp /home/dev/ws/src/dynamic-box/config.yaml /home/dev/ws/src/rslidar_sdk/con
 
 RUN apt-get install ros-$ROS_DISTRO-rviz2 -y
 
-RUN git clone https://github.com/RoboSense-LiDAR/rslidar_msg.git /home/${USERNAME}/ws/src/rslidar_msg && git clone https://github.com/cornellev/cev_msgs.git src/cev_msgs && source /opt/ros/$ROS_DISTRO/setup.bash
+RUN git clone https://github.com/RoboSense-LiDAR/rslidar_msg.git /home/${USERNAME}/ws/src/rslidar_msg \
+  && git clone https://github.com/cornellev/cev_msgs.git src/cev_msgs \
+  && source /opt/ros/$ROS_DISTRO/setup.bash 
 
 COPY /my_rosbag_reader/my_rosbag_reader/requirements.txt .
 
@@ -57,7 +64,7 @@ RUN pip install --no-cache-dir -r requirements.txt
   
 RUN source /opt/ros/$ROS_DISTRO/setup.bash \
     && cd /home/dev/ws/src \
-    && colcon build --packages-select rslidar_msg rslidar_sdk cev_msgs \
+    && colcon build --packages-select rslidar_msg rslidar_sdk cev_msgs obstacles \
     && source install/setup.bash \
     && cd /home/dev/ws/src/dynamic-box/my_rosbag_reader \
     && colcon build --packages-select my_rosbag_reader \
