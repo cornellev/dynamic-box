@@ -1,12 +1,13 @@
 common:
-  msg_source: 3                         # 0: not use Lidar
+  msg_source: 1                         # 0: not use Lidar
                                         # 1: packet message comes from online Lidar
                                         # 2: packet message comes from ROS or ROS2
                                         # 3: packet message comes from Pcap file
-  send_packet_ros: false                # true: Send packets through ROS or ROS2(Used to record packet)
+  send_packet_ros: true                # true: Send packets through ROS or ROS2(Used to record packet)
   send_point_cloud_ros: true            # true: Send point cloud through ROS or ROS2
 lidar:
   - driver:
+      host_address: 192.168.1.102
       lidar_type: RSHELIOS             #  LiDAR type - RS16, RS32, RSBP, RSAIRY, RSHELIOS, RSHELIOS_16P, RS128, RS80, RS48, RSP128, RSP80, RSP48,
                                    #               RSM1, RSM1_JUMBO, RSM2, RSM3, RSE1, RSMX.
 
