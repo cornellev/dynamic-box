@@ -114,6 +114,32 @@ cd /my_rosbag_reader
 python3 setup.py build_ext --inplace
 ```
 
+### Getting Online LiDAR Inputs via Ethernet
+Check that your device is recieving data from the LiDAR by running ```ping 192.168.1.100```. 
+
+You should be seeing continuous outputs of the format:
+
+```
+... bytes from 192.168.1.100: icmp_seq=... ttl=... time=... ms
+```
+
+If there are no outputs in pinging, check and link ethernet connection via:
+
+```
+sudo ip link set enp4s0 up
+sudo ip addr ad 192.168.1.100/24 dev enp4s0
+```
+
+OR
+
+```
+sudo ip link set enP8p1s0 up
+sudo ip addr ad 192.168.1.100/24 dev enP8p1s0
+```
+
+Pray and hope that ```ping 192.168.1.100``` outputs something.
+
+
 ## Euclidean Cluster Extraction Important links:
 [Fast Euclidean Cluster Extraction Using GPUs](https://www.jstage.jst.go.jp/article/jrobomech/32/3/32_548/_pdf)
 
