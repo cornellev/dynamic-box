@@ -1,0 +1,4 @@
+Invoking command in '/home/dev/ws/src/dynamic-box/build/cev_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dev/ws/src/dynamic-box/cev_msgs -DCMAKE_INSTALL_PREFIX=/home/dev/ws/src/dynamic-box/install/cev_msgs
+Invoked command in '/home/dev/ws/src/dynamic-box/build/cev_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/dev/ws/src/dynamic-box/cev_msgs -DCMAKE_INSTALL_PREFIX=/home/dev/ws/src/dynamic-box/install/cev_msgs
+Invoking command in '/home/dev/ws/src/dynamic-box/build/cev_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/build/cev_msgs -- -j10 -l10
+Invoked command in '/home/dev/ws/src/dynamic-box/build/cev_msgs' returned '-2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/build/cev_msgs -- -j10 -l10

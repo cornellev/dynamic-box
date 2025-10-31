@@ -1,0 +1,247 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found std_msgs: 4.9.0 (/opt/ros/humble/share/std_msgs/cmake)
+-- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+-- Found PythonLibs: /usr/lib/aarch64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3
+-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+-- Using PYTHON_LIBRARIES: /usr/lib/aarch64-linux-gnu/libpython3.10.so
+-- Found PythonExtra: .so  
+-- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+-- Added test 'lint_cmake' to check CMake code style
+-- Added test 'xmllint' to check XML markup files
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/dev/ws/src/dynamic-box/build/cev_msgs
+[  1%] [34m[1mGenerating C code for ROS interfaces[0m
+[  3%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[  3%] Built target ament_cmake_python_copy_cev_msgs
+running egg_info
+creating cev_msgs.egg-info
+writing cev_msgs.egg-info/PKG-INFO
+writing dependency_links to cev_msgs.egg-info/dependency_links.txt
+writing top-level names to cev_msgs.egg-info/top_level.txt
+writing manifest file 'cev_msgs.egg-info/SOURCES.txt'
+reading manifest file 'cev_msgs.egg-info/SOURCES.txt'
+writing manifest file 'cev_msgs.egg-info/SOURCES.txt'
+[  3%] Built target ament_cmake_python_build_cev_msgs_egg
+[  3%] Built target cev_msgs__cpp
+[  7%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[  7%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[  7%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[ 15%] [32mBuilding C object CMakeFiles/cev_msgs__rosidl_generator_c.dir/rosidl_generator_c/cev_msgs/msg/detail/waypoint__functions.c.o[0m
+[ 15%] [32mBuilding C object CMakeFiles/cev_msgs__rosidl_generator_c.dir/rosidl_generator_c/cev_msgs/msg/detail/obstacles__functions.c.o[0m
+[ 15%] [32mBuilding C object CMakeFiles/cev_msgs__rosidl_generator_c.dir/rosidl_generator_c/cev_msgs/msg/detail/sensor_collect__functions.c.o[0m
+[ 15%] [32mBuilding C object CMakeFiles/cev_msgs__rosidl_generator_c.dir/rosidl_generator_c/cev_msgs/msg/detail/trajectory__functions.c.o[0m
+[ 15%] [32mBuilding C object CMakeFiles/cev_msgs__rosidl_generator_c.dir/rosidl_generator_c/cev_msgs/msg/detail/obstacle__functions.c.o[0m
+[ 17%] [32m[1mLinking C shared library libcev_msgs__rosidl_generator_c.so[0m
+[ 17%] Built target cev_msgs__rosidl_generator_c
+[ 22%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[ 22%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[ 22%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[ 26%] [32mBuilding CXX object CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/waypoint__type_support.cpp.o[0m
+[ 26%] [32mBuilding CXX object CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/trajectory__type_support.cpp.o[0m
+[ 30%] [32mBuilding CXX object CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/sensor_collect__type_support.cpp.o[0m
+[ 30%] [32mBuilding CXX object CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/obstacles__type_support.cpp.o[0m
+[ 30%] [32mBuilding CXX object CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/obstacle__type_support.cpp.o[0m
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/opt/ros/humble/lib/rosidl_typesupport_c/rosidl_typesupport_c", line 28, in <module>
+  File "/opt/ros/humble/lib/rosidl_typesupport_fastrtps_c/rosidl_typesupport_fastrtps_c", line 33, in <module>
+Traceback (most recent call last):
+  File "/opt/ros/humble/lib/rosidl_typesupport_fastrtps_cpp/rosidl_typesupport_fastrtps_cpp", line 23, in <module>
+    sys.exit(main())
+    sys.exit(main())
+    sys.exit(main())
+  File "/opt/ros/humble/lib/rosidl_typesupport_fastrtps_c/rosidl_typesupport_fastrtps_c", line 29, in main
+  File "/opt/ros/humble/lib/rosidl_typesupport_c/rosidl_typesupport_c", line 24, in main
+  File "/opt/ros/humble/lib/rosidl_typesupport_fastrtps_cpp/rosidl_typesupport_fastrtps_cpp", line 19, in main
+    generate_typesupport_fastrtps_c(args.generator_arguments_file)
+    generate_c(args.generator_arguments_file, args.typesupports)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_typesupport_fastrtps_c/__init__.py", line 24, in generate_typesupport_fastrtps_c
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_typesupport_c/__init__.py", line 28, in generate_c
+    generate_cpp(args.generator_arguments_file)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_typesupport_fastrtps_cpp/__init__.py", line 24, in generate_cpp
+    return generate_files(generator_arguments_file, mapping)
+    return generate_files(
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 74, in generate_files
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 74, in generate_files
+    return generate_files(generator_arguments_file, mapping)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 87, in generate_files
+    idl_file = parse_idl_file(locator)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 64, in parse_idl_file
+    expand_template(
+    content = parse_idl_string(string, png_file=png_file)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 149, in expand_template
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 72, in parse_idl_string
+    tree = get_ast_from_idl_string(idl_string)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 89, in get_ast_from_idl_string
+    interpreter.string(template_content, template_path, locals=data)
+  File "/usr/lib/python3/dist-packages/em.py", line 2391, in string
+    return _parser.parse(idl_string)
+  File "/usr/lib/python3/dist-packages/lark/lark.py", line 619, in parse
+gmake[2]: *** Deleting file 'rosidl_typesupport_introspection_cpp/cev_msgs/msg/detail/sensor_collect__type_support.cpp'
+Traceback (most recent call last):
+  File "/opt/ros/humble/lib/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c", line 31, in <module>
+    sys.exit(main())
+  File "/opt/ros/humble/lib/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c", line 27, in main
+    generate_c(args.generator_arguments_file)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_typesupport_introspection_c/__init__.py", line 31, in generate_c
+    return generate_files(generator_arguments_file, mapping)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 87, in generate_files
+    expand_template(
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 149, in expand_template
+gmake[2]: *** Deleting file 'rosidl_typesupport_fastrtps_c/cev_msgs/msg/detail/waypoint__rosidl_typesupport_fastrtps_c.h'
+    interpreter.string(template_content, template_path, locals=data)
+  File "/usr/lib/python3/dist-packages/em.py", line 2391, in string
+gmake[2]: *** Deleting file 'rosidl_typesupport_fastrtps_cpp/cev_msgs/msg/detail/dds_fastrtps/waypoint__type_support.cpp'
+gmake[2]: *** Deleting file 'rosidl_typesupport_c/cev_msgs/msg/waypoint__type_support.cpp'
+gmake[2]: *** Deleting file 'rosidl_typesupport_introspection_c/cev_msgs/msg/detail/waypoint__rosidl_typesupport_introspection_c.h'
+gmake[1]: *** [CMakeFiles/Makefile2:368: CMakeFiles/cev_msgs__rosidl_typesupport_introspection_cpp.dir/all] Interrupt
+    return self.parser.parse(text, start=start, on_error=on_error)
+  File "/usr/lib/python3/dist-packages/lark/parser_frontends.py", line 99, in parse
+    self.safe(scanner, True, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 2401, in safe
+    idl_file = parse_idl_file(locator)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 64, in parse_idl_file
+    content = parse_idl_string(string, png_file=png_file)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 72, in parse_idl_string
+    tree = get_ast_from_idl_string(idl_string)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 89, in get_ast_from_idl_string
+gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/build.make:134: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/waypoint__type_support.cpp.o] Interrupt
+gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/build.make:162: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/trajectory__type_support.cpp.o] Interrupt
+gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/build.make:148: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/sensor_collect__type_support.cpp.o] Interrupt
+    return _parser.parse(idl_string)
+gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/build.make:190: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/obstacles__type_support.cpp.o] Interrupt
+  File "/usr/lib/python3/dist-packages/lark/lark.py", line 619, in parse
+    return self.parser.parse(stream, chosen_start, **kw)
+gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/build.make:176: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/obstacle__type_support.cpp.o] Interrupt
+  File "/usr/lib/python3/dist-packages/lark/parsers/earley.py", line 266, in parse
+    self.parse(scanner, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 2421, in parse
+    self.safe(scanner, True, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 2401, in safe
+    return self.parser.parse(text, start=start, on_error=on_error)
+  File "/usr/lib/python3/dist-packages/lark/parser_frontends.py", line 99, in parse
+    return self.parser.parse(stream, chosen_start, **kw)
+  File "/usr/lib/python3/dist-packages/lark/parsers/earley.py", line 266, in parse
+    self.parse(scanner, locals)
+    token.run(self, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 2421, in parse
+  File "/usr/lib/python3/dist-packages/em.py", line 1425, in run
+gmake[1]: *** [CMakeFiles/Makefile2:395: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/all] Interrupt
+    interpreter.execute(self.code, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 2596, in execute
+    to_scan = self._parse(lexer, columns, to_scan, start_symbol)
+    to_scan = self._parse(lexer, columns, to_scan, start_symbol)
+  File "/usr/lib/python3/dist-packages/lark/parsers/xearley.py", line 153, in _parse
+  File "/usr/lib/python3/dist-packages/lark/parsers/xearley.py", line 146, in _parse
+    token.run(self, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 1547, in run
+    self.subrun(info[0][1], interpreter, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 1631, in subrun
+    _exec(statements, self.globals, locals)
+  File "<string>", line 10, in <module>
+    to_scan = scan(i, to_scan)
+  File "/usr/lib/python3/dist-packages/lark/parsers/xearley.py", line 76, in scan
+    i += 1
+KeyboardInterrupt
+    token.run(interpreter, locals)
+    m = match(x, stream, i)
+  File "/usr/lib/python3/dist-packages/lark/parser_frontends.py", line 179, in match
+  File "/usr/lib/python3/dist-packages/em.py", line 1425, in run
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 198, in _expand_template
+    return self.regexps[term.name].match(text, index)
+KeyboardInterrupt
+    interpreter.string(content, str(template_path), kwargs)
+  File "/usr/lib/python3/dist-packages/em.py", line 2391, in string
+    interpreter.execute(self.code, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 2596, in execute
+    self.safe(scanner, True, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 2401, in safe
+    _exec(statements, self.globals, locals)
+  File "<string>", line 2, in <module>
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 198, in _expand_template
+    interpreter.string(content, str(template_path), kwargs)
+  File "/usr/lib/python3/dist-packages/em.py", line 2391, in string
+    self.parse(scanner, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 2417, in parse
+    self.safe(scanner, True, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 2401, in safe
+    token = scanner.one()
+  File "/usr/lib/python3/dist-packages/em.py", line 1984, in one
+    self.parse(scanner, locals)
+  File "/usr/lib/python3/dist-packages/em.py", line 2417, in parse
+    token.scan(self)
+  File "/usr/lib/python3/dist-packages/em.py", line 1311, in scan
+    q = scanner.next('$', 0, z, True)
+  File "/usr/lib/python3/dist-packages/em.py", line 1818, in next
+    token = scanner.one()
+  File "/usr/lib/python3/dist-packages/em.py", line 1984, in one
+    newQuote = self.check(i, quote)
+  File "/usr/lib/python3/dist-packages/em.py", line 1762, in check
+    token.scan(self)
+  File "/usr/lib/python3/dist-packages/em.py", line 1468, in scan
+    def check(self, i, archetype=None):
+KeyboardInterrupt
+    self.subscan(scanner, self.type)
+  File "/usr/lib/python3/dist-packages/em.py", line 1483, in subscan
+    token = scanner.one()
+  File "/usr/lib/python3/dist-packages/em.py", line 1984, in one
+    token.scan(self)
+  File "/usr/lib/python3/dist-packages/em.py", line 1468, in scan
+    self.subscan(scanner, self.type)
+  File "/usr/lib/python3/dist-packages/em.py", line 1483, in subscan
+    token = scanner.one()
+  File "/usr/lib/python3/dist-packages/em.py", line 1984, in one
+    token.scan(self)
+  File "/usr/lib/python3/dist-packages/em.py", line 1456, in scan
+    i = scanner.complex('[', ']', 0)
+  File "/usr/lib/python3/dist-packages/em.py", line 1893, in complex
+    newQuote = self.check(i, quote)
+  File "/usr/lib/python3/dist-packages/em.py", line 1762, in check
+    def check(self, i, archetype=None):
+KeyboardInterrupt
+Exception ignored in: <function Interpreter.__del__ at 0xffffa8ad6f80>
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/em.py", line 2094, in __del__
+  File "/usr/lib/python3/dist-packages/em.py", line 2157, in shutdown
+  File "/usr/lib/python3/dist-packages/em.py", line 2647, in finalize
+  File "/usr/lib/python3/dist-packages/em.py", line 2200, in push
+AttributeError: '_io.TextIOWrapper' object has no attribute 'push'
+Exception ignored in: <function Interpreter.__del__ at 0xffff94f96ef0>
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/em.py", line 2094, in __del__
+  File "/usr/lib/python3/dist-packages/em.py", line 2157, in shutdown
+  File "/usr/lib/python3/dist-packages/em.py", line 2647, in finalize
+  File "/usr/lib/python3/dist-packages/em.py", line 2200, in push
+AttributeError: '_io.TextIOWrapper' object has no attribute 'push'
+gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_fastrtps_c.dir/build.make:118: rosidl_typesupport_fastrtps_c/cev_msgs/msg/detail/waypoint__rosidl_typesupport_fastrtps_c.h] Interrupt
+gmake[1]: *** [CMakeFiles/Makefile2:238: CMakeFiles/cev_msgs__rosidl_typesupport_fastrtps_c.dir/all] Interrupt
+gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_fastrtps_cpp.dir/build.make:118: rosidl_typesupport_fastrtps_cpp/cev_msgs/msg/detail/dds_fastrtps/waypoint__type_support.cpp] Interrupt
+gmake[1]: *** [CMakeFiles/Makefile2:342: CMakeFiles/cev_msgs__rosidl_typesupport_fastrtps_cpp.dir/all] Interrupt
+gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_introspection_c.dir/build.make:118: rosidl_typesupport_introspection_c/cev_msgs/msg/detail/waypoint__rosidl_typesupport_introspection_c.h] Interrupt
+gmake[1]: *** [CMakeFiles/Makefile2:264: CMakeFiles/cev_msgs__rosidl_typesupport_introspection_c.dir/all] Interrupt
+gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_c.dir/build.make:116: rosidl_typesupport_c/cev_msgs/msg/waypoint__type_support.cpp] Interrupt
+gmake[1]: *** [CMakeFiles/Makefile2:290: CMakeFiles/cev_msgs__rosidl_typesupport_c.dir/all] Interrupt
+gmake: *** [Makefile:146: all] Interrupt

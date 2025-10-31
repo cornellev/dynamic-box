@@ -4,7 +4,9 @@ google-auth
 google-cloud-storage
 Flask==2.3.2
 gunicorn
-google-cloud-storage
 flask_socketio
 websocket-client
 pybind11
+open3d[full]
+numpy<2.0
+

@@ -1,0 +1,246 @@
+[0.000000] (-) TimerEvent: {}
+[0.000253] (cev_msgs) JobQueued: {'identifier': 'cev_msgs', 'dependencies': OrderedDict()}
+[0.000332] (cev_msgs) JobStarted: {'identifier': 'cev_msgs'}
+[0.003774] (cev_msgs) JobProgress: {'identifier': 'cev_msgs', 'progress': 'cmake'}
+[0.004721] (cev_msgs) JobProgress: {'identifier': 'cev_msgs', 'progress': 'build'}
+[0.005125] (cev_msgs) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/dev/ws/src/dynamic-box/build/cev_msgs', '--', '-j10', '-l10'], 'cwd': '/home/dev/ws/src/dynamic-box/build/cev_msgs', 'env': OrderedDict([('HOSTNAME', 'ba8ab7eab3d1'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/dev'), ('OLDPWD', '/home/dev/ws/src'), ('WS_DIR', '/home/dev/ws'), ('ROS_PYTHON_VERSION', '3'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('LANG', 'C.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('DEBIAN_FRONTEND', 'noninteractive'), ('PWD', '/home/dev/ws/src/dynamic-box/build/cev_msgs'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('TZ', 'Etc/UTC'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.037702] (cev_msgs) StdoutLine: {'line': b'[  1%] Built target cev_msgs__cpp\n'}
+[0.046835] (cev_msgs) StdoutLine: {'line': b'[ 12%] Built target cev_msgs__rosidl_generator_c\n'}
+[0.051358] (cev_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_cpp\x1b[0m\n'}
+[0.052143] (cev_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_fastrtps_cpp\x1b[0m\n'}
+[0.056094] (cev_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_introspection_cpp\x1b[0m\n'}
+[0.058546] (cev_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_c\x1b[0m\n'}
+[0.059861] (cev_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_introspection_c\x1b[0m\n'}
+[0.061255] (cev_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_fastrtps_c\x1b[0m\n'}
+[0.092022] (cev_msgs) StdoutLine: {'line': b'[ 12%] Built target ament_cmake_python_copy_cev_msgs\n'}
+[0.099125] (-) TimerEvent: {}
+[0.099969] (cev_msgs) StdoutLine: {'line': b'[ 23%] Built target cev_msgs__rosidl_typesupport_c\n'}
+[0.118693] (cev_msgs) StdoutLine: {'line': b'[ 34%] Built target cev_msgs__rosidl_typesupport_introspection_c\n'}
+[0.178256] (cev_msgs) StdoutLine: {'line': b'[ 50%] Built target cev_msgs__rosidl_typesupport_cpp\n'}
+[0.180540] (cev_msgs) StdoutLine: {'line': b'[ 57%] Built target cev_msgs__rosidl_typesupport_introspection_cpp\n'}
+[0.186532] (cev_msgs) StdoutLine: {'line': b'[ 73%] Built target cev_msgs__rosidl_typesupport_fastrtps_c\n'}
+[0.187403] (cev_msgs) StdoutLine: {'line': b'running egg_info\n'}
+[0.187876] (cev_msgs) StdoutLine: {'line': b'writing cev_msgs.egg-info/PKG-INFO\n'}
+[0.188551] (cev_msgs) StdoutLine: {'line': b'writing dependency_links to cev_msgs.egg-info/dependency_links.txt\n'}
+[0.189337] (cev_msgs) StdoutLine: {'line': b'[ 79%] Built target cev_msgs__rosidl_typesupport_fastrtps_cpp\n'}
+[0.189751] (cev_msgs) StdoutLine: {'line': b'writing top-level names to cev_msgs.egg-info/top_level.txt\n'}
+[0.192413] (cev_msgs) StdoutLine: {'line': b"reading manifest file 'cev_msgs.egg-info/SOURCES.txt'\n"}
+[0.193095] (cev_msgs) StdoutLine: {'line': b"writing manifest file 'cev_msgs.egg-info/SOURCES.txt'\n"}
+[0.200300] (-) TimerEvent: {}
+[0.205856] (cev_msgs) StdoutLine: {'line': b'[ 79%] Built target cev_msgs\n'}
+[0.207008] (cev_msgs) StdoutLine: {'line': b'[ 79%] Built target ament_cmake_python_build_cev_msgs_egg\n'}
+[0.216104] (cev_msgs) StdoutLine: {'line': b'[ 80%] Built target cev_msgs__py\n'}
+[0.222171] (cev_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_generator_py\x1b[0m\n'}
+[0.273133] (cev_msgs) StdoutLine: {'line': b'[ 90%] Built target cev_msgs__rosidl_generator_py\n'}
+[0.279463] (cev_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_fastrtps_c__pyext\x1b[0m\n'}
+[0.279919] (cev_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_introspection_c__pyext\x1b[0m\n'}
+[0.280458] (cev_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cev_msgs__rosidl_typesupport_c__pyext\x1b[0m\n'}
+[0.301117] (-) TimerEvent: {}
+[0.321470] (cev_msgs) StdoutLine: {'line': b'[ 93%] Built target cev_msgs__rosidl_typesupport_fastrtps_c__pyext\n'}
+[0.323342] (cev_msgs) StdoutLine: {'line': b'[100%] Built target cev_msgs__rosidl_typesupport_c__pyext\n'}
+[0.323794] (cev_msgs) StdoutLine: {'line': b'[100%] Built target cev_msgs__rosidl_typesupport_introspection_c__pyext\n'}
+[0.339153] (cev_msgs) CommandEnded: {'returncode': 0}
+[0.340908] (cev_msgs) JobProgress: {'identifier': 'cev_msgs', 'progress': 'install'}
+[0.344698] (cev_msgs) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/dev/ws/src/dynamic-box/build/cev_msgs'], 'cwd': '/home/dev/ws/src/dynamic-box/build/cev_msgs', 'env': OrderedDict([('HOSTNAME', 'ba8ab7eab3d1'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/dev'), ('OLDPWD', '/home/dev/ws/src'), ('WS_DIR', '/home/dev/ws'), ('ROS_PYTHON_VERSION', '3'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('LANG', 'C.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('DEBIAN_FRONTEND', 'noninteractive'), ('PWD', '/home/dev/ws/src/dynamic-box/build/cev_msgs'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('TZ', 'Etc/UTC'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.348121] (cev_msgs) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[0.348473] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/ament_index/resource_index/rosidl_interfaces/cev_msgs\n'}
+[0.348756] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs\n'}
+[0.349169] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg\n'}
+[0.349711] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/waypoint.h\n'}
+[0.349972] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/rosidl_generator_c__visibility_control.h\n'}
+[0.350233] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/sensor_collect.h\n'}
+[0.350538] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/trajectory.h\n'}
+[0.350761] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail\n'}
+[0.351432] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__struct.h\n'}
+[0.351689] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__struct.h\n'}
+[0.351958] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__type_support.h\n'}
+[0.352405] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__type_support.h\n'}
+[0.352887] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__functions.c\n'}
+[0.353470] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__functions.c\n'}
+[0.353900] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__functions.h\n'}
+[0.354212] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__functions.c\n'}
+[0.354563] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__functions.c\n'}
+[0.354963] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__struct.h\n'}
+[0.355332] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__type_support.h\n'}
+[0.355749] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__struct.h\n'}
+[0.356128] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__functions.h\n'}
+[0.356549] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__functions.c\n'}
+[0.356868] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__type_support.h\n'}
+[0.357181] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__functions.h\n'}
+[0.357479] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__type_support.h\n'}
+[0.357780] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__functions.h\n'}
+[0.358100] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__functions.h\n'}
+[0.358424] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__struct.h\n'}
+[0.358845] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/obstacles.h\n'}
+[0.359199] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/obstacle.h\n'}
+[0.359740] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/library_path.sh\n'}
+[0.360237] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/library_path.dsv\n'}
+[0.361068] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_generator_c.so\n'}
+[0.361611] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs\n'}
+[0.362036] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg\n'}
+[0.362451] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail\n'}
+[0.362952] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__rosidl_typesupport_fastrtps_c.h\n'}
+[0.363197] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__rosidl_typesupport_fastrtps_c.h\n'}
+[0.363490] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__rosidl_typesupport_fastrtps_c.h\n'}
+[0.363853] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__rosidl_typesupport_fastrtps_c.h\n'}
+[0.364248] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__rosidl_typesupport_fastrtps_c.h\n'}
+[0.364808] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[0.365366] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_fastrtps_c.so\n'}
+[0.365909] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs\n'}
+[0.366356] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg\n'}
+[0.366757] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail\n'}
+[0.367240] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__type_support.c\n'}
+[0.367490] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__rosidl_typesupport_introspection_c.h\n'}
+[0.367871] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__type_support.c\n'}
+[0.368393] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__rosidl_typesupport_introspection_c.h\n'}
+[0.368797] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__type_support.c\n'}
+[0.369124] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__type_support.c\n'}
+[0.369347] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__rosidl_typesupport_introspection_c.h\n'}
+[0.369578] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__type_support.c\n'}
+[0.369836] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__rosidl_typesupport_introspection_c.h\n'}
+[0.370099] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__rosidl_typesupport_introspection_c.h\n'}
+[0.370346] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[0.371005] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_introspection_c.so\n'}
+[0.372287] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_c.so\n'}
+[0.372845] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs\n'}
+[0.373236] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg\n'}
+[0.373699] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/trajectory.hpp\n'}
+[0.373965] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/waypoint.hpp\n'}
+[0.374191] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/sensor_collect.hpp\n'}
+[0.374413] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/obstacles.hpp\n'}
+[0.374702] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail\n'}
+[0.375354] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__traits.hpp\n'}
+[0.375790] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__type_support.hpp\n'}
+[0.376245] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__builder.hpp\n'}
+[0.376492] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__builder.hpp\n'}
+[0.376728] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__traits.hpp\n'}
+[0.376972] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__struct.hpp\n'}
+[0.377229] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__type_support.hpp\n'}
+[0.377523] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__builder.hpp\n'}
+[0.377813] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__type_support.hpp\n'}
+[0.378152] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__struct.hpp\n'}
+[0.378478] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__traits.hpp\n'}
+[0.378874] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__type_support.hpp\n'}
+[0.379201] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__builder.hpp\n'}
+[0.379576] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__traits.hpp\n'}
+[0.379837] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__struct.hpp\n'}
+[0.380117] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__struct.hpp\n'}
+[0.380515] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__struct.hpp\n'}
+[0.380922] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__traits.hpp\n'}
+[0.381348] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__builder.hpp\n'}
+[0.381817] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__type_support.hpp\n'}
+[0.382116] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/rosidl_generator_cpp__visibility_control.hpp\n'}
+[0.382373] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/obstacle.hpp\n'}
+[0.382606] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs\n'}
+[0.382994] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg\n'}
+[0.383418] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[0.383659] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail\n'}
+[0.384094] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[0.384493] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[0.384957] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[0.385465] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/dds_fastrtps\n'}
+[0.386109] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[0.386387] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[0.386872] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_fastrtps_cpp.so\n'}
+[0.387428] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs\n'}
+[0.388054] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg\n'}
+[0.388629] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail\n'}
+[0.389350] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__type_support.cpp\n'}
+[0.389725] (cev_msgs) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__rosidl_typesupport_introspection_cpp.hpp\n'}
+[0.391217] (cev_msgs) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__rosidl_typesupport_introspection_cpp.hpp\n'}
+[0.393194] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__rosidl_typesupport_introspection_cpp.hpp\n'}
+[0.393578] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__type_support.cpp\n'}
+[0.393971] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/waypoint__type_support.cpp\n'}
+[0.394199] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacles__type_support.cpp\n'}
+[0.394447] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/sensor_collect__type_support.cpp\n'}
+[0.394718] (cev_msgs) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/trajectory__rosidl_typesupport_introspection_cpp.hpp\n'}
+[0.396252] (cev_msgs) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/include/cev_msgs/cev_msgs/msg/detail/obstacle__rosidl_typesupport_introspection_cpp.hpp\n'}
+[0.398249] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_introspection_cpp.so\n'}
+[0.398861] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_typesupport_cpp.so\n'}
+[0.399292] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/pythonpath.sh\n'}
+[0.399556] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/pythonpath.dsv\n'}
+[0.399745] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs-0.0.0-py3.10.egg-info\n'}
+[0.400129] (cev_msgs) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs-0.0.0-py3.10.egg-info/PKG-INFO\n'}
+[0.401410] (cev_msgs) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs-0.0.0-py3.10.egg-info/SOURCES.txt\n'}
+[0.401636] (-) TimerEvent: {}
+[0.402770] (cev_msgs) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs-0.0.0-py3.10.egg-info/top_level.txt\n'}
+[0.404162] (cev_msgs) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs-0.0.0-py3.10.egg-info/dependency_links.txt\n'}
+[0.405499] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs\n'}
+[0.405870] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so\n'}
+[0.406050] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/_cev_msgs_s.ep.rosidl_typesupport_fastrtps_c.c\n'}
+[0.406253] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so\n'}
+[0.406419] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg\n'}
+[0.406815] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_trajectory.py\n'}
+[0.407137] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_trajectory_s.c\n'}
+[0.407372] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_waypoint.py\n'}
+[0.407596] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/__init__.py\n'}
+[0.407736] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_waypoint_s.c\n'}
+[0.407869] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_sensor_collect.py\n'}
+[0.408006] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_obstacle.py\n'}
+[0.408177] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_sensor_collect_s.c\n'}
+[0.408325] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_obstacle_s.c\n'}
+[0.408570] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_obstacles_s.c\n'}
+[0.408998] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg/_obstacles.py\n'}
+[0.409261] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/libcev_msgs__rosidl_generator_py.so\n'}
+[0.409553] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so\n'}
+[0.409779] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/__init__.py\n'}
+[0.409929] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/_cev_msgs_s.ep.rosidl_typesupport_introspection_c.c\n'}
+[0.410282] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/_cev_msgs_s.ep.rosidl_typesupport_c.c\n'}
+[0.427665] (cev_msgs) StdoutLine: {'line': b"Listing '/home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs'...\n"}
+[0.430113] (cev_msgs) StdoutLine: {'line': b"Listing '/home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/msg'...\n"}
+[0.430370] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so\n'}
+[0.430992] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so\n'}
+[0.431528] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/local/lib/python3.10/dist-packages/cev_msgs/cev_msgs_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so\n'}
+[0.432100] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/lib/libcev_msgs__rosidl_generator_py.so\n'}
+[0.432657] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Waypoint.idl\n'}
+[0.432898] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/SensorCollect.idl\n'}
+[0.433138] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Trajectory.idl\n'}
+[0.433369] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Obstacle.idl\n'}
+[0.433600] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Obstacles.idl\n'}
+[0.433931] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Waypoint.msg\n'}
+[0.434369] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/SensorCollect.msg\n'}
+[0.434749] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Trajectory.msg\n'}
+[0.435033] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Obstacle.msg\n'}
+[0.435305] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/msg/Obstacles.msg\n'}
+[0.435687] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/ament_index/resource_index/package_run_dependencies/cev_msgs\n'}
+[0.436060] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/ament_index/resource_index/parent_prefix_path/cev_msgs\n'}
+[0.436473] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/ament_prefix_path.sh\n'}
+[0.436761] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/ament_prefix_path.dsv\n'}
+[0.436994] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/path.sh\n'}
+[0.437296] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/environment/path.dsv\n'}
+[0.437608] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/local_setup.bash\n'}
+[0.437875] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/local_setup.sh\n'}
+[0.438232] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/local_setup.zsh\n'}
+[0.438573] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/local_setup.dsv\n'}
+[0.439120] (cev_msgs) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/package.dsv\n'}
+[0.440789] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/ament_index/resource_index/packages/cev_msgs\n'}
+[0.441490] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_generator_cExport.cmake\n'}
+[0.441917] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_generator_cExport-noconfig.cmake\n'}
+[0.442779] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_typesupport_fastrtps_cExport.cmake\n'}
+[0.443079] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake\n'}
+[0.443595] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_introspection_cExport.cmake\n'}
+[0.443907] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake\n'}
+[0.444347] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_cExport.cmake\n'}
+[0.444645] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_cExport-noconfig.cmake\n'}
+[0.445328] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_generator_cppExport.cmake\n'}
+[0.445887] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_typesupport_fastrtps_cppExport.cmake\n'}
+[0.446159] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake\n'}
+[0.446608] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[0.446872] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake\n'}
+[0.447284] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_cppExport.cmake\n'}
+[0.447568] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgs__rosidl_typesupport_cppExport-noconfig.cmake\n'}
+[0.447906] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_generator_pyExport.cmake\n'}
+[0.448175] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/export_cev_msgs__rosidl_generator_pyExport-noconfig.cmake\n'}
+[0.448402] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/rosidl_cmake-extras.cmake\n'}
+[0.448721] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[0.448944] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[0.449159] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[0.449667] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[0.450053] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[0.450476] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[0.450835] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgsConfig.cmake\n'}
+[0.451188] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/cmake/cev_msgsConfig-version.cmake\n'}
+[0.451656] (cev_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/install/cev_msgs/share/cev_msgs/package.xml\n'}
+[0.453746] (cev_msgs) CommandEnded: {'returncode': 0}
+[0.477900] (cev_msgs) JobEnded: {'identifier': 'cev_msgs', 'rc': 0}
+[0.478983] (-) EventReactorShutdown: {}

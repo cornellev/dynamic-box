@@ -1,0 +1,277 @@
+[0.000000] (-) TimerEvent: {}
+[0.000194] (cev_msgs) JobQueued: {'identifier': 'cev_msgs', 'dependencies': OrderedDict()}
+[0.000297] (cev_msgs) JobStarted: {'identifier': 'cev_msgs'}
+[0.007152] (cev_msgs) JobProgress: {'identifier': 'cev_msgs', 'progress': 'cmake'}
+[0.008372] (cev_msgs) Command: {'cmd': ['/usr/bin/cmake', '/home/dev/ws/src/dynamic-box/cev_msgs', '-DCMAKE_INSTALL_PREFIX=/home/dev/ws/src/dynamic-box/install/cev_msgs'], 'cwd': '/home/dev/ws/src/dynamic-box/build/cev_msgs', 'env': OrderedDict([('HOSTNAME', 'c503433e3370'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/dev'), ('OLDPWD', '/home/dev/ws/src/dynamic-box/my_rosbag_reader'), ('WS_DIR', '/home/dev/ws'), ('ROS_PYTHON_VERSION', '3'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('LANG', 'C.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('DEBIAN_FRONTEND', 'noninteractive'), ('PWD', '/home/dev/ws/src/dynamic-box/build/cev_msgs'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('TZ', 'Etc/UTC'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.100367] (-) TimerEvent: {}
+[0.111677] (cev_msgs) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.180080] (cev_msgs) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.187721] (cev_msgs) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.201391] (-) TimerEvent: {}
+[0.242101] (cev_msgs) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.247496] (cev_msgs) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.248043] (cev_msgs) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.248731] (cev_msgs) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.252260] (cev_msgs) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.302646] (-) TimerEvent: {}
+[0.319767] (cev_msgs) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.325402] (cev_msgs) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.326380] (cev_msgs) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.326762] (cev_msgs) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.330804] (cev_msgs) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.392190] (cev_msgs) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[0.403570] (-) TimerEvent: {}
+[0.448834] (cev_msgs) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)\n'}
+[0.451653] (cev_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.455859] (cev_msgs) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.479115] (cev_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.500708] (cev_msgs) StdoutLine: {'line': b'-- Found std_msgs: 4.9.0 (/opt/ros/humble/share/std_msgs/cmake)\n'}
+[0.504394] (-) TimerEvent: {}
+[0.605853] (-) TimerEvent: {}
+[0.671529] (cev_msgs) StdoutLine: {'line': b'-- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)\n'}
+[0.706357] (-) TimerEvent: {}
+[0.799490] (cev_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.807329] (-) TimerEvent: {}
+[0.909043] (-) TimerEvent: {}
+[0.968723] (cev_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.977422] (cev_msgs) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") \n'}
+[0.978503] (cev_msgs) StdoutLine: {'line': b'-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)\n'}
+[0.988855] (cev_msgs) StdoutLine: {'line': b'-- Found PythonLibs: /usr/lib/aarch64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") \n'}
+[0.989123] (cev_msgs) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[0.989229] (cev_msgs) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10\n'}
+[0.989328] (cev_msgs) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: /usr/lib/aarch64-linux-gnu/libpython3.10.so\n'}
+[0.996610] (cev_msgs) StdoutLine: {'line': b'-- Found PythonExtra: .so  \n'}
+[1.009325] (-) TimerEvent: {}
+[1.033337] (cev_msgs) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[1.087371] (cev_msgs) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[1.109689] (cev_msgs) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[1.109944] (-) TimerEvent: {}
+[1.123504] (cev_msgs) StdoutLine: {'line': b'-- Configuring done\n'}
+[1.210375] (-) TimerEvent: {}
+[1.244916] (cev_msgs) StdoutLine: {'line': b'-- Generating done\n'}
+[1.276382] (cev_msgs) StdoutLine: {'line': b'-- Build files have been written to: /home/dev/ws/src/dynamic-box/build/cev_msgs\n'}
+[1.278837] (cev_msgs) CommandEnded: {'returncode': 0}
+[1.279270] (cev_msgs) JobProgress: {'identifier': 'cev_msgs', 'progress': 'build'}
+[1.280079] (cev_msgs) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/dev/ws/src/dynamic-box/build/cev_msgs', '--', '-j10', '-l10'], 'cwd': '/home/dev/ws/src/dynamic-box/build/cev_msgs', 'env': OrderedDict([('HOSTNAME', 'c503433e3370'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/dev'), ('OLDPWD', '/home/dev/ws/src/dynamic-box/my_rosbag_reader'), ('WS_DIR', '/home/dev/ws'), ('ROS_PYTHON_VERSION', '3'), ('ROS_DISTRO', 'humble'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'), ('LANG', 'C.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('DEBIAN_FRONTEND', 'noninteractive'), ('PWD', '/home/dev/ws/src/dynamic-box/build/cev_msgs'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('TZ', 'Etc/UTC'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[1.302474] (cev_msgs) StdoutLine: {'line': b'[  1%] \x1b[34m\x1b[1mGenerating C code for ROS interfaces\x1b[0m\n'}
+[1.308943] (cev_msgs) StdoutLine: {'line': b'[  3%] \x1b[34m\x1b[1mGenerating C++ code for ROS interfaces\x1b[0m\n'}
+[1.311372] (-) TimerEvent: {}
+[1.312186] (cev_msgs) StdoutLine: {'line': b'[  3%] Built target ament_cmake_python_copy_cev_msgs\n'}
+[1.400801] (cev_msgs) StdoutLine: {'line': b'running egg_info\n'}
+[1.401401] (cev_msgs) StdoutLine: {'line': b'creating cev_msgs.egg-info\n'}
+[1.401787] (cev_msgs) StdoutLine: {'line': b'writing cev_msgs.egg-info/PKG-INFO\n'}
+[1.403783] (cev_msgs) StdoutLine: {'line': b'writing dependency_links to cev_msgs.egg-info/dependency_links.txt\n'}
+[1.404880] (cev_msgs) StdoutLine: {'line': b'writing top-level names to cev_msgs.egg-info/top_level.txt\n'}
+[1.405355] (cev_msgs) StdoutLine: {'line': b"writing manifest file 'cev_msgs.egg-info/SOURCES.txt'\n"}
+[1.407424] (cev_msgs) StdoutLine: {'line': b"reading manifest file 'cev_msgs.egg-info/SOURCES.txt'\n"}
+[1.410522] (cev_msgs) StdoutLine: {'line': b"writing manifest file 'cev_msgs.egg-info/SOURCES.txt'\n"}
+[1.411439] (-) TimerEvent: {}
+[1.425667] (cev_msgs) StdoutLine: {'line': b'[  3%] Built target ament_cmake_python_build_cev_msgs_egg\n'}
+[1.512342] (-) TimerEvent: {}
+[1.613379] (-) TimerEvent: {}
+[1.619349] (cev_msgs) StdoutLine: {'line': b'[  3%] Built target cev_msgs__cpp\n'}
+[1.637477] (cev_msgs) StdoutLine: {'line': b'[  7%] \x1b[34m\x1b[1mGenerating C++ type support for eProsima Fast-RTPS\x1b[0m\n'}
+[1.639044] (cev_msgs) StdoutLine: {'line': b'[  7%] \x1b[34m\x1b[1mGenerating C++ type support dispatch for ROS interfaces\x1b[0m\n'}
+[1.639813] (cev_msgs) StdoutLine: {'line': b'[  7%] \x1b[34m\x1b[1mGenerating C++ introspection for ROS interfaces\x1b[0m\n'}
+[1.656725] (cev_msgs) StdoutLine: {'line': b'[ 15%] \x1b[32mBuilding C object CMakeFiles/cev_msgs__rosidl_generator_c.dir/rosidl_generator_c/cev_msgs/msg/detail/waypoint__functions.c.o\x1b[0m\n'}
+[1.658377] (cev_msgs) StdoutLine: {'line': b'[ 15%] \x1b[32mBuilding C object CMakeFiles/cev_msgs__rosidl_generator_c.dir/rosidl_generator_c/cev_msgs/msg/detail/obstacles__functions.c.o\x1b[0m\n'}
+[1.659027] (cev_msgs) StdoutLine: {'line': b'[ 15%] \x1b[32mBuilding C object CMakeFiles/cev_msgs__rosidl_generator_c.dir/rosidl_generator_c/cev_msgs/msg/detail/sensor_collect__functions.c.o\x1b[0m\n'}
+[1.659831] (cev_msgs) StdoutLine: {'line': b'[ 15%] \x1b[32mBuilding C object CMakeFiles/cev_msgs__rosidl_generator_c.dir/rosidl_generator_c/cev_msgs/msg/detail/trajectory__functions.c.o\x1b[0m\n'}
+[1.660823] (cev_msgs) StdoutLine: {'line': b'[ 15%] \x1b[32mBuilding C object CMakeFiles/cev_msgs__rosidl_generator_c.dir/rosidl_generator_c/cev_msgs/msg/detail/obstacle__functions.c.o\x1b[0m\n'}
+[1.714544] (-) TimerEvent: {}
+[1.729694] (cev_msgs) StdoutLine: {'line': b'[ 17%] \x1b[32m\x1b[1mLinking C shared library libcev_msgs__rosidl_generator_c.so\x1b[0m\n'}
+[1.763824] (cev_msgs) StdoutLine: {'line': b'[ 17%] Built target cev_msgs__rosidl_generator_c\n'}
+[1.772294] (cev_msgs) StdoutLine: {'line': b'[ 22%] \x1b[34m\x1b[1mGenerating C type support for eProsima Fast-RTPS\x1b[0m\n'}
+[1.773164] (cev_msgs) StdoutLine: {'line': b'[ 22%] \x1b[34m\x1b[1mGenerating C introspection for ROS interfaces\x1b[0m\n'}
+[1.774725] (cev_msgs) StdoutLine: {'line': b'[ 22%] \x1b[34m\x1b[1mGenerating C type support dispatch for ROS interfaces\x1b[0m\n'}
+[1.815352] (-) TimerEvent: {}
+[1.876701] (cev_msgs) StdoutLine: {'line': b'[ 26%] \x1b[32mBuilding CXX object CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/waypoint__type_support.cpp.o\x1b[0m\n'}
+[1.878132] (cev_msgs) StdoutLine: {'line': b'[ 26%] \x1b[32mBuilding CXX object CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/trajectory__type_support.cpp.o\x1b[0m\n'}
+[1.879752] (cev_msgs) StdoutLine: {'line': b'[ 30%] \x1b[32mBuilding CXX object CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/sensor_collect__type_support.cpp.o\x1b[0m\n'}
+[1.880635] (cev_msgs) StdoutLine: {'line': b'[ 30%] \x1b[32mBuilding CXX object CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/obstacles__type_support.cpp.o\x1b[0m\n'}
+[1.881391] (cev_msgs) StdoutLine: {'line': b'[ 30%] \x1b[32mBuilding CXX object CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/obstacle__type_support.cpp.o\x1b[0m\n'}
+[1.904858] (cev_msgs) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[1.906034] (cev_msgs) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[1.906315] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/lib/rosidl_typesupport_c/rosidl_typesupport_c", line 28, in <module>\n'}
+[1.906680] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/lib/rosidl_typesupport_fastrtps_c/rosidl_typesupport_fastrtps_c", line 33, in <module>\n'}
+[1.906930] (cev_msgs) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[1.907158] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/lib/rosidl_typesupport_fastrtps_cpp/rosidl_typesupport_fastrtps_cpp", line 23, in <module>\n'}
+[1.907527] (cev_msgs) StderrLine: {'line': b'    sys.exit(main())\n'}
+[1.907952] (cev_msgs) StderrLine: {'line': b'    sys.exit(main())\n'}
+[1.908439] (cev_msgs) StderrLine: {'line': b'    sys.exit(main())\n'}
+[1.908825] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/lib/rosidl_typesupport_fastrtps_c/rosidl_typesupport_fastrtps_c", line 29, in main\n'}
+[1.909086] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/lib/rosidl_typesupport_c/rosidl_typesupport_c", line 24, in main\n'}
+[1.909222] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/lib/rosidl_typesupport_fastrtps_cpp/rosidl_typesupport_fastrtps_cpp", line 19, in main\n'}
+[1.909472] (cev_msgs) StderrLine: {'line': b'    generate_typesupport_fastrtps_c(args.generator_arguments_file)\n'}
+[1.909722] (cev_msgs) StderrLine: {'line': b'    generate_c(args.generator_arguments_file, args.typesupports)\n'}
+[1.909871] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_typesupport_fastrtps_c/__init__.py", line 24, in generate_typesupport_fastrtps_c\n'}
+[1.910057] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_typesupport_c/__init__.py", line 28, in generate_c\n'}
+[1.910334] (cev_msgs) StderrLine: {'line': b'    generate_cpp(args.generator_arguments_file)\n'}
+[1.910734] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_typesupport_fastrtps_cpp/__init__.py", line 24, in generate_cpp\n'}
+[1.911026] (cev_msgs) StderrLine: {'line': b'    return generate_files(generator_arguments_file, mapping)\n'}
+[1.911238] (cev_msgs) StderrLine: {'line': b'    return generate_files(\n'}
+[1.911595] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 74, in generate_files\n'}
+[1.911915] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 74, in generate_files\n'}
+[1.912068] (cev_msgs) StderrLine: {'line': b'    return generate_files(generator_arguments_file, mapping)\n'}
+[1.912203] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 87, in generate_files\n'}
+[1.912393] (cev_msgs) StderrLine: {'line': b'    idl_file = parse_idl_file(locator)\n'}
+[1.912532] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 64, in parse_idl_file\n'}
+[1.912766] (cev_msgs) StderrLine: {'line': b'    expand_template(\n'}
+[1.912917] (cev_msgs) StderrLine: {'line': b'    content = parse_idl_string(string, png_file=png_file)\n'}
+[1.913052] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 149, in expand_template\n'}
+[1.913185] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 72, in parse_idl_string\n'}
+[1.913316] (cev_msgs) StderrLine: {'line': b'    tree = get_ast_from_idl_string(idl_string)\n'}
+[1.913575] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 89, in get_ast_from_idl_string\n'}
+[1.913709] (cev_msgs) StderrLine: {'line': b'    interpreter.string(template_content, template_path, locals=data)\n'}
+[1.913837] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2391, in string\n'}
+[1.914047] (cev_msgs) StderrLine: {'line': b'    return _parser.parse(idl_string)\n'}
+[1.914267] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/lark/lark.py", line 619, in parse\n'}
+[1.914403] (cev_msgs) StderrLine: {'line': b"gmake[2]: *** Deleting file 'rosidl_typesupport_introspection_cpp/cev_msgs/msg/detail/sensor_collect__type_support.cpp'\n"}
+[1.914587] (cev_msgs) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[1.914724] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/lib/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c", line 31, in <module>\n'}
+[1.914854] (cev_msgs) StderrLine: {'line': b'    sys.exit(main())\n'}
+[1.914982] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/lib/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c", line 27, in main\n'}
+[1.915112] (cev_msgs) StderrLine: {'line': b'    generate_c(args.generator_arguments_file)\n'}
+[1.915239] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_typesupport_introspection_c/__init__.py", line 31, in generate_c\n'}
+[1.915456] (-) TimerEvent: {}
+[1.915557] (cev_msgs) StderrLine: {'line': b'    return generate_files(generator_arguments_file, mapping)\n'}
+[1.916045] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 87, in generate_files\n'}
+[1.916317] (cev_msgs) StderrLine: {'line': b'    expand_template(\n'}
+[1.916455] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 149, in expand_template\n'}
+[1.916551] (cev_msgs) StderrLine: {'line': b"gmake[2]: *** Deleting file 'rosidl_typesupport_fastrtps_c/cev_msgs/msg/detail/waypoint__rosidl_typesupport_fastrtps_c.h'\n"}
+[1.916706] (cev_msgs) StderrLine: {'line': b'    interpreter.string(template_content, template_path, locals=data)\n'}
+[1.916800] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2391, in string\n'}
+[1.917000] (cev_msgs) StderrLine: {'line': b"gmake[2]: *** Deleting file 'rosidl_typesupport_fastrtps_cpp/cev_msgs/msg/detail/dds_fastrtps/waypoint__type_support.cpp'\n"}
+[1.917160] (cev_msgs) StderrLine: {'line': b"gmake[2]: *** Deleting file 'rosidl_typesupport_c/cev_msgs/msg/waypoint__type_support.cpp'\n"}
+[1.917294] (cev_msgs) StderrLine: {'line': b"gmake[2]: *** Deleting file 'rosidl_typesupport_introspection_c/cev_msgs/msg/detail/waypoint__rosidl_typesupport_introspection_c.h'\n"}
+[1.917438] (cev_msgs) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:368: CMakeFiles/cev_msgs__rosidl_typesupport_introspection_cpp.dir/all] Interrupt\n'}
+[1.917545] (cev_msgs) StderrLine: {'line': b'    return self.parser.parse(text, start=start, on_error=on_error)\n'}
+[1.917665] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/lark/parser_frontends.py", line 99, in parse\n'}
+[1.917794] (cev_msgs) StderrLine: {'line': b'    self.safe(scanner, True, locals)\n'}
+[1.917987] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2401, in safe\n'}
+[1.918166] (cev_msgs) StderrLine: {'line': b'    idl_file = parse_idl_file(locator)\n'}
+[1.918314] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 64, in parse_idl_file\n'}
+[1.918441] (cev_msgs) StderrLine: {'line': b'    content = parse_idl_string(string, png_file=png_file)\n'}
+[1.918578] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 72, in parse_idl_string\n'}
+[1.919316] (cev_msgs) StderrLine: {'line': b'    tree = get_ast_from_idl_string(idl_string)\n'}
+[1.919714] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_parser/parser.py", line 89, in get_ast_from_idl_string\n'}
+[1.920018] (cev_msgs) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/build.make:134: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/waypoint__type_support.cpp.o] Interrupt\n'}
+[1.920215] (cev_msgs) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/build.make:162: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/trajectory__type_support.cpp.o] Interrupt\n'}
+[1.920674] (cev_msgs) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/build.make:148: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/sensor_collect__type_support.cpp.o] Interrupt\n'}
+[1.921039] (cev_msgs) StderrLine: {'line': b'    return _parser.parse(idl_string)\n'}
+[1.921332] (cev_msgs) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/build.make:190: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/obstacles__type_support.cpp.o] Interrupt\n'}
+[1.921836] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/lark/lark.py", line 619, in parse\n'}
+[1.922014] (cev_msgs) StderrLine: {'line': b'    return self.parser.parse(stream, chosen_start, **kw)\n'}
+[1.922256] (cev_msgs) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/build.make:176: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cev_msgs/msg/obstacle__type_support.cpp.o] Interrupt\n'}
+[1.922595] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/lark/parsers/earley.py", line 266, in parse\n'}
+[1.922705] (cev_msgs) StderrLine: {'line': b'    self.parse(scanner, locals)\n'}
+[1.922958] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2421, in parse\n'}
+[1.923109] (cev_msgs) StderrLine: {'line': b'    self.safe(scanner, True, locals)\n'}
+[1.923422] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2401, in safe\n'}
+[1.923557] (cev_msgs) StderrLine: {'line': b'    return self.parser.parse(text, start=start, on_error=on_error)\n'}
+[1.923817] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/lark/parser_frontends.py", line 99, in parse\n'}
+[1.923972] (cev_msgs) StderrLine: {'line': b'    return self.parser.parse(stream, chosen_start, **kw)\n'}
+[1.924122] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/lark/parsers/earley.py", line 266, in parse\n'}
+[1.924272] (cev_msgs) StderrLine: {'line': b'    self.parse(scanner, locals)\n'}
+[1.924691] (cev_msgs) StderrLine: {'line': b'    token.run(self, locals)\n'}
+[1.924909] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2421, in parse\n'}
+[1.925035] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1425, in run\n'}
+[1.925189] (cev_msgs) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:395: CMakeFiles/cev_msgs__rosidl_typesupport_cpp.dir/all] Interrupt\n'}
+[1.925321] (cev_msgs) StderrLine: {'line': b'    interpreter.execute(self.code, locals)\n'}
+[1.925449] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2596, in execute\n'}
+[1.925798] (cev_msgs) StderrLine: {'line': b'    to_scan = self._parse(lexer, columns, to_scan, start_symbol)\n'}
+[1.926119] (cev_msgs) StderrLine: {'line': b'    to_scan = self._parse(lexer, columns, to_scan, start_symbol)\n'}
+[1.927517] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/lark/parsers/xearley.py", line 153, in _parse\n'}
+[1.927691] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/lark/parsers/xearley.py", line 146, in _parse\n'}
+[1.927819] (cev_msgs) StderrLine: {'line': b'    token.run(self, locals)\n'}
+[1.928510] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1547, in run\n'}
+[1.928812] (cev_msgs) StderrLine: {'line': b'    self.subrun(info[0][1], interpreter, locals)\n'}
+[1.929003] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1631, in subrun\n'}
+[1.929318] (cev_msgs) StderrLine: {'line': b'    _exec(statements, self.globals, locals)\n'}
+[1.929754] (cev_msgs) StderrLine: {'line': b'  File "<string>", line 10, in <module>\n'}
+[1.930019] (cev_msgs) StderrLine: {'line': b'    to_scan = scan(i, to_scan)\n'}
+[1.930262] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/lark/parsers/xearley.py", line 76, in scan\n'}
+[1.930712] (cev_msgs) StderrLine: {'line': b'    i += 1\n'}
+[1.930896] (cev_msgs) StderrLine: {'line': b'KeyboardInterrupt\n'}
+[1.931061] (cev_msgs) StderrLine: {'line': b'    token.run(interpreter, locals)\n'}
+[1.931206] (cev_msgs) StderrLine: {'line': b'    m = match(x, stream, i)\n'}
+[1.931329] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/lark/parser_frontends.py", line 179, in match\n'}
+[1.931442] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1425, in run\n'}
+[1.931879] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 198, in _expand_template\n'}
+[1.932064] (cev_msgs) StderrLine: {'line': b'    return self.regexps[term.name].match(text, index)\n'}
+[1.932280] (cev_msgs) StderrLine: {'line': b'KeyboardInterrupt\n'}
+[1.932446] (cev_msgs) StderrLine: {'line': b'    interpreter.string(content, str(template_path), kwargs)\n'}
+[1.932994] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2391, in string\n'}
+[1.933318] (cev_msgs) StderrLine: {'line': b'    interpreter.execute(self.code, locals)\n'}
+[1.933663] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2596, in execute\n'}
+[1.934070] (cev_msgs) StderrLine: {'line': b'    self.safe(scanner, True, locals)\n'}
+[1.934285] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2401, in safe\n'}
+[1.934476] (cev_msgs) StderrLine: {'line': b'    _exec(statements, self.globals, locals)\n'}
+[1.934722] (cev_msgs) StderrLine: {'line': b'  File "<string>", line 2, in <module>\n'}
+[1.934824] (cev_msgs) StderrLine: {'line': b'  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_cmake/__init__.py", line 198, in _expand_template\n'}
+[1.934919] (cev_msgs) StderrLine: {'line': b'    interpreter.string(content, str(template_path), kwargs)\n'}
+[1.935019] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2391, in string\n'}
+[1.935108] (cev_msgs) StderrLine: {'line': b'    self.parse(scanner, locals)\n'}
+[1.935192] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2417, in parse\n'}
+[1.935299] (cev_msgs) StderrLine: {'line': b'    self.safe(scanner, True, locals)\n'}
+[1.935410] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2401, in safe\n'}
+[1.935498] (cev_msgs) StderrLine: {'line': b'    token = scanner.one()\n'}
+[1.935597] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1984, in one\n'}
+[1.935687] (cev_msgs) StderrLine: {'line': b'    self.parse(scanner, locals)\n'}
+[1.935777] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2417, in parse\n'}
+[1.935866] (cev_msgs) StderrLine: {'line': b'    token.scan(self)\n'}
+[1.935952] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1311, in scan\n'}
+[1.936067] (cev_msgs) StderrLine: {'line': b"    q = scanner.next('$', 0, z, True)\n"}
+[1.936195] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1818, in next\n'}
+[1.936283] (cev_msgs) StderrLine: {'line': b'    token = scanner.one()\n'}
+[1.936383] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1984, in one\n'}
+[1.936470] (cev_msgs) StderrLine: {'line': b'    newQuote = self.check(i, quote)\n'}
+[1.936588] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1762, in check\n'}
+[1.936691] (cev_msgs) StderrLine: {'line': b'    token.scan(self)\n'}
+[1.936787] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1468, in scan\n'}
+[1.936903] (cev_msgs) StderrLine: {'line': b'    def check(self, i, archetype=None):\n'}
+[1.936992] (cev_msgs) StderrLine: {'line': b'KeyboardInterrupt\n'}
+[1.937080] (cev_msgs) StderrLine: {'line': b'    self.subscan(scanner, self.type)\n'}
+[1.937168] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1483, in subscan\n'}
+[1.937254] (cev_msgs) StderrLine: {'line': b'    token = scanner.one()\n'}
+[1.937341] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1984, in one\n'}
+[1.937443] (cev_msgs) StderrLine: {'line': b'    token.scan(self)\n'}
+[1.937574] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1468, in scan\n'}
+[1.937725] (cev_msgs) StderrLine: {'line': b'    self.subscan(scanner, self.type)\n'}
+[1.937838] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1483, in subscan\n'}
+[1.937982] (cev_msgs) StderrLine: {'line': b'    token = scanner.one()\n'}
+[1.938081] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1984, in one\n'}
+[1.938168] (cev_msgs) StderrLine: {'line': b'    token.scan(self)\n'}
+[1.938258] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1456, in scan\n'}
+[1.938404] (cev_msgs) StderrLine: {'line': b"    i = scanner.complex('[', ']', 0)\n"}
+[1.938588] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1893, in complex\n'}
+[1.938685] (cev_msgs) StderrLine: {'line': b'    newQuote = self.check(i, quote)\n'}
+[1.938805] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 1762, in check\n'}
+[1.938979] (cev_msgs) StderrLine: {'line': b'    def check(self, i, archetype=None):\n'}
+[1.939193] (cev_msgs) StderrLine: {'line': b'KeyboardInterrupt\n'}
+[1.939373] (cev_msgs) StderrLine: {'line': b'Exception ignored in: <function Interpreter.__del__ at 0xffffa8ad6f80>\n'}
+[1.939623] (cev_msgs) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[1.939740] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2094, in __del__\n'}
+[1.939847] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2157, in shutdown\n'}
+[1.939946] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2647, in finalize\n'}
+[1.940035] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2200, in push\n'}
+[1.940125] (cev_msgs) StderrLine: {'line': b"AttributeError: '_io.TextIOWrapper' object has no attribute 'push'\n"}
+[1.940214] (cev_msgs) StderrLine: {'line': b'Exception ignored in: <function Interpreter.__del__ at 0xffff94f96ef0>\n'}
+[1.940322] (cev_msgs) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[1.940420] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2094, in __del__\n'}
+[1.940527] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2157, in shutdown\n'}
+[1.940694] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2647, in finalize\n'}
+[1.940850] (cev_msgs) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/em.py", line 2200, in push\n'}
+[1.940979] (cev_msgs) StderrLine: {'line': b"AttributeError: '_io.TextIOWrapper' object has no attribute 'push'\n"}
+[1.941136] (cev_msgs) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_fastrtps_c.dir/build.make:118: rosidl_typesupport_fastrtps_c/cev_msgs/msg/detail/waypoint__rosidl_typesupport_fastrtps_c.h] Interrupt\n'}
+[1.941312] (cev_msgs) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:238: CMakeFiles/cev_msgs__rosidl_typesupport_fastrtps_c.dir/all] Interrupt\n'}
+[1.941497] (cev_msgs) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_fastrtps_cpp.dir/build.make:118: rosidl_typesupport_fastrtps_cpp/cev_msgs/msg/detail/dds_fastrtps/waypoint__type_support.cpp] Interrupt\n'}
+[1.941681] (cev_msgs) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:342: CMakeFiles/cev_msgs__rosidl_typesupport_fastrtps_cpp.dir/all] Interrupt\n'}
+[1.941855] (cev_msgs) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_introspection_c.dir/build.make:118: rosidl_typesupport_introspection_c/cev_msgs/msg/detail/waypoint__rosidl_typesupport_introspection_c.h] Interrupt\n'}
+[1.941985] (cev_msgs) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:264: CMakeFiles/cev_msgs__rosidl_typesupport_introspection_c.dir/all] Interrupt\n'}
+[1.942111] (cev_msgs) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/cev_msgs__rosidl_typesupport_c.dir/build.make:116: rosidl_typesupport_c/cev_msgs/msg/waypoint__type_support.cpp] Interrupt\n'}
+[1.942316] (cev_msgs) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:290: CMakeFiles/cev_msgs__rosidl_typesupport_c.dir/all] Interrupt\n'}
+[1.942447] (cev_msgs) StderrLine: {'line': b'gmake: *** [Makefile:146: all] Interrupt\n'}
+[1.942616] (cev_msgs) CommandEnded: {'returncode': -2}
+[1.942849] (cev_msgs) JobEnded: {'identifier': 'cev_msgs', 'rc': 'SIGINT'}
+[1.945894] (-) EventReactorShutdown: {}
