@@ -74,93 +74,89 @@ Then, $n'$ clusters are grown in parallel from these $n'$ seeds. Specifically, E
 
 In terms of speedup and optimization, the runtime of segmentation on fully parallelized Euclidean Cluster Extraction is constrained by the largest cluster, or the cluster with the most points. If there are no overlaps between two consecutive LiDAR scans, then only  sequential Euclidean Cluster Extraction will grow clusters.
 
-## Installation (NEED TO UPDATE):
-### OpenCV:
-Run:
+## Installation:
+### [Recommended] Building and Running the Provided Docker Image:
+All Python and ROS2 dependencies in ```my_rosbag_reader``` will be automatically installed and built with the provided Docker image:
 ```
-pip3 install requirements.txt
+git clone --branch improvements git@github.com:cornellev/dynamic-box.git --single-branch
+docker build -t dbimage .
+docker run --network host -it --name dbimage dbimage bash
+```
+After building the docker image ```dbimage```, directories should appear in a layout similar to:
+```
+/home/dev/ws/src/
+├── ./
+├── ../
+├── dynamic-box/my_rosbag_reader/
+│   ├── my_rosbag_reader/ 
+│   │   ├── __init__.py
+│   │   ├── requirements.txt
+│   │   ├── cluster.cpp
+│   │   ├── live.py
+│   │   ├── setup.py        
+│   │   └── test_cloud.pcap
+│   ├── package.xml  
+│   ├── resource/ 
+│   │   └── my_rosbag_reader 
+│   ├── setup.cfg
+│   └── setup.py  
+├── rslidar_msg/
+└── rslidar_sdk/
+```
+Running the docker image will automatically build, but not source ```rslidar_msg, rslidar_sdk```, and ```my_rosbag_reader``` ROS2 packages.
+Source these packages by going to ```/home/dev/ws/src``` and running:
+```
+colcon build --packages-select cev_msgs --cmake-clean-cache
+source install/setup.bash
+cd /dynamic-box/my_rosbag_reader
+source install/setup.bash
+cd /my_rosbag_reader
+python3 setup.py build_ext --inplace
 ```
 
-### Conda: 
-https://docs.anaconda.com/anaconda/install/linux/:
-Download in Ubuntu home directory:
-``` 
-Anaconda3-2024.06-1-Linux-x86_64.sh from https://repo.anaconda.com/archive/
+
+docker run --network host -it <your_ros2_image> /bin/bash
+
+
+### Getting Online LiDAR Inputs via Ethernet
+Check that your device is recieving data from the LiDAR by running ```ping 192.168.1.102```. 
+
+You should be seeing continuous outputs of the format:
+
+```
+... bytes from 192.168.1.102: icmp_seq=... ttl=... time=... ms
 ```
 
-Run:
+Also run ```tcpdump -i enP8p1s0 host 192.168.1.102 and port 6699```, which should output:
+
 ```
-curl -O https://repo.anaconda.com/archive/Anaconda3-2024.06-1-Linux-x86_64.sh
-bash ~/<Wherever you downloaded it>/Anaconda3-2024.06-1-Linux-x86_64.sh
+x:x:x.xxx IP 192.168.1.200.6699 > mini-dos.6699: UDP, length xxxx
 ```
 
-Anaconda is now downloaded in ``` /home/<USER>/anaconda3 ``` in Ubuntu
+If ```ping``` and ```tcpdump``` has no outputs, then probably your device is not recieving any packets from the LiDAR. 
 
-Refresh terminal: ``` source ~/.bashrc ```
+To troubleshoot, first run ```ip a show enP8p1s0```, which should output message of the format:
 
-### Activate conda environment:
-``` python
-conda create -n env_stereo python=3.10
-conda activate env_stereo
-conda install pytorch
-conda install cuda80 -c pytorch
-conda install torchvision -c pytorch
 ```
+x: enP8p1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 48:b0:2d:f7:80:68 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.102/24 scope global secondary enP8p1s0
+       valid_lft forever preferred_lft forever
+```
+
+Given that we are recieving online LiDAR scans via Ethernet, make sure that network interface ```enP8p1s0``` is UP or LOWER_UP. If you see something like:
+```
+enP8P1s0: <...DOWN>
+```
+check and link ethernet connection to 192.168.1.102 via:
+
+```
+sudo ip link set enP8p1s0 up
+sudo ip addr ad 192.168.1.102/24 dev enP8p1s0
+```
+
+Pray and hope that ```ping 192.168.1.102``` outputs something. GLHF.
+
 
 ## Euclidean Cluster Extraction Important links:
-[Fast Euclidean Cluster Extraction Using GPUs]
-(https://www.jstage.jst.go.jp/article/jrobomech/32/3/32_548/_pdf)
-
-## How Dynamic Box Works (NEED TO UPDATE):
-ZED camera captures stereo pairs of left (Il) and right (Ir) images -> run through a 2D detector that generates 2D boxes on regions of interest (ROIs) in Il and Ir:
-1) 2D detector that generates 2D boxes in Il and Ir:
-   Given stereo image pair input: an Il, Ir pair from ZED -> identify left (l) and right (r) ROIs -> threshold -> aquire m, n ROIs in Il, Ir ->
-   perform association with SSIM(l,r) for each ROI pair combination 
-   (assume l, r are similar).
-2) Box association algorithm matches object detections across both images,
-    forms a box association pair if SSIM threshold satisfied.
-3) Stereo regression: with left-right box association pairs, apply ROI
-   Align -> concatenate l, r into two fully-connected layers + ReLU
-   layer. 
-4) Given left-right 2D boxes, perspective keypoint, regressed dim, generate
-   3D box: look at ```3D box Estimation``` for reference on how we will use the 
-   left and right 2D boxes to generate a 3D box. 
-
-### Steps completed:
-1) Used YOLOv3 to generate 2D bounding boxes for objects in stereo images taken by the ZED camera. Returns 2D bounding box information in the form of $(x_l,y_l,w,h)$.
-2) Given derived $F$, and assuming that the left camera is placed at the origin, then let us define the left camera in a canonical form where the camera projection or intrinsic matrix is $K_L = [I|0]$, where $I$ is the identity matrix and $0$ is the zero vector. Then we can compute the epipole $e_R$ of the right image with $F^Te_R=0$, where $e_R$ is in the null space of $F$. Finally, we derive the right camera's projection matrix as $K_R=[[e_R]_xF+e_2v^T]$.
-
-4) Use $F$, $K_R$ and $K_L$ to derive essential matrix $E={K_R^T}\cdot{F}\cdot{K_L}={[T_x]}\cdot{R}$, which is used to compute epipolar lines $l={E}\cdot{P}$ and $l^{'}={E^T}\cdot{P^{'}}$ with $P$ being a point on the left image and $P^{'}$ on the right image. The location of right $P^{'}$ in the left image is derived by rotating $P^{'}$ with rotation matrix $R$ and translating with translation matrix $T$ to get $P={R}\cdot{P^{'}}+T$.
-   
-3) Found the correspondence of each point on the left image to the right image, where given a point in the left image, the corresponding epipolar line equation in the right image was derived by [formula] and exhaustive block matching with sum of absolute differences (SAD) was conducted to derive the actual corresponding right point.
-
-4) Given corresponding left and right points, we can convert 2D points in the images to 3D points by calculating the depth of that point from the camera. We use the formula $Z=\dfrac{{f}\cdot{B}}{d}$, where $Z$ is distance of the object from the camera, $f$ is focal length, $B=120mm$ (for ZED) is baseline, and $d$ is disparity (horizontal shift between left and right image). Given a point $P$ that corresponds in the left and right images, disparity $d=x_l-x_r$, where $x_l$ is the horizontal pixel distance of $P$ in the left image, and $x_r$ is the horizontal pixel distance of $P$ in the right image.
-   
-5) Estimate 3D coordinates with depth and ZED camera calibration information. The 3D position $(X,Y,Z)$ (a point on the epipolar plane $\pi$ which contains the baseline $B$) of the front face of the object is calculated by: $X={x-c_x}\cdot{\dfrac{Z}{f_x}}$, $Y={y-c_y}\cdot{\dfrac{Z}{f_y}}$, and $Z=depth(x,y)$ where $(x,y)$ is the pixel coordinates of the corners of the 2D bounding box, focal lengths of the left ZED camera $f_x=700.819$ and $f_y=700.819$.
-
-6) For each object detected by YOLOv3, convert 2D points constrained in its corresponding bounding box into a 3D point cloud. Then find the eigenvalues and eigenvectors of the covariance matrix of the 3D dataset to construct a rotation matrix, which is used to derive yaw, pitch, and roll of the object. The dimensions of the 3D bounding box is constrained within the 2D bounding box, and orientation and pose are estimated using the calculated yaw, pitch, and roll.
-
-### Currently working on:
-1) Getting more accurate 3D bounding boxes that consider perspective, rotation of the object in 3D space, and its overall pose.
-
-
-
-
-## Important links:
-
-[An Introduction to 3D Computer Vision Techniques and Algorithms](https://ia801208.us.archive.org/12/items/an-introduction-to-3-d-computer-vision-techniques-and-algorithms-cyganek-siebert-2009-02-09/An%20Introduction%20to%203D%20Computer%20Vision%20Techniques%20and%20Algorithms%20%5BCyganek%20%26%20Siebert%202009-02-09%5D.pdf)
-
-[ZED Calibration File](https://support.stereolabs.com/hc/en-us/articles/360007497173-What-is-the-calibration-file)
-
-[CS231A Course Notes 3: Epipolar Geometry](https://web.stanford.edu/class/cs231a/course_notes/03-epipolar-geometry.pdf)
-
-[Epipolar Geometry and the Fundamental Matrix](https://www.robots.ox.ac.uk/~vgg/hzbook/hzbook2/HZepipolar.pdf)
-
-[Complex YOLO: YOLOv4 for 3D Object Detection](https://medium.com/@mohit_gaikwad/complex-yolo-yolov4-for-3d-object-detection-3c9746281cd2)
-
-[Stereo R-CNN based 3D Object Detection](https://github.com/HKUST-Aerial-Robotics/Stereo-RCNN?tab=readme-ov-file)
-
-[3D Reconstruction and Epipolar Geometry](https://github.com/laavanyebahl/3D-Reconstruction-and-Epipolar-Geometry)
-
-[The 8-point algorithm](https://www.cs.cmu.edu/~16385/s17/Slides/12.4_8Point_Algorithm.pdf)
-
+[Fast Euclidean Cluster Extraction Using GPUs](https://www.jstage.jst.go.jp/article/jrobomech/32/3/32_548/_pdf)
