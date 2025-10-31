@@ -11,6 +11,12 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   python3-colcon-common-extensions python3-rosdep python3-vcstool \
   && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update \
+  && apt-get install -y \
+  git openssh-client \
+  libopencv-dev \
+  ros-humble-pcl-ros
+  
 # ---- Non-root dev user ----
 ARG USERNAME=dev
 ARG UID=1000
