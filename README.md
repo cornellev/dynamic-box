@@ -119,7 +119,7 @@ docker run --network host -it <your_ros2_image> /bin/bash
 
 
 ### Getting Online LiDAR Inputs via Ethernet
-Check that your device is recieving data from the LiDAR by running ```ping 192.168.1.102```. 
+The host address of the LiDAR should be 192.168.1.102. Check that your device is recieving data from this address by running ```ping 192.168.1.102```. 
 
 You should be seeing continuous outputs of the format:
 
@@ -127,7 +127,7 @@ You should be seeing continuous outputs of the format:
 ... bytes from 192.168.1.102: icmp_seq=... ttl=... time=... ms
 ```
 
-Also run ```tcpdump -i enP8p1s0 host 192.168.1.102 and port 6699```, which should output:
+By default, MSOP port is 6699 and DFOP port is 7788, to confirm the correct ports, also run ```tcpdump -i enP8p1s0 host 192.168.1.102 and port 6699```, which should output:
 
 ```
 x:x:x.xxx IP 192.168.1.200.6699 > mini-dos.6699: UDP, length xxxx
@@ -155,7 +155,7 @@ sudo ip link set enP8p1s0 up
 sudo ip addr ad 192.168.1.102/24 dev enP8p1s0
 ```
 
-Pray and hope that ```ping 192.168.1.102``` outputs something. GLHF.
+Pray and hope that ```ping``` and ```tcpdump``` outputs something. GLHF :).
 
 
 ## Euclidean Cluster Extraction Important links:
