@@ -81,10 +81,7 @@ class MinimalSubscriber(Node):
         cloud = np.vstack((cloud[:,0], cloud[:,1], cloud[:,2], cloud[:,2])).T
 
         if cloud.size > 0:
-            # start = time.time()
-            plt.ion()
-            fig = plt.figure()
-            ax = fig.add_subplot(111, projection='3d')
+            start = time.time()
             self.get_logger().info(f"LIVE: Received {cloud.shape[0]} points")
             self.data = cloud 
             
@@ -124,12 +121,47 @@ class MinimalSubscriber(Node):
                 C = np.hstack((C, remaining_C[mask]))
 
             # need to reorder here from x, y, z -> z, x, y
-            self.display_clusters(ax, np.array(C), [np.median(c, axis = 0) for c in C])
+            self.output_clusters(C)
+            # self.display_clusters(ax, np.array(C), [np.median(c, axis = 0) for c in C])
             self.C_prev = np.array([np.median(c, axis = 0) for c in C])
         else:
             self.get_logger().warn("Received empty point cloud")
 
+        end = time.time()
+        self.get_logger().info(f"RAN FOR: {end - start} ms")
         self.iter += 1
+
+    def output_clusters(self, clusters): 
+        obstacles_arr = []
+
+        for i, _ in enumerate(clusters):
+            # DISPLAY PREVIOUS CENTROID ELLIPSOID
+            data = clusters[i][:, :3]
+
+            pc_msg = PointCloud2()
+            pc_msg.fields = [
+                PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+                PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+                PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+                PointField(name='id', offset=12, datatype=PointField.INT32, count=1)
+            ]
+
+            pc_msg.is_bigendian = False
+            pc_msg.point_step = 16
+            pc_msg.row_step = pc_msg.point_step * data.shape[0]
+            pc_msg.is_dense = True
+
+            buffer = []
+            for p in data:
+                buffer.append(struct.pack('fffI', p[0], p[1], p[2], i))
+            pc_msg.data = b"".join(buffer)
+
+            obstacles_arr.append(pc_msg)
+
+        obstacles_msg = Obstacles()
+        obstacles_msg.obstacles = obstacles_arr
+        self.publisher.publish(obstacles_msg)
+        self.get_logger().info(f'Published {len(obstacles_arr)} obstacles')
 
     def display_clusters(self, ax, clusters, prev, reorder=True): 
         global COLORS
@@ -229,77 +261,6 @@ class MinimalSubscriber(Node):
         # blob = bucket.blob(f"Alexander_Nevsky_Cathedral,_Sofia/sparse/optical_flow/colmap_model.json")
         # blob.upload_from_filename(f"colmap_model.json")
 
-class Node(object):
-    def __init__(self, data=None, axis=None, left=None, right=None):
-        self.data = data
-        self.axis = axis
-        self.left = left
-        self.right = right
-        self.prev = np.array([0,0,0,0])
-        self.C_prev = np.array([], dtype=object)
-
-    def make_kdtree(self, points, axis, dim):
-        if (points.shape[0] <= 10):
-            # left = None, right = None is a Leaf
-            return Node(data = points, axis = axis) if points.shape[0] > 5 else Node()
-
-        median_id = np.argpartition(points[:, axis], len(points)//2)[len(points)//2]
-        median = points[median_id, axis]
-        left = points[points[:, axis] < median]
-        right = points[points[:, axis] >= median]
-
-        return Node(data = points, axis = axis, 
-                    left = self.make_kdtree(points = left, axis = (axis + 1) % dim, dim = dim),
-                    right = self.make_kdtree(points = right, axis = (axis + 1) % dim, dim = dim))
-    
-    def search_point(self, ax, point, radius, thres, C, C_prev):
-        split_axis = np.median(self.data[:, self.axis])
-        scaled_radius = radius
-        # scaled_radius = max(radius, radius / np.sqrt(np.sum(point[0][:3]**2)))
-
-        if (len(self.data[np.linalg.norm(self.data[:,:3] - point[0][:3], axis=1) <= scaled_radius]) > 0):
-            # centroids = np.array([np.mean(C, axis = 0)[:3] for C in C_prev])
-            # try:
-            #     # match current point to closest centroid in cluster: 
-            #     curr_centroid = np.mean(C[-1], axis = 0)[:3]
-            #     i = np.argmin(np.sum((centroids - curr_centroid) ** 2, axis = 1))
-            #     # print(np.array([np.median(C, axis = 0)[3] for C in C_prev])[i])
-            #     past_centroid = centroids[i]
-            #     self.C_prev = centroids
-            #     self.prev = np.hstack((past_centroid, np.array([np.array([np.median(C, axis = 0)[3] for C in C_prev])[i]])))
-            # except:
-            #     pass
-
-            diff = np.abs(self.data[:, :3] - point[0][:3])
-            mask = np.all(diff < np.array([radius, radius, 2 * radius]), axis=1)
-            in_radius = self.data[mask]
-  
-            return point + [in_radius]
-        
-        if (point[0][:3][self.axis] - scaled_radius < split_axis):
-            point = self.left.search_point(ax, point, radius, thres, C, C_prev)
-        elif (point[0][:3][self.axis] + scaled_radius >= split_axis):
-            point = self.right.search_point(ax, point, radius, thres, C, C_prev)
-
-        return point
-
-    def search_tree(self, ax, root, start_point, radius, thres, C, C_prev):
-        stack = [start_point]
-        unexplored_set = set(map(tuple, Node.unexplored))
-
-        while stack:
-            point = stack.pop()
-            neighbors = np.vstack(self.search_point(ax, [point], radius, thres, C, C_prev)[1:])
-            neighbors = [tuple(p) for p in neighbors if tuple(p) in unexplored_set]
-            
-            for neighbor in neighbors:
-                if neighbor not in C[-1]:
-                    C[-1].append(neighbor)
-                    stack.append(np.array(neighbor))  # Add to stack for further exploration
-                    unexplored_set.remove(neighbor)
-
-        return Node.unexplored
-
 def grow_seed(seed, data, itr, C_prev):
     if itr == 0:
         c, _ = cluster_cpp.euclidean_cluster(seeds = seed, cloud = data, radius = 0.1, MIN_CLUSTER_SIZE = 10, mode = "cartesian", reorder = False, cloud_prev = C_prev)
@@ -321,63 +282,6 @@ def merge(data, thres):
     # Convert the merged values back to NumPy arrays
     merged_result = np.array([[np.array(values), coords[0], coords[1], coords[2]] for coords, values in merged_dict.items()], dtype=object)
     return merged_result
-
-def euclidean_cluster(ax, cloud, radius, intensity_threshold, MIN_CLUSTER_SIZE = 1, mode = "cartesian", cloud_prev = np.array([]), reorder=True):
-    C = []
-    prev = []
-    
-    if reorder:
-        if (mode == "spherical"):
-            z, x, y = cloud[:, 0]*np.sin(cloud[:, 2])*np.cos(cloud[:, 1]), cloud[:, 0]*np.sin(cloud[:, 2])*np.sin(cloud[:, 1]), cloud[:, 0]*np.cos(cloud[:, 2])
-        else:
-            z, x, y = cloud[:, 0], cloud[:, 1], cloud[:, 2]
-    else:
-        x, y, z = cloud[:, 0], cloud[:, 1], cloud[:, 2]
-
-    cloud = np.array([x, y, z, cloud[:, 3]]).T
-    Node.unexplored = set(map(tuple, cloud))
-
-    kd_tree = Node().make_kdtree(cloud, 0, 3)
-
-    while len(Node.unexplored) != 0:
-        
-        next_point = np.array(next(iter(Node.unexplored)))
-        C.append([tuple(next_point)])
-
-        Node.unexplored.remove(tuple(next_point))
-
-        Node.unexplored = kd_tree.search_tree(ax, kd_tree, next_point, radius, intensity_threshold, C, cloud_prev)
-        
-        prev.append(kd_tree.prev)
-
-    clusters = np.empty(len(C), dtype=object)
-
-    for i, cluster in enumerate(C):
-        clusters[i] = np.array(cluster)
-    
-    clusters = np.array([cluster for cluster in np.column_stack((clusters, prev)) if cluster[0].shape[0] > MIN_CLUSTER_SIZE], dtype = object)
-
-    return clusters[:,0], clusters[:,1:]
-
-def euclidean_cluster_2d(ax, cloud, radius, intensity_threshold, MIN_CLUSTER_SIZE = 1, mode = "cartesian", cloud_prev = np.array([])):
-    C = []
-    prevs = []
-
-    for i, c in enumerate(cloud):
-        try:
-            c_out, prev = euclidean_cluster(ax, c * [1, 0, 1, 1], radius, intensity_threshold, MIN_CLUSTER_SIZE, mode, cloud_prev, reorder=False)  
-        except:
-            c_out, prev = [np.array(c)], [list(np.median(cloud_prev[i], axis=0))] 
-            
-        C = C + [c for c in c_out]
-        prevs = prevs + [p for p in prev]
-    
-    clusters = np.empty(len(C), dtype=object)
-
-    for i, cluster in enumerate(C):
-        clusters[i] = cluster
-    
-    return clusters, prevs
 
 def main(args=None):
     rclpy.init(args=args)
