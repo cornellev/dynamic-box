@@ -1,0 +1,18 @@
+[31mCMake Error at CMakeLists.txt:14 (find_package):
+  By not providing "FindOpen3D.cmake" in CMAKE_MODULE_PATH this project has
+  asked CMake to find a package configuration file provided by "Open3D", but
+  CMake did not find one.
+
+  Could not find a package configuration file provided by "Open3D" with any
+  of the following names:
+
+    Open3DConfig.cmake
+    open3d-config.cmake
+
+  Add the installation prefix of "Open3D" to CMAKE_PREFIX_PATH or set
+  "Open3D_DIR" to a directory containing one of the above files.  If "Open3D"
+  provides a separate development package or SDK, be sure it has been
+  installed.
+
+[0m
+gmake: *** [Makefile:1004: cmake_check_build_system] Error 1

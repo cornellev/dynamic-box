@@ -1,0 +1,57 @@
+[0.022s] Invoking command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22
+[0.104s] [  2%] Built target cluster_node__cpp
+[0.104s] [ 12%] Built target cluster_node__rosidl_generator_c
+[0.116s] [ 12%] Built target ament_cmake_python_copy_cluster_node
+[0.126s] [ 21%] Built target cluster_node__rosidl_typesupport_introspection_c
+[0.126s] [ 31%] Built target cluster_node__rosidl_typesupport_fastrtps_cpp
+[0.127s] [ 41%] Built target cluster_node__rosidl_typesupport_c
+[0.127s] [ 51%] Built target cluster_node__rosidl_typesupport_fastrtps_c
+[0.127s] [ 60%] Built target cluster_node__rosidl_typesupport_cpp
+[0.127s] [ 70%] Built target cluster_node__rosidl_typesupport_introspection_cpp
+[0.140s] [ 70%] Built target cluster_node
+[0.153s] [35m[1mConsolidate compiler generated dependencies of target cluster_cpp[0m
+[0.153s] [ 73%] Built target cluster_node__py
+[0.170s] [ 80%] Built target cluster_node__rosidl_generator_py
+[0.173s] [ 82%] [32mBuilding CXX object CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o[0m
+[0.187s] [ 97%] Built target cluster_node__rosidl_typesupport_c__pyext
+[0.187s] [ 97%] Built target cluster_node__rosidl_typesupport_fastrtps_c__pyext
+[0.187s] [ 97%] Built target cluster_node__rosidl_typesupport_introspection_c__pyext
+[0.247s] running egg_info
+[0.254s] writing cluster_node.egg-info/PKG-INFO
+[0.255s] writing dependency_links to cluster_node.egg-info/dependency_links.txt
+[0.255s] writing top-level names to cluster_node.egg-info/top_level.txt
+[0.277s] reading manifest file 'cluster_node.egg-info/SOURCES.txt'
+[0.277s] writing manifest file 'cluster_node.egg-info/SOURCES.txt'
+[0.298s] [ 97%] Built target ament_cmake_python_build_cluster_node_egg
+[5.119s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:156:40:[m[K [01;31m[Kerror: [m[K‘[01m[KVector4d[m[K’ does not name a type
+[5.119s]   156 |     std::tuple euclidean_cluster(const [01;31m[KVector4d[m[K seeds,
+[5.119s]       |                                        [01;31m[K^~~~~~~~[m[K
+[5.123s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:157:39:[m[K [01;31m[Kerror: [m[K‘[01m[KMatrixXd[m[K’ does not name a type
+[5.123s]   157 |                                 const [01;31m[KMatrixXd[m[K& cloud_input,
+[5.123s]       |                                       [01;31m[K^~~~~~~~[m[K
+[5.127s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:160:39:[m[K [01;31m[Kerror: [m[K‘[01m[Kstring[m[K’ does not name a type; did you mean ‘[01m[Kstdin[m[K’?
+[5.127s]   160 |                                 const [01;31m[Kstring[m[K& mode = "cartesian",
+[5.127s]       |                                       [01;31m[K^~~~~~[m[K
+[5.127s]       |                                       [32m[Kstdin[m[K
+[5.129s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:161:39:[m[K [01;31m[Kerror: [m[K‘[01m[Kvector[m[K’ does not name a type
+[5.129s]   161 |                                 const [01;31m[Kvector[m[K<Vector4d>& cloud_prev = {},
+[5.129s]       |                                       [01;31m[K^~~~~~[m[K
+[5.129s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:161:45:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K,[m[K’ or ‘[01m[K...[m[K’ before ‘[01m[K<[m[K’ token
+[5.129s]   161 |                                 const vector[01;31m[K<[m[KVector4d>& cloud_prev = {},
+[5.129s]       |                                             [01;31m[K^[m[K
+[5.129s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:156:16:[m[K [01;31m[Kerror: [m[Kdeduced class type ‘[01m[Ktuple[m[K’ in function return type
+[5.130s]   156 |     std::tuple [01;31m[Keuclidean_cluster[m[K(const Vector4d seeds,
+[5.130s]       |                [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[5.130s] In file included from [01m[K/usr/include/c++/11/bits/move.h:57[m[K,
+[5.130s]                  from [01m[K/usr/include/c++/11/bits/stl_pair.h:59[m[K,
+[5.130s]                  from [01m[K/usr/include/c++/11/bits/stl_algobase.h:64[m[K,
+[5.130s]                  from [01m[K/usr/include/c++/11/memory:63[m[K,
+[5.130s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:153[m[K,
+[5.130s]                  from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[5.130s] [01m[K/usr/include/c++/11/type_traits:45:11:[m[K [01;36m[Knote: [m[K‘[01m[Ktemplate<class ... _Elements> class std::tuple[m[K’ declared here
+[5.130s]    45 |     class [01;36m[Ktuple[m[K;
+[5.130s]       |           [01;36m[K^~~~~[m[K
+[8.004s] gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+[8.004s] gmake[1]: *** [CMakeFiles/Makefile2:594: CMakeFiles/cluster_cpp.dir/all] Error 2
+[8.004s] gmake: *** [Makefile:146: all] Error 2
+[8.007s] Invoked command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22

@@ -1,0 +1,46 @@
+[0.014s] Invoking command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22
+[0.046s] [35m[1mConsolidate compiler generated dependencies of target cluster_cpp[0m
+[0.049s] [  2%] Built target cluster_node__cpp
+[0.051s] [ 12%] Built target cluster_node__rosidl_generator_c
+[0.056s] [ 12%] Built target ament_cmake_python_copy_cluster_node
+[0.069s] [ 21%] Built target cluster_node__rosidl_typesupport_introspection_cpp
+[0.070s] [ 31%] Built target cluster_node__rosidl_typesupport_cpp
+[0.070s] [ 41%] Built target cluster_node__rosidl_typesupport_fastrtps_cpp
+[0.071s] [ 60%] Built target cluster_node__rosidl_typesupport_c
+[0.071s] [ 60%] Built target cluster_node__rosidl_typesupport_fastrtps_c
+[0.072s] [ 63%] [32mBuilding CXX object CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o[0m
+[0.072s] [ 73%] Built target cluster_node__rosidl_typesupport_introspection_c
+[0.087s] [ 73%] Built target cluster_node
+[0.101s] [ 75%] Built target cluster_node__py
+[0.116s] [ 82%] Built target cluster_node__rosidl_generator_py
+[0.132s] [ 97%] Built target cluster_node__rosidl_typesupport_introspection_c__pyext
+[0.133s] [ 97%] Built target cluster_node__rosidl_typesupport_c__pyext
+[0.133s] [ 97%] Built target cluster_node__rosidl_typesupport_fastrtps_c__pyext
+[0.187s] running egg_info
+[0.195s] writing cluster_node.egg-info/PKG-INFO
+[0.196s] writing dependency_links to cluster_node.egg-info/dependency_links.txt
+[0.196s] writing top-level names to cluster_node.egg-info/top_level.txt
+[0.216s] reading manifest file 'cluster_node.egg-info/SOURCES.txt'
+[0.217s] writing manifest file 'cluster_node.egg-info/SOURCES.txt'
+[0.237s] [ 97%] Built target ament_cmake_python_build_cluster_node_egg
+[3.484s] In file included from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/client.hpp:40[m[K,
+[3.484s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/callback_group.hpp:24[m[K,
+[3.484s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/any_executable.hpp:20[m[K,
+[3.484s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategy.hpp:25[m[K,
+[3.484s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategies.hpp:18[m[K,
+[3.484s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor_options.hpp:20[m[K,
+[3.484s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:37[m[K,
+[3.484s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+[3.484s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+[3.485s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+[3.485s]                  from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[3.485s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:23:5:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[Kdo[m[K’
+[3.485s]    23 |     [01;31m[KRCLCPP_INFO[m[K(this->get_logger(), "ClusterNode started - waiting for PointCloud2 on '/rslidar_points'");
+[3.485s]       |     [01;31m[K^~~~~~~~~~~[m[K
+[3.485s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:23:5:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[Kwhile[m[K’
+[3.485s]    23 |     [01;31m[KRCLCPP_INFO[m[K(this->get_logger(), "ClusterNode started - waiting for PointCloud2 on '/rslidar_points'");
+[3.485s]       |     [01;31m[K^~~~~~~~~~~[m[K
+[5.746s] gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+[5.746s] gmake[1]: *** [CMakeFiles/Makefile2:592: CMakeFiles/cluster_cpp.dir/all] Error 2
+[5.747s] gmake: *** [Makefile:146: all] Error 2
+[5.749s] Invoked command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22

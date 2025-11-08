@@ -1,0 +1,20 @@
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kstd::unique_ptr<KdTree<PointT>::Node> KdTree<PointT>::build_recursive(int*, int, int)[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:69:21:[m[K [01;31m[Kerror: [m[K‘[01m[Kmake_unique[m[K’ was not declared in this scope; did you mean ‘[01m[Kstd::make_unique[m[K’?
+   69 |         auto node = [01;31m[Kmake_unique[m[K<Node>();
+      |                     [01;31m[K^~~~~~~~~~~[m[K
+      |                     [32m[Kstd::make_unique[m[K
+In file included from [01m[K/usr/include/c++/11/memory:76[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:153[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[01m[K/usr/include/c++/11/bits/unique_ptr.h:973:5:[m[K [01;36m[Knote: [m[K‘[01m[Kstd::make_unique[m[K’ declared here
+  973 |     [01;36m[Kmake_unique[m[K(_Args&&...) = delete;
+      |     [01;36m[K^~~~~~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:69:37:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K>[m[K’ token
+   69 |         auto node = make_unique<Node[01;31m[K>[m[K();
+      |                                     [01;31m[K^[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:69:39:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K)[m[K’ token
+   69 |         auto node = make_unique<Node>([01;31m[K)[m[K;
+      |                                       [01;31m[K^[m[K
+gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:594: CMakeFiles/cluster_cpp.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

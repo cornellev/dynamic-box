@@ -1,0 +1,312 @@
+[0.000000] (-) TimerEvent: {}
+[0.000543] (cluster_node) JobQueued: {'identifier': 'cluster_node', 'dependencies': OrderedDict()}
+[0.000698] (cluster_node) JobStarted: {'identifier': 'cluster_node'}
+[0.019511] (cluster_node) JobProgress: {'identifier': 'cluster_node', 'progress': 'cmake'}
+[0.021473] (cluster_node) JobProgress: {'identifier': 'cluster_node', 'progress': 'build'}
+[0.022301] (cluster_node) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node', '--', '-j22', '-l22'], 'cwd': '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node', 'env': OrderedDict([('HOSTNAME', 'XT'), ('GIT_ASKPASS', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/extensions/git/dist/askpass.sh'), ('SHLVL', '2'), ('LD_LIBRARY_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib:/home/dev/ws/src/install/rslidar_msg/lib:/home/dev/ws/src/install/obstacle/lib:/home/dev/ws/src/install/cev_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/bin/helpers/browser.sh'), ('HOME', '/root'), ('OLDPWD', '/home/dev/ws/src/dynamic-box/my_rosbag_reader'), ('TERM_PROGRAM_VERSION', '1.105.1'), ('VSCODE_IPC_HOOK_CLI', '/tmp/vscode-ipc-57387dd6-6140-4ece-a484-ce1c2caede6f.sock'), ('WS_DIR', '/home/dev/ws'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/node'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('COLORTERM', 'truecolor'), ('REMOTE_CONTAINERS', 'true'), ('COLCON_PREFIX_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install:/home/dev/ws/src/install'), ('ROS_DISTRO', 'humble'), ('REMOTE_CONTAINERS_IPC', '/tmp/vscode-remote-containers-ipc-f5c091f8-ac64-4334-9fa8-c4afe6062fcd.sock'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/bin/remote-cli:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand'), ('REMOTE_CONTAINERS_SOCKETS', '["/tmp/vscode-ssh-auth-f5c091f8-ac64-4334-9fa8-c4afe6062fcd.sock","/root/.gnupg/S.gpg-agent"]'), ('DISPLAY', ':0'), ('LANG', 'C.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/tmp/vscode-git-727dbb23fb.sock'), ('TERM_PROGRAM', 'vscode'), ('SSH_AUTH_SOCK', '/tmp/vscode-ssh-auth-f5c091f8-ac64-4334-9fa8-c4afe6062fcd.sock'), ('AMENT_PREFIX_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/home/dev/ws/src/install/rslidar_sdk:/home/dev/ws/src/install/rslidar_msg:/home/dev/ws/src/install/obstacle:/home/dev/ws/src/install/cev_msgs:/opt/ros/humble'), ('DEBIAN_FRONTEND', 'noninteractive'), ('SHELL', '/bin/bash'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader/lib/python3.10/site-packages:/home/dev/ws/src/install/rslidar_msg/local/lib/python3.10/dist-packages:/home/dev/ws/src/install/obstacle/local/lib/python3.10/dist-packages:/home/dev/ws/src/install/cev_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('TZ', 'Etc/UTC'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node:/home/dev/ws/src/install/rslidar_sdk:/home/dev/ws/src/install/rslidar_msg:/home/dev/ws/src/install/obstacle:/home/dev/ws/src/install/cev_msgs:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble')]), 'shell': False}
+[0.099754] (-) TimerEvent: {}
+[0.112049] (cluster_node) StdoutLine: {'line': b'[  2%] Built target cluster_node__cpp\n'}
+[0.113222] (cluster_node) StdoutLine: {'line': b'[ 12%] Built target cluster_node__rosidl_generator_c\n'}
+[0.124930] (cluster_node) StdoutLine: {'line': b'[ 12%] Built target ament_cmake_python_copy_cluster_node\n'}
+[0.134860] (cluster_node) StdoutLine: {'line': b'[ 31%] Built target cluster_node__rosidl_typesupport_cpp\n'}
+[0.135135] (cluster_node) StdoutLine: {'line': b'[ 31%] Built target cluster_node__rosidl_typesupport_c\n'}
+[0.135268] (cluster_node) StdoutLine: {'line': b'[ 41%] Built target cluster_node__rosidl_typesupport_fastrtps_cpp\n'}
+[0.135393] (cluster_node) StdoutLine: {'line': b'[ 60%] Built target cluster_node__rosidl_typesupport_introspection_cpp\n'}
+[0.135561] (cluster_node) StdoutLine: {'line': b'[ 63%] Built target cluster_node__rosidl_typesupport_fastrtps_c\n'}
+[0.135636] (cluster_node) StdoutLine: {'line': b'[ 70%] Built target cluster_node__rosidl_typesupport_introspection_c\n'}
+[0.147520] (cluster_node) StdoutLine: {'line': b'[ 70%] Built target cluster_node\n'}
+[0.161238] (cluster_node) StdoutLine: {'line': b'[ 73%] Built target cluster_node__py\n'}
+[0.161530] (cluster_node) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cluster_cpp\x1b[0m\n'}
+[0.177817] (cluster_node) StdoutLine: {'line': b'[ 80%] Built target cluster_node__rosidl_generator_py\n'}
+[0.181620] (cluster_node) StdoutLine: {'line': b'[ 82%] \x1b[32mBuilding CXX object CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o\x1b[0m\n'}
+[0.194712] (cluster_node) StdoutLine: {'line': b'[ 92%] Built target cluster_node__rosidl_typesupport_fastrtps_c__pyext\n'}
+[0.194993] (cluster_node) StdoutLine: {'line': b'[ 92%] Built target cluster_node__rosidl_typesupport_introspection_c__pyext\n'}
+[0.195060] (cluster_node) StdoutLine: {'line': b'[ 97%] Built target cluster_node__rosidl_typesupport_c__pyext\n'}
+[0.199829] (-) TimerEvent: {}
+[0.253337] (cluster_node) StdoutLine: {'line': b'running egg_info\n'}
+[0.259975] (cluster_node) StdoutLine: {'line': b'writing cluster_node.egg-info/PKG-INFO\n'}
+[0.260357] (cluster_node) StdoutLine: {'line': b'writing dependency_links to cluster_node.egg-info/dependency_links.txt\n'}
+[0.260575] (cluster_node) StdoutLine: {'line': b'writing top-level names to cluster_node.egg-info/top_level.txt\n'}
+[0.283001] (cluster_node) StdoutLine: {'line': b"reading manifest file 'cluster_node.egg-info/SOURCES.txt'\n"}
+[0.284107] (cluster_node) StdoutLine: {'line': b"writing manifest file 'cluster_node.egg-info/SOURCES.txt'\n"}
+[0.299975] (-) TimerEvent: {}
+[0.303930] (cluster_node) StdoutLine: {'line': b'[ 97%] Built target ament_cmake_python_build_cluster_node_egg\n'}
+[0.400096] (-) TimerEvent: {}
+[0.500410] (-) TimerEvent: {}
+[0.600763] (-) TimerEvent: {}
+[0.701121] (-) TimerEvent: {}
+[0.801567] (-) TimerEvent: {}
+[0.901917] (-) TimerEvent: {}
+[1.002274] (-) TimerEvent: {}
+[1.102616] (-) TimerEvent: {}
+[1.203009] (-) TimerEvent: {}
+[1.303448] (-) TimerEvent: {}
+[1.403848] (-) TimerEvent: {}
+[1.504205] (-) TimerEvent: {}
+[1.604538] (-) TimerEvent: {}
+[1.704885] (-) TimerEvent: {}
+[1.805368] (-) TimerEvent: {}
+[1.905700] (-) TimerEvent: {}
+[2.005999] (-) TimerEvent: {}
+[2.106346] (-) TimerEvent: {}
+[2.206749] (-) TimerEvent: {}
+[2.307213] (-) TimerEvent: {}
+[2.407622] (-) TimerEvent: {}
+[2.507980] (-) TimerEvent: {}
+[2.608375] (-) TimerEvent: {}
+[2.708848] (-) TimerEvent: {}
+[2.809265] (-) TimerEvent: {}
+[2.909646] (-) TimerEvent: {}
+[3.010081] (-) TimerEvent: {}
+[3.110428] (-) TimerEvent: {}
+[3.210916] (-) TimerEvent: {}
+[3.311493] (-) TimerEvent: {}
+[3.411878] (-) TimerEvent: {}
+[3.512231] (-) TimerEvent: {}
+[3.612597] (-) TimerEvent: {}
+[3.713027] (-) TimerEvent: {}
+[3.813447] (-) TimerEvent: {}
+[3.913932] (-) TimerEvent: {}
+[4.014276] (-) TimerEvent: {}
+[4.114647] (-) TimerEvent: {}
+[4.214991] (-) TimerEvent: {}
+[4.315337] (-) TimerEvent: {}
+[4.415684] (-) TimerEvent: {}
+[4.516037] (-) TimerEvent: {}
+[4.616441] (-) TimerEvent: {}
+[4.716785] (-) TimerEvent: {}
+[4.817149] (-) TimerEvent: {}
+[4.917601] (-) TimerEvent: {}
+[5.017950] (-) TimerEvent: {}
+[5.118303] (-) TimerEvent: {}
+[5.218670] (-) TimerEvent: {}
+[5.319049] (-) TimerEvent: {}
+[5.419425] (-) TimerEvent: {}
+[5.519824] (-) TimerEvent: {}
+[5.620273] (-) TimerEvent: {}
+[5.720694] (-) TimerEvent: {}
+[5.765016] (cluster_node) StderrLine: {'line': b'\x1b[01m\x1b[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kstd::tuple<std::vector<std::vector<Eigen::Matrix<double, 4, 1, 0, 4, 1>, std::allocator<Eigen::Matrix<double, 4, 1, 0, 4, 1> > >, std::allocator<std::vector<Eigen::Matrix<double, 4, 1, 0, 4, 1>, std::allocator<Eigen::Matrix<double, 4, 1, 0, 4, 1> > > > >, std::vector<Eigen::Matrix<double, 4, 1, 0, 4, 1>, std::allocator<Eigen::Matrix<double, 4, 1, 0, 4, 1> > > > ClusterNode::euclidean_cluster(Eigen::Vector4d, const MatrixXd&, double, int, const string&, const std::vector<Eigen::Matrix<double, 4, 1> >&, bool, double)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[5.765345] (cluster_node) StderrLine: {'line': b'\x1b[01m\x1b[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:240:29:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KMIN_CLUSTER_SIZE\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter\x07-Wunused-parameter\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[5.765391] (cluster_node) StderrLine: {'line': b'  240 |                         \x1b[01;35m\x1b[Kint MIN_CLUSTER_SIZE = 1\x1b[m\x1b[K,\n'}
+[5.765421] (cluster_node) StderrLine: {'line': b'      |                         \x1b[01;35m\x1b[K~~~~^~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[5.820820] (-) TimerEvent: {}
+[5.921158] (-) TimerEvent: {}
+[6.021509] (-) TimerEvent: {}
+[6.121868] (-) TimerEvent: {}
+[6.222217] (-) TimerEvent: {}
+[6.322569] (-) TimerEvent: {}
+[6.422919] (-) TimerEvent: {}
+[6.523273] (-) TimerEvent: {}
+[6.623659] (-) TimerEvent: {}
+[6.724041] (-) TimerEvent: {}
+[6.824535] (-) TimerEvent: {}
+[6.924900] (-) TimerEvent: {}
+[7.025250] (-) TimerEvent: {}
+[7.125711] (-) TimerEvent: {}
+[7.226144] (-) TimerEvent: {}
+[7.326631] (-) TimerEvent: {}
+[7.426986] (-) TimerEvent: {}
+[7.527373] (-) TimerEvent: {}
+[7.627861] (-) TimerEvent: {}
+[7.728257] (-) TimerEvent: {}
+[7.828624] (-) TimerEvent: {}
+[7.929026] (-) TimerEvent: {}
+[8.029441] (-) TimerEvent: {}
+[8.129825] (-) TimerEvent: {}
+[8.230304] (-) TimerEvent: {}
+[8.330850] (-) TimerEvent: {}
+[8.431288] (-) TimerEvent: {}
+[8.531655] (-) TimerEvent: {}
+[8.632072] (-) TimerEvent: {}
+[8.732447] (-) TimerEvent: {}
+[8.832889] (-) TimerEvent: {}
+[8.933321] (-) TimerEvent: {}
+[9.033739] (-) TimerEvent: {}
+[9.134241] (-) TimerEvent: {}
+[9.234689] (-) TimerEvent: {}
+[9.334986] (-) TimerEvent: {}
+[9.435322] (-) TimerEvent: {}
+[9.535667] (-) TimerEvent: {}
+[9.636000] (-) TimerEvent: {}
+[9.736673] (-) TimerEvent: {}
+[9.837161] (-) TimerEvent: {}
+[9.937483] (-) TimerEvent: {}
+[10.037799] (-) TimerEvent: {}
+[10.138124] (-) TimerEvent: {}
+[10.238659] (-) TimerEvent: {}
+[10.339143] (-) TimerEvent: {}
+[10.439610] (-) TimerEvent: {}
+[10.539943] (-) TimerEvent: {}
+[10.640283] (-) TimerEvent: {}
+[10.740778] (-) TimerEvent: {}
+[10.841236] (-) TimerEvent: {}
+[10.941576] (-) TimerEvent: {}
+[11.041952] (-) TimerEvent: {}
+[11.142280] (-) TimerEvent: {}
+[11.242590] (-) TimerEvent: {}
+[11.342917] (-) TimerEvent: {}
+[11.443268] (-) TimerEvent: {}
+[11.543658] (-) TimerEvent: {}
+[11.644023] (-) TimerEvent: {}
+[11.744492] (-) TimerEvent: {}
+[11.802819] (cluster_node) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable cluster_cpp\x1b[0m\n'}
+[11.844594] (-) TimerEvent: {}
+[11.944933] (-) TimerEvent: {}
+[12.045280] (-) TimerEvent: {}
+[12.145612] (-) TimerEvent: {}
+[12.245982] (-) TimerEvent: {}
+[12.346334] (-) TimerEvent: {}
+[12.446702] (-) TimerEvent: {}
+[12.547058] (-) TimerEvent: {}
+[12.647438] (-) TimerEvent: {}
+[12.747902] (-) TimerEvent: {}
+[12.848227] (-) TimerEvent: {}
+[12.948578] (-) TimerEvent: {}
+[13.005196] (cluster_node) StdoutLine: {'line': b'[100%] Built target cluster_cpp\n'}
+[13.013425] (cluster_node) CommandEnded: {'returncode': 0}
+[13.015489] (cluster_node) JobProgress: {'identifier': 'cluster_node', 'progress': 'install'}
+[13.020673] (cluster_node) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node'], 'cwd': '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node', 'env': OrderedDict([('HOSTNAME', 'XT'), ('GIT_ASKPASS', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/extensions/git/dist/askpass.sh'), ('SHLVL', '2'), ('LD_LIBRARY_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib:/home/dev/ws/src/install/rslidar_msg/lib:/home/dev/ws/src/install/obstacle/lib:/home/dev/ws/src/install/cev_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/bin/helpers/browser.sh'), ('HOME', '/root'), ('OLDPWD', '/home/dev/ws/src/dynamic-box/my_rosbag_reader'), ('TERM_PROGRAM_VERSION', '1.105.1'), ('VSCODE_IPC_HOOK_CLI', '/tmp/vscode-ipc-57387dd6-6140-4ece-a484-ce1c2caede6f.sock'), ('WS_DIR', '/home/dev/ws'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/node'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('COLORTERM', 'truecolor'), ('REMOTE_CONTAINERS', 'true'), ('COLCON_PREFIX_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install:/home/dev/ws/src/install'), ('ROS_DISTRO', 'humble'), ('REMOTE_CONTAINERS_IPC', '/tmp/vscode-remote-containers-ipc-f5c091f8-ac64-4334-9fa8-c4afe6062fcd.sock'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/bin/remote-cli:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand'), ('REMOTE_CONTAINERS_SOCKETS', '["/tmp/vscode-ssh-auth-f5c091f8-ac64-4334-9fa8-c4afe6062fcd.sock","/root/.gnupg/S.gpg-agent"]'), ('DISPLAY', ':0'), ('LANG', 'C.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/tmp/vscode-git-727dbb23fb.sock'), ('TERM_PROGRAM', 'vscode'), ('SSH_AUTH_SOCK', '/tmp/vscode-ssh-auth-f5c091f8-ac64-4334-9fa8-c4afe6062fcd.sock'), ('AMENT_PREFIX_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/home/dev/ws/src/install/rslidar_sdk:/home/dev/ws/src/install/rslidar_msg:/home/dev/ws/src/install/obstacle:/home/dev/ws/src/install/cev_msgs:/opt/ros/humble'), ('DEBIAN_FRONTEND', 'noninteractive'), ('SHELL', '/bin/bash'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader/lib/python3.10/site-packages:/home/dev/ws/src/install/rslidar_msg/local/lib/python3.10/dist-packages:/home/dev/ws/src/install/obstacle/local/lib/python3.10/dist-packages:/home/dev/ws/src/install/cev_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('TZ', 'Etc/UTC'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node:/home/dev/ws/src/install/rslidar_sdk:/home/dev/ws/src/install/rslidar_msg:/home/dev/ws/src/install/obstacle:/home/dev/ws/src/install/cev_msgs:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble')]), 'shell': False}
+[13.026084] (cluster_node) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[13.026459] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/ament_index/resource_index/rosidl_interfaces/cluster_node\n'}
+[13.026883] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node\n'}
+[13.026984] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg\n'}
+[13.027167] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/rosidl_generator_c__visibility_control.h\n'}
+[13.027319] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail\n'}
+[13.027446] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__struct.h\n'}
+[13.027625] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__functions.c\n'}
+[13.027671] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__type_support.h\n'}
+[13.027700] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__functions.c\n'}
+[13.027728] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__struct.h\n'}
+[13.027760] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__functions.h\n'}
+[13.027787] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__type_support.h\n'}
+[13.027812] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__functions.h\n'}
+[13.027838] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/obstacle_array.h\n'}
+[13.027863] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/obstacle.h\n'}
+[13.027888] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/library_path.sh\n'}
+[13.027913] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/library_path.dsv\n'}
+[13.028366] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_generator_c.so\n'}
+[13.028611] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node\n'}
+[13.028673] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg\n'}
+[13.028701] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail\n'}
+[13.028727] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__rosidl_typesupport_fastrtps_c.h\n'}
+[13.028752] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__rosidl_typesupport_fastrtps_c.h\n'}
+[13.028781] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[13.029320] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_fastrtps_c.so\n'}
+[13.029490] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node\n'}
+[13.029701] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg\n'}
+[13.029744] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/rosidl_generator_cpp__visibility_control.hpp\n'}
+[13.029864] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail\n'}
+[13.029899] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__traits.hpp\n'}
+[13.029929] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__struct.hpp\n'}
+[13.029958] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__type_support.hpp\n'}
+[13.029993] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__type_support.hpp\n'}
+[13.030039] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__struct.hpp\n'}
+[13.030079] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__builder.hpp\n'}
+[13.030114] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__traits.hpp\n'}
+[13.030160] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__builder.hpp\n'}
+[13.030203] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/obstacle.hpp\n'}
+[13.030245] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/obstacle_array.hpp\n'}
+[13.030285] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node\n'}
+[13.030325] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg\n'}
+[13.030365] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail\n'}
+[13.030402] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[13.030433] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[13.030462] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/dds_fastrtps\n'}
+[13.030489] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[13.030909] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_fastrtps_cpp.so\n'}
+[13.031052] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node\n'}
+[13.031180] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg\n'}
+[13.031306] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail\n'}
+[13.031441] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__rosidl_typesupport_introspection_c.h\n'}
+[13.031533] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__type_support.c\n'}
+[13.031616] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__type_support.c\n'}
+[13.031732] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__rosidl_typesupport_introspection_c.h\n'}
+[13.031811] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[13.032006] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_introspection_c.so\n'}
+[13.032656] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_c.so\n'}
+[13.032871] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node\n'}
+[13.032933] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg\n'}
+[13.032962] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail\n'}
+[13.032987] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__type_support.cpp\n'}
+[13.033013] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__type_support.cpp\n'}
+[13.033043] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__rosidl_typesupport_introspection_cpp.hpp\n'}
+[13.033068] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__rosidl_typesupport_introspection_cpp.hpp\n'}
+[13.033575] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_introspection_cpp.so\n'}
+[13.034138] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_cpp.so\n'}
+[13.034311] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/pythonpath.sh\n'}
+[13.034356] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/pythonpath.dsv\n'}
+[13.034387] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node-0.0.0-py3.10.egg-info\n'}
+[13.034433] (cluster_node) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node-0.0.0-py3.10.egg-info/SOURCES.txt\n'}
+[13.034462] (cluster_node) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node-0.0.0-py3.10.egg-info/top_level.txt\n'}
+[13.034586] (cluster_node) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node-0.0.0-py3.10.egg-info/PKG-INFO\n'}
+[13.035270] (cluster_node) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node-0.0.0-py3.10.egg-info/dependency_links.txt\n'}
+[13.035469] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node\n'}
+[13.035517] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg\n'}
+[13.035611] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/_obstacle_array.py\n'}
+[13.035786] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/_obstacle.py\n'}
+[13.035926] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/_obstacle_s.c\n'}
+[13.035969] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/_obstacle_array_s.c\n'}
+[13.035999] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/__init__.py\n'}
+[13.036033] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/_cluster_node_s.ep.rosidl_typesupport_introspection_c.c\n'}
+[13.036060] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[13.036088] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/_cluster_node_s.ep.rosidl_typesupport_fastrtps_c.c\n'}
+[13.036113] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[13.036139] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/libcluster_node__rosidl_generator_py.so\n'}
+[13.036165] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/_cluster_node_s.ep.rosidl_typesupport_c.c\n'}
+[13.036193] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[13.036219] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/__init__.py\n'}
+[13.048657] (-) TimerEvent: {}
+[13.057836] (cluster_node) StdoutLine: {'line': b"Listing '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node'...\n"}
+[13.057997] (cluster_node) StdoutLine: {'line': b"Listing '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg'...\n"}
+[13.061266] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[13.061938] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[13.062528] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[13.063328] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_generator_py.so\n'}
+[13.063565] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/msg/Obstacle.idl\n'}
+[13.063619] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/msg/ObstacleArray.idl\n'}
+[13.063656] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/msg/Obstacle.msg\n'}
+[13.063686] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/msg/ObstacleArray.msg\n'}
+[13.064499] (cluster_node) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/cluster_node/cluster_cpp\n'}
+[13.067368] (cluster_node) StdoutLine: {'line': b'-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/cluster_node/cluster_cpp" to ""\n'}
+[13.067534] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/ament_index/resource_index/package_run_dependencies/cluster_node\n'}
+[13.067629] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/ament_index/resource_index/parent_prefix_path/cluster_node\n'}
+[13.067722] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/ament_prefix_path.sh\n'}
+[13.067821] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/ament_prefix_path.dsv\n'}
+[13.067998] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/path.sh\n'}
+[13.068066] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/path.dsv\n'}
+[13.068150] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/local_setup.bash\n'}
+[13.068223] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/local_setup.sh\n'}
+[13.068295] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/local_setup.zsh\n'}
+[13.068366] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/local_setup.dsv\n'}
+[13.068446] (cluster_node) StdoutLine: {'line': b'-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/package.dsv\n'}
+[13.068588] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/ament_index/resource_index/packages/cluster_node\n'}
+[13.068628] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_generator_cExport.cmake\n'}
+[13.068662] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_generator_cExport-noconfig.cmake\n'}
+[13.068934] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_typesupport_fastrtps_cExport.cmake\n'}
+[13.069061] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_typesupport_fastrtps_cExport-noconfig.cmake\n'}
+[13.069465] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_generator_cppExport.cmake\n'}
+[13.069909] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_typesupport_fastrtps_cppExport.cmake\n'}
+[13.069993] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake\n'}
+[13.070403] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_introspection_cExport.cmake\n'}
+[13.070470] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_introspection_cExport-noconfig.cmake\n'}
+[13.070814] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_cExport.cmake\n'}
+[13.070910] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_cExport-noconfig.cmake\n'}
+[13.071327] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[13.071406] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_introspection_cppExport-noconfig.cmake\n'}
+[13.071787] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_cppExport.cmake\n'}
+[13.071872] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_cppExport-noconfig.cmake\n'}
+[13.072310] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_generator_pyExport.cmake\n'}
+[13.072444] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_generator_pyExport-noconfig.cmake\n'}
+[13.072533] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/rosidl_cmake-extras.cmake\n'}
+[13.072620] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[13.072788] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[13.072828] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[13.072855] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[13.072881] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[13.072909] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[13.072955] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_nodeConfig.cmake\n'}
+[13.072991] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_nodeConfig-version.cmake\n'}
+[13.073027] (cluster_node) StdoutLine: {'line': b'-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/package.xml\n'}
+[13.074711] (cluster_node) CommandEnded: {'returncode': 0}
+[13.093160] (cluster_node) JobEnded: {'identifier': 'cluster_node', 'rc': 0}
+[13.094090] (-) EventReactorShutdown: {}

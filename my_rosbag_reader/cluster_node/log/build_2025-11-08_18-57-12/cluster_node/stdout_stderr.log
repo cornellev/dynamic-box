@@ -1,0 +1,179 @@
+[35m[1mConsolidate compiler generated dependencies of target cluster_cpp[0m
+[  2%] Built target cluster_node__cpp
+[ 12%] Built target cluster_node__rosidl_generator_c
+[ 12%] Built target ament_cmake_python_copy_cluster_node
+[ 21%] Built target cluster_node__rosidl_typesupport_introspection_cpp
+[ 26%] [32mBuilding CXX object CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o[0m
+[ 34%] Built target cluster_node__rosidl_typesupport_cpp
+[ 43%] Built target cluster_node__rosidl_typesupport_fastrtps_cpp
+[ 58%] Built target cluster_node__rosidl_typesupport_c
+[ 63%] Built target cluster_node__rosidl_typesupport_introspection_c
+[ 73%] Built target cluster_node__rosidl_typesupport_fastrtps_c
+[ 73%] Built target cluster_node
+[ 75%] Built target cluster_node__py
+[ 82%] Built target cluster_node__rosidl_generator_py
+[ 87%] Built target cluster_node__rosidl_typesupport_fastrtps_c__pyext
+[ 92%] Built target cluster_node__rosidl_typesupport_introspection_c__pyext
+[ 97%] Built target cluster_node__rosidl_typesupport_c__pyext
+running egg_info
+writing cluster_node.egg-info/PKG-INFO
+writing dependency_links to cluster_node.egg-info/dependency_links.txt
+writing top-level names to cluster_node.egg-info/top_level.txt
+reading manifest file 'cluster_node.egg-info/SOURCES.txt'
+writing manifest file 'cluster_node.egg-info/SOURCES.txt'
+[ 97%] Built target ament_cmake_python_build_cluster_node_egg
+[100%] [32m[1mLinking CXX executable cluster_cpp[0m
+[100%] Built target cluster_cpp
+-- Install configuration: ""
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/ament_index/resource_index/rosidl_interfaces/cluster_node
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/rosidl_generator_c__visibility_control.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__struct.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__functions.c
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__type_support.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__functions.c
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__struct.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__functions.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__type_support.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__functions.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/obstacle_array.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/obstacle.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/library_path.sh
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/library_path.dsv
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_generator_c.so
+-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_generator_c.so" to ""
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__rosidl_typesupport_fastrtps_c.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__rosidl_typesupport_fastrtps_c.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_fastrtps_c.so
+-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_fastrtps_c.so" to ""
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/rosidl_generator_cpp__visibility_control.hpp
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__traits.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__struct.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__type_support.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__type_support.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__struct.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__builder.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__traits.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__builder.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/obstacle.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/obstacle_array.hpp
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/dds_fastrtps
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_fastrtps_cpp.so
+-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_fastrtps_cpp.so" to ""
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__rosidl_typesupport_introspection_c.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__type_support.c
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__type_support.c
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__rosidl_typesupport_introspection_c.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/rosidl_typesupport_introspection_c__visibility_control.h
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_introspection_c.so
+-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_introspection_c.so" to ""
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_c.so
+-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_c.so" to ""
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg
+-- Up-to-date: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__type_support.cpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__type_support.cpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle_array__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/include/cluster_node/cluster_node/msg/detail/obstacle__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_introspection_cpp.so
+-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_introspection_cpp.so" to ""
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_cpp.so
+-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_typesupport_cpp.so" to ""
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/pythonpath.sh
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/pythonpath.dsv
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node-0.0.0-py3.10.egg-info
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node-0.0.0-py3.10.egg-info/SOURCES.txt
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node-0.0.0-py3.10.egg-info/top_level.txt
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node-0.0.0-py3.10.egg-info/PKG-INFO
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node-0.0.0-py3.10.egg-info/dependency_links.txt
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/_obstacle_array.py
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/_obstacle.py
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/_obstacle_s.c
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/_obstacle_array_s.c
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/__init__.py
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/_cluster_node_s.ep.rosidl_typesupport_introspection_c.c
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/_cluster_node_s.ep.rosidl_typesupport_fastrtps_c.c
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/libcluster_node__rosidl_generator_py.so
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/_cluster_node_s.ep.rosidl_typesupport_c.c
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/__init__.py
+Listing '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node'...
+Compiling '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/__init__.py'...
+Listing '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg'...
+Compiling '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/__init__.py'...
+Compiling '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/_obstacle.py'...
+Compiling '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/msg/_obstacle_array.py'...
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages/cluster_node/cluster_node_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_generator_py.so
+-- Set runtime path of "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib/libcluster_node__rosidl_generator_py.so" to ""
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/msg/Obstacle.idl
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/msg/ObstacleArray.idl
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/msg/Obstacle.msg
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/msg/ObstacleArray.msg
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/ament_index/resource_index/package_run_dependencies/cluster_node
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/ament_index/resource_index/parent_prefix_path/cluster_node
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/ament_prefix_path.sh
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/ament_prefix_path.dsv
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/path.sh
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/environment/path.dsv
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/local_setup.bash
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/local_setup.sh
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/local_setup.zsh
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/local_setup.dsv
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/package.dsv
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/ament_index/resource_index/packages/cluster_node
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_generator_cExport.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_generator_cExport-noconfig.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_typesupport_fastrtps_cExport.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_generator_cppExport.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_typesupport_fastrtps_cppExport.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_introspection_cExport.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_introspection_cExport-noconfig.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_cExport.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_cExport-noconfig.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_introspection_cppExport.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_cppExport.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_node__rosidl_typesupport_cppExport-noconfig.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_generator_pyExport.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/export_cluster_node__rosidl_generator_pyExport-noconfig.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/rosidl_cmake-extras.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/ament_cmake_export_libraries-extras.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/ament_cmake_export_targets-extras.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_nodeConfig.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/cmake/cluster_nodeConfig-version.cmake
+-- Installing: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/share/cluster_node/package.xml

@@ -1,0 +1,33 @@
+[0.020s] Invoking command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22
+[0.112s] [  2%] Built target cluster_node__cpp
+[0.113s] [ 12%] Built target cluster_node__rosidl_generator_c
+[0.123s] [ 12%] Built target ament_cmake_python_copy_cluster_node
+[0.133s] [ 29%] Built target cluster_node__rosidl_typesupport_cpp
+[0.133s] [ 31%] Built target cluster_node__rosidl_typesupport_fastrtps_cpp
+[0.134s] [ 41%] Built target cluster_node__rosidl_typesupport_introspection_cpp
+[0.141s] [ 51%] Built target cluster_node__rosidl_typesupport_c
+[0.141s] [ 60%] Built target cluster_node__rosidl_typesupport_introspection_c
+[0.142s] [ 70%] Built target cluster_node__rosidl_typesupport_fastrtps_c
+[0.155s] [ 70%] Built target cluster_node
+[0.169s] [ 73%] Built target cluster_node__py
+[0.169s] [35m[1mConsolidate compiler generated dependencies of target cluster_cpp[0m
+[0.185s] [ 80%] Built target cluster_node__rosidl_generator_py
+[0.187s] [ 82%] [32mBuilding CXX object CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o[0m
+[0.202s] [ 97%] Built target cluster_node__rosidl_typesupport_fastrtps_c__pyext
+[0.202s] [ 97%] Built target cluster_node__rosidl_typesupport_introspection_c__pyext
+[0.202s] [ 97%] Built target cluster_node__rosidl_typesupport_c__pyext
+[0.247s] running egg_info
+[0.254s] writing cluster_node.egg-info/PKG-INFO
+[0.254s] writing dependency_links to cluster_node.egg-info/dependency_links.txt
+[0.255s] writing top-level names to cluster_node.egg-info/top_level.txt
+[0.274s] reading manifest file 'cluster_node.egg-info/SOURCES.txt'
+[0.275s] writing manifest file 'cluster_node.egg-info/SOURCES.txt'
+[0.295s] [ 97%] Built target ament_cmake_python_build_cluster_node_egg
+[4.957s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kvoid ClusterNode::listenerCallback(sensor_msgs::msg::PointCloud2_<std::allocator<void> >::SharedPtr)[m[K’:
+[4.957s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:42:23:[m[K [01;31m[Kerror: [m[K‘[01m[Ko3d[m[K’ has not been declared
+[4.957s]    42 |         pcd.points_ = [01;31m[Ko3d[m[K::utility::Vector3dVector(cloud);
+[4.957s]       |                       [01;31m[K^~~[m[K
+[7.791s] gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+[7.791s] gmake[1]: *** [CMakeFiles/Makefile2:594: CMakeFiles/cluster_cpp.dir/all] Error 2
+[7.791s] gmake: *** [Makefile:146: all] Error 2
+[7.793s] Invoked command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22

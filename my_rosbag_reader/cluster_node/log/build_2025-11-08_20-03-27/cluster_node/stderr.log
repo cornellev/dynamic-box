@@ -1,0 +1,38 @@
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kint KdTree<PointT>::search(const PointT&, double*) const[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:54:27:[m[K [01;31m[Kerror: [m[K‘[01m[Knumeric_limits[m[K’ was not declared in this scope
+   54 |         double _minDist = [01;31m[Knumeric_limits[m[K<double>::max();
+      |                           [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:54:27:[m[K [01;36m[Knote: [m[Ksuggested alternatives:
+In file included from [01m[K/usr/include/c++/11/chrono:41[m[K,
+                 from [01m[K/usr/include/c++/11/mutex:39[m[K,
+                 from [01m[K/usr/include/c++/11/future:38[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:18[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[01m[K/usr/include/c++/11/limits:312:12:[m[K [01;36m[Knote: [m[K  ‘[01m[Kstd::numeric_limits[m[K’
+  312 |     struct [01;36m[Knumeric_limits[m[K : public __numeric_limits_base
+      |            [01;36m[K^~~~~~~~~~~~~~[m[K
+[01m[K/usr/include/c++/11/limits:312:12:[m[K [01;36m[Knote: [m[K  ‘[01m[Kstd::numeric_limits[m[K’
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:54:42:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[Kdouble[m[K’
+   54 |         double _minDist = numeric_limits<[01;31m[Kdouble[m[K>::max();
+      |                                          [01;31m[K^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kstd::unique_ptr<KdTree<PointT>::Node> KdTree<PointT>::build_recursive(int*, int, int)[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:69:21:[m[K [01;31m[Kerror: [m[K‘[01m[Kmake_unique[m[K’ was not declared in this scope; did you mean ‘[01m[Kstd::make_unique[m[K’?
+   69 |         auto node = [01;31m[Kmake_unique[m[K<Node>();
+      |                     [01;31m[K^~~~~~~~~~~[m[K
+      |                     [32m[Kstd::make_unique[m[K
+In file included from [01m[K/usr/include/c++/11/memory:76[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:153[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[01m[K/usr/include/c++/11/bits/unique_ptr.h:973:5:[m[K [01;36m[Knote: [m[K‘[01m[Kstd::make_unique[m[K’ declared here
+  973 |     [01;36m[Kmake_unique[m[K(_Args&&...) = delete;
+      |     [01;36m[K^~~~~~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:69:37:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K>[m[K’ token
+   69 |         auto node = make_unique<Node[01;31m[K>[m[K();
+      |                                     [01;31m[K^[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:69:39:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K)[m[K’ token
+   69 |         auto node = make_unique<Node>([01;31m[K)[m[K;
+      |                                       [01;31m[K^[m[K
+gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:594: CMakeFiles/cluster_cpp.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

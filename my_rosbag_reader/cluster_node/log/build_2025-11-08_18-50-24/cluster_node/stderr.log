@@ -1,0 +1,84 @@
+In file included from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/client.hpp:40[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/callback_group.hpp:24[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/any_executable.hpp:20[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategy.hpp:25[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategies.hpp:18[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor_options.hpp:20[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:37[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:22:5:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[Kdo[m[K’
+   22 |     [01;31m[KRCLCPP_INFO[m[K(this->get_logger(), "ClusterNode started - waiting for PointCloud2 on '/rslidar_points'");
+      |     [01;31m[K^~~~~~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:22:5:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[Kwhile[m[K’
+   22 |     [01;31m[KRCLCPP_INFO[m[K(this->get_logger(), "ClusterNode started - waiting for PointCloud2 on '/rslidar_points'");
+      |     [01;31m[K^~~~~~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:38:2:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ after class definition
+   38 | }
+      |  [01;31m[K^[m[K
+      |  [32m[K;[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In constructor ‘[01m[KClusterNode::ClusterNode()[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:17:9:[m[K [01;31m[Kerror: [m[K‘[01m[Klidar_sub_[m[K’ was not declared in this scope
+   17 |         [01;31m[Klidar_sub_[m[K = this->create_subscription<sensor_msgs::msg::PointCloud2>(
+      |         [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kvoid ClusterNode::listenerCallback(sensor_msgs::msg::PointCloud2_<std::allocator<void> >::SharedPtr)[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:30:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kvector[m[K’ was not declared in this scope
+   30 |         [01;31m[Kvector[m[K<Vector4d> cloud;
+      |         [01;31m[K^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:30:9:[m[K [01;36m[Knote: [m[Ksuggested alternatives:
+In file included from [01m[K/usr/include/c++/11/vector:67[m[K,
+                 from [01m[K/usr/include/c++/11/functional:62[m[K,
+                 from [01m[K/usr/include/c++/11/pstl/glue_algorithm_defs.h:13[m[K,
+                 from [01m[K/usr/include/c++/11/algorithm:74[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:18[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[01m[K/usr/include/c++/11/bits/stl_vector.h:389:11:[m[K [01;36m[Knote: [m[K  ‘[01m[Kstd::vector[m[K’
+  389 |     class [01;36m[Kvector[m[K : protected _Vector_base<_Tp, _Alloc>
+      |           [01;36m[K^~~~~~[m[K
+In file included from [01m[K/usr/include/c++/11/functional:62[m[K,
+                 from [01m[K/usr/include/c++/11/pstl/glue_algorithm_defs.h:13[m[K,
+                 from [01m[K/usr/include/c++/11/algorithm:74[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:18[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[01m[K/usr/include/c++/11/vector:86:13:[m[K [01;36m[Knote: [m[K  ‘[01m[Kstd::pmr::vector[m[K’
+   86 |       using [01;36m[Kvector[m[K = std::vector<_Tp, polymorphic_allocator<_Tp>>;
+      |             [01;36m[K^~~~~~[m[K
+In file included from [01m[K/usr/include/boost/mpl/aux_/include_preprocessed.hpp:37[m[K,
+                 from [01m[K/usr/include/boost/mpl/vector.hpp:46[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/point_struct_traits.h:43[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/type_traits.h:40[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/memory.h:46[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/PCLPointField.h:3[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/conversions.h:46[m[K,
+                 from [01m[K/opt/ros/humble/include/pcl_conversions/pcl_conversions/pcl_conversions.h:47[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:4[m[K:
+[01m[K/usr/include/boost/mpl/aux_/preprocessed/gcc/vector.hpp:22:8:[m[K [01;36m[Knote: [m[K  ‘[01m[Kboost::mpl::vector[m[K’
+   22 | struct [01;36m[Kvector[m[K;
+      |        [01;36m[K^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:30:16:[m[K [01;31m[Kerror: [m[K‘[01m[KVector4d[m[K’ was not declared in this scope; did you mean ‘[01m[KEigen::Vector4d[m[K’?
+   30 |         vector<[01;31m[KVector4d[m[K> cloud;
+      |                [01;31m[K^~~~~~~~[m[K
+      |                [32m[KEigen::Vector4d[m[K
+In file included from [01m[K/usr/include/eigen3/Eigen/Core:295[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/memory.h:48[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/PCLPointField.h:3[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/conversions.h:46[m[K,
+                 from [01m[K/opt/ros/humble/include/pcl_conversions/pcl_conversions/pcl_conversions.h:47[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:4[m[K:
+[01m[K/usr/include/eigen3/Eigen/src/Core/Matrix.h:506:1:[m[K [01;36m[Knote: [m[K‘[01m[KEigen::Vector4d[m[K’ declared here
+  506 | [01;36m[KEIGEN_MAKE_TYPEDEFS_ALL_SIZES[m[K(double,               d)
+      | [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:30:26:[m[K [01;31m[Kerror: [m[K‘[01m[Kcloud[m[K’ was not declared in this scope
+   30 |         vector<Vector4d> [01;31m[Kcloud[m[K;
+      |                          [01;31m[K^~~~~[m[K
+gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:592: CMakeFiles/cluster_cpp.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

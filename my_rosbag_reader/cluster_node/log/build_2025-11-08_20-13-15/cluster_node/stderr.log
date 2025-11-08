@@ -1,0 +1,27 @@
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:159:45:[m[K [01;31m[Kerror: [m[K‘[01m[KVector4d[m[K’ in namespace ‘[01m[Kstd[m[K’ does not name a type; did you mean ‘[01m[Kvector[m[K’?
+  159 |     std::tuple euclidean_cluster(const std::[01;31m[KVector4d[m[K seeds,
+      |                                             [01;31m[K^~~~~~~~[m[K
+      |                                             [32m[Kvector[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:164:56:[m[K [01;31m[Kerror: [m[K‘[01m[KVector4d[m[K’ is not a member of ‘[01m[Kstd[m[K’; did you mean ‘[01m[Kvector[m[K’?
+  164 |                                 const std::vector<std::[01;31m[KVector4d[m[K>& cloud_prev = {},
+      |                                                        [01;31m[K^~~~~~~~[m[K
+      |                                                        [32m[Kvector[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:164:64:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+  164 |                                 const std::vector<std::Vector4d[01;31m[K>[m[K& cloud_prev = {},
+      |                                                                [01;31m[K^[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:164:64:[m[K [01;31m[Kerror: [m[Ktemplate argument 2 is invalid
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:159:16:[m[K [01;31m[Kerror: [m[Kdeduced class type ‘[01m[Ktuple[m[K’ in function return type
+  159 |     std::tuple [01;31m[Keuclidean_cluster[m[K(const std::Vector4d seeds,
+      |                [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/usr/include/c++/11/bits/move.h:57[m[K,
+                 from [01m[K/usr/include/c++/11/bits/stl_pair.h:59[m[K,
+                 from [01m[K/usr/include/c++/11/bits/stl_algobase.h:64[m[K,
+                 from [01m[K/usr/include/c++/11/memory:63[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:153[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[01m[K/usr/include/c++/11/type_traits:45:11:[m[K [01;36m[Knote: [m[K‘[01m[Ktemplate<class ... _Elements> class std::tuple[m[K’ declared here
+   45 |     class [01;36m[Ktuple[m[K;
+      |           [01;36m[K^~~~~[m[K
+gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:594: CMakeFiles/cluster_cpp.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

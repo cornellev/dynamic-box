@@ -1,0 +1,22 @@
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kvoid ClusterNode::listenerCallback(sensor_msgs::msg::PointCloud2_<std::allocator<void> >::SharedPtr)[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:48:25:[m[K [01;31m[Kerror: [m[Kconflicting declaration ‘[01m[KEigen::MatrixXd cloud[m[K’
+   48 |         Eigen::MatrixXd [01;31m[Kcloud[m[K(points.size(), 4);
+      |                         [01;31m[K^~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:33:38:[m[K [01;36m[Knote: [m[Kprevious declaration as ‘[01m[Kstd::vector<Eigen::Matrix<double, 3, 1> > cloud[m[K’
+   33 |         std::vector<Eigen::Vector3d> [01;36m[Kcloud[m[K;
+      |                                      [01;36m[K^~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:51:18:[m[K [01;31m[Kerror: [m[Kno match for call to ‘[01m[K(std::vector<Eigen::Matrix<double, 3, 1> >) (size_t&, int)[m[K’
+   51 |             [01;31m[Kcloud(i, 0)[m[K = points ;  // x
+      |             [01;31m[K~~~~~^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:52:18:[m[K [01;31m[Kerror: [m[Kno match for call to ‘[01m[K(std::vector<Eigen::Matrix<double, 3, 1> >) (size_t&, int)[m[K’
+   52 |             [01;31m[Kcloud(i, 1)[m[K = points ;  // y
+      |             [01;31m[K~~~~~^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:53:18:[m[K [01;31m[Kerror: [m[Kno match for call to ‘[01m[K(std::vector<Eigen::Matrix<double, 3, 1> >) (size_t&, int)[m[K’
+   53 |             [01;31m[Kcloud(i, 2)[m[K = points ;  // z
+      |             [01;31m[K~~~~~^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:54:18:[m[K [01;31m[Kerror: [m[Kno match for call to ‘[01m[K(std::vector<Eigen::Matrix<double, 3, 1> >) (size_t&, int)[m[K’
+   54 |             [01;31m[Kcloud(i, 3)[m[K = points ;  // duplicate z (like Python’s cloud[:,2])
+      |             [01;31m[K~~~~~^~~~~~[m[K
+gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:594: CMakeFiles/cluster_cpp.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

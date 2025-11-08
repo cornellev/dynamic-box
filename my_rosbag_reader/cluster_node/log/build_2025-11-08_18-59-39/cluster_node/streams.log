@@ -1,0 +1,81 @@
+[0.011s] Invoking command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22
+[0.036s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.152s] -- Found rclcpp: 16.0.15 (/opt/ros/humble/share/rclcpp/cmake)
+[0.204s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.207s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.218s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.230s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.245s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.284s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.287s] -- Found rmw_fastrtps_cpp: 6.2.8 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.390s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.454s] -- Found sensor_msgs: 4.9.0 (/opt/ros/humble/share/sensor_msgs/cmake)
+[0.494s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[0.519s] -- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+[0.687s] -- Found Eigen3: /usr/include/eigen3 (found version "3.4.0") 
+[0.811s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[0.816s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[0.816s] [0m** WARNING ** io features related to pcap will be disabled[0m
+[0.905s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[0.909s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[0.913s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[1.001s] -- Found Qhull version 8.0.2
+[1.091s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.178s] -- looking for PCL_COMMON
+[1.178s] -- looking for PCL_KDTREE
+[1.178s] -- looking for PCL_OCTREE
+[1.178s] -- looking for PCL_SEARCH
+[1.178s] -- looking for PCL_SAMPLE_CONSENSUS
+[1.179s] -- looking for PCL_FILTERS
+[1.179s] -- looking for PCL_2D
+[1.179s] -- looking for PCL_GEOMETRY
+[1.179s] -- looking for PCL_IO
+[1.180s] -- looking for PCL_FEATURES
+[1.180s] -- looking for PCL_ML
+[1.180s] -- looking for PCL_SEGMENTATION
+[1.180s] -- looking for PCL_VISUALIZATION
+[1.181s] -- looking for PCL_SURFACE
+[1.181s] -- looking for PCL_REGISTRATION
+[1.181s] -- looking for PCL_KEYPOINTS
+[1.181s] -- looking for PCL_TRACKING
+[1.181s] -- looking for PCL_RECOGNITION
+[1.182s] -- looking for PCL_STEREO
+[1.182s] -- looking for PCL_APPS
+[1.182s] -- looking for PCL_IN_HAND_SCANNER
+[1.183s] -- looking for PCL_MODELER
+[1.183s] -- looking for PCL_POINT_CLOUD_EDITOR
+[1.183s] -- looking for PCL_OUTOFCORE
+[1.183s] -- looking for PCL_PEOPLE
+[1.186s] -- Found pcl_conversions: 2.4.5 (/opt/ros/humble/share/pcl_conversions/cmake)
+[1.208s] -- Found pcl_ros: 2.4.5 (/opt/ros/humble/share/pcl_ros/cmake)
+[1.227s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[1.229s] -- Found Eigen3: TRUE (found version "3.4.0") 
+[1.229s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[1.316s] -- Found cev_msgs: 0.0.0 (/home/dev/ws/src/install/cev_msgs/share/cev_msgs/cmake)
+[1.331s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[1.344s] -- Found visualization_msgs: 4.9.0 (/opt/ros/humble/share/visualization_msgs/cmake)
+[1.560s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[1.837s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.943s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.956s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[1.970s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.971s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[1.971s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[2.011s] [0mCMake Deprecation Warning at /opt/ros/humble/share/rosidl_cmake/cmake/rosidl_target_interfaces.cmake:32 (message):
+[2.011s]   Use rosidl_get_typesupport_target() and target_link_libraries() instead of
+[2.011s]   rosidl_target_interfaces()
+[2.011s] Call Stack (most recent call first):
+[2.011s]   CMakeLists.txt:46 (rosidl_target_interfaces)
+[2.011s] 
+[2.011s] [0m
+[2.011s] [31mCMake Error at /opt/ros/humble/share/rosidl_cmake/cmake/rosidl_target_interfaces.cmake:38 (message):
+[2.012s]   rosidl_target_interfaces() the first argument 'obstacle_node' must be a
+[2.012s]   valid target name
+[2.012s] Call Stack (most recent call first):
+[2.012s]   CMakeLists.txt:46 (rosidl_target_interfaces)
+[2.012s] 
+[2.012s] [0m
+[2.012s] -- Configuring incomplete, errors occurred!
+[2.012s] See also "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node/CMakeFiles/CMakeOutput.log".
+[2.022s] gmake: *** [Makefile:1004: cmake_check_build_system] Error 1
+[2.024s] Invoked command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22

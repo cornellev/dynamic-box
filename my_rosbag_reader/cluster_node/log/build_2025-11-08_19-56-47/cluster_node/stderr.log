@@ -1,0 +1,141 @@
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:19:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kvector[m[K’ does not name a type
+   19 |     KdTree(const [01;31m[Kvector[m[K<PointT>& points, int dim = -1) {
+      |                  [01;31m[K^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:19:24:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K,[m[K’ or ‘[01m[K...[m[K’ before ‘[01m[K<[m[K’ token
+   19 |     KdTree(const vector[01;31m[K<[m[KPointT>& points, int dim = -1) {
+      |                        [01;31m[K^[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:23:22:[m[K [01;31m[Kerror: [m[K‘[01m[Kvector[m[K’ does not name a type
+   23 |     void build(const [01;31m[Kvector[m[K<PointT>& points, int dim = -1) {
+      |                      [01;31m[K^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:23:28:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K,[m[K’ or ‘[01m[K...[m[K’ before ‘[01m[K<[m[K’ token
+   23 |     void build(const vector[01;31m[K<[m[KPointT>& points, int dim = -1) {
+      |                            [01;31m[K^[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:41:9:[m[K [01;31m[Kerror: [m[K‘[01m[Karray[m[K’ does not name a type
+   41 |         [01;31m[Karray[m[K<unique_ptr<Node>, 2> next;
+      |         [01;31m[K^~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:54:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kunique_ptr[m[K’ does not name a type
+   54 |     [01;31m[Kunique_ptr[m[K<Node> build_recursive(int* indices, int npoints, int depth) {
+      |     [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:90:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kunique_ptr[m[K’ does not name a type
+   90 |     [01;31m[Kunique_ptr[m[K<Node> root_;
+      |     [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:91:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kvector[m[K’ does not name a type
+   91 |     [01;31m[Kvector[m[K<PointT> points_;
+      |     [01;31m[K^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In constructor ‘[01m[KKdTree<PointT>::KdTree(int)[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:20:15:[m[K [01;31m[Kerror: [m[K‘[01m[Kpoints[m[K’ was not declared in this scope; did you mean ‘[01m[KPointT[m[K’?
+   20 |         build([01;31m[Kpoints[m[K, dim);
+      |               [01;31m[K^~~~~~[m[K
+      |               [32m[KPointT[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:20:23:[m[K [01;31m[Kerror: [m[K‘[01m[Kdim[m[K’ was not declared in this scope; did you mean ‘[01m[Kdim_[m[K’?
+   20 |         build(points, [01;31m[Kdim[m[K);
+      |                       [01;31m[K^~~[m[K
+      |                       [32m[Kdim_[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kvoid KdTree<PointT>::build(int)[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:25:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kpoints_[m[K’ was not declared in this scope
+   25 |         [01;31m[Kpoints_[m[K = points;
+      |         [01;31m[K^~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:25:19:[m[K [01;31m[Kerror: [m[K‘[01m[Kpoints[m[K’ was not declared in this scope; did you mean ‘[01m[KPointT[m[K’?
+   25 |         points_ = [01;31m[Kpoints[m[K;
+      |                   [01;31m[K^~~~~~[m[K
+      |                   [32m[KPointT[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:26:17:[m[K [01;31m[Kerror: [m[K‘[01m[Kdim[m[K’ was not declared in this scope; did you mean ‘[01m[Kdim_[m[K’?
+   26 |         dim_ = ([01;31m[Kdim[m[K > 0) ? dim : 3;
+      |                 [01;31m[K^~~[m[K
+      |                 [32m[Kdim_[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:28:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kvector[m[K’ was not declared in this scope
+   28 |         [01;31m[Kvector[m[K<int> indices(points.size());
+      |         [01;31m[K^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:28:9:[m[K [01;36m[Knote: [m[Ksuggested alternatives:
+In file included from [01m[K/usr/include/c++/11/vector:67[m[K,
+                 from [01m[K/usr/include/c++/11/functional:62[m[K,
+                 from [01m[K/usr/include/c++/11/pstl/glue_algorithm_defs.h:13[m[K,
+                 from [01m[K/usr/include/c++/11/algorithm:74[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:18[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[01m[K/usr/include/c++/11/bits/stl_vector.h:389:11:[m[K [01;36m[Knote: [m[K  ‘[01m[Kstd::vector[m[K’
+  389 |     class [01;36m[Kvector[m[K : protected _Vector_base<_Tp, _Alloc>
+      |           [01;36m[K^~~~~~[m[K
+In file included from [01m[K/usr/include/c++/11/functional:62[m[K,
+                 from [01m[K/usr/include/c++/11/pstl/glue_algorithm_defs.h:13[m[K,
+                 from [01m[K/usr/include/c++/11/algorithm:74[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:18[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[01m[K/usr/include/c++/11/vector:86:13:[m[K [01;36m[Knote: [m[K  ‘[01m[Kstd::pmr::vector[m[K’
+   86 |       using [01;36m[Kvector[m[K = std::vector<_Tp, polymorphic_allocator<_Tp>>;
+      |             [01;36m[K^~~~~~[m[K
+In file included from [01m[K/usr/include/boost/mpl/aux_/include_preprocessed.hpp:37[m[K,
+                 from [01m[K/usr/include/boost/mpl/vector.hpp:46[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/point_struct_traits.h:43[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/type_traits.h:40[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/memory.h:46[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/PCLPointField.h:3[m[K,
+                 from [01m[K/usr/include/pcl-1.12/pcl/conversions.h:46[m[K,
+                 from [01m[K/opt/ros/humble/include/pcl_conversions/pcl_conversions/pcl_conversions.h:47[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:5[m[K:
+[01m[K/usr/include/boost/mpl/aux_/preprocessed/gcc/vector.hpp:22:8:[m[K [01;36m[Knote: [m[K  ‘[01m[Kboost::mpl::vector[m[K’
+   22 | struct [01;36m[Kvector[m[K;
+      |        [01;36m[K^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:28:16:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[Kint[m[K’
+   28 |         vector<[01;31m[Kint[m[K> indices(points.size());
+      |                [01;31m[K^~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:29:14:[m[K [01;31m[Kerror: [m[K‘[01m[Kindices[m[K’ was not declared in this scope; did you mean ‘[01m[Knice[m[K’?
+   29 |         iota([01;31m[Kindices[m[K.begin(), indices.end(), 0);
+      |              [01;31m[K^~~~~~~[m[K
+      |              [32m[Knice[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:29:9:[m[K [01;31m[Kerror: [m[Kthere are no arguments to ‘[01m[Kiota[m[K’ that depend on a template parameter, so a declaration of ‘[01m[Kiota[m[K’ must be available [[01;31m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-fpermissive-fpermissive]8;;[m[K]
+   29 |         [01;31m[Kiota[m[K(indices.begin(), indices.end(), 0);
+      |         [01;31m[K^~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:29:9:[m[K [01;36m[Knote: [m[K(if you use ‘[01m[K-fpermissive[m[K’, G++ will accept your code, but allowing the use of an undeclared name is deprecated)
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:31:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kroot_[m[K’ was not declared in this scope
+   31 |         [01;31m[Kroot_[m[K = build_recursive(indices.data(), static_cast<int>(points.size()), 0);
+      |         [01;31m[K^~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:31:17:[m[K [01;31m[Kerror: [m[Kthere are no arguments to ‘[01m[Kbuild_recursive[m[K’ that depend on a template parameter, so a declaration of ‘[01m[Kbuild_recursive[m[K’ must be available [[01;31m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-fpermissive-fpermissive]8;;[m[K]
+   31 |         root_ = [01;31m[Kbuild_recursive[m[K(indices.data(), static_cast<int>(points.size()), 0);
+      |                 [01;31m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kvoid KdTree<PointT>::clear()[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:35:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kroot_[m[K’ was not declared in this scope
+   35 |         [01;31m[Kroot_[m[K.reset();
+      |         [01;31m[K^~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:36:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kpoints_[m[K’ was not declared in this scope
+   36 |         [01;31m[Kpoints_[m[K.clear();
+      |         [01;31m[K^~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kint KdTree<PointT>::search(const PointT&, double*) const[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:47:27:[m[K [01;31m[Kerror: [m[K‘[01m[Knumeric_limits[m[K’ was not declared in this scope
+   47 |         double _minDist = [01;31m[Knumeric_limits[m[K<double>::max();
+      |                           [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:47:27:[m[K [01;36m[Knote: [m[Ksuggested alternatives:
+In file included from [01m[K/usr/include/c++/11/chrono:41[m[K,
+                 from [01m[K/usr/include/c++/11/mutex:39[m[K,
+                 from [01m[K/usr/include/c++/11/future:38[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:18[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+                 from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[01m[K/usr/include/c++/11/limits:312:12:[m[K [01;36m[Knote: [m[K  ‘[01m[Kstd::numeric_limits[m[K’
+  312 |     struct [01;36m[Knumeric_limits[m[K : public __numeric_limits_base
+      |            [01;36m[K^~~~~~~~~~~~~~[m[K
+[01m[K/usr/include/c++/11/limits:312:12:[m[K [01;36m[Knote: [m[K  ‘[01m[Kstd::numeric_limits[m[K’
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:47:42:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[Kdouble[m[K’
+   47 |         double _minDist = numeric_limits<[01;31m[Kdouble[m[K>::max();
+      |                                          [01;31m[K^~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:48:33:[m[K [01;31m[Kerror: [m[K‘[01m[Kroot_[m[K’ was not declared in this scope
+   48 |         search_recursive(query, [01;31m[Kroot_[m[K.get(), &guess, &_minDist);
+      |                                 [01;31m[K^~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kvoid KdTree<PointT>::search_recursive(const PointT&, const KdTree<PointT>::Node*, int*, double*) const[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:78:31:[m[K [01;31m[Kerror: [m[K‘[01m[Kpoints_[m[K’ was not declared in this scope
+   78 |         const PointT& train = [01;31m[Kpoints_[m[K[node->idx];
+      |                               [01;31m[K^~~~~~~[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kvoid ClusterNode::listenerCallback(sensor_msgs::msg::PointCloud2_<std::allocator<void> >::SharedPtr)[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:144:19:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass ClusterNode[m[K’ has no member named ‘[01m[Kdata[m[K’; did you mean ‘[01m[Kdata_[m[K’?
+  144 |             this->[01;31m[Kdata[m[K
+      |                   [01;31m[K^~~~[m[K
+      |                   [32m[Kdata_[m[K
+gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:594: CMakeFiles/cluster_cpp.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

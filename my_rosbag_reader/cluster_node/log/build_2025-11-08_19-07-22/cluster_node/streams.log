@@ -1,0 +1,33 @@
+[0.021s] Invoking command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22
+[0.094s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.198s] -- Found rclcpp: 16.0.15 (/opt/ros/humble/share/rclcpp/cmake)
+[0.251s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.254s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.262s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.275s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.288s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.328s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.331s] -- Found rmw_fastrtps_cpp: 6.2.8 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.428s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.492s] -- Found sensor_msgs: 4.9.0 (/opt/ros/humble/share/sensor_msgs/cmake)
+[0.528s] [31mCMake Error at CMakeLists.txt:14 (find_package):
+[0.528s]   By not providing "FindOpen3D.cmake" in CMAKE_MODULE_PATH this project has
+[0.528s]   asked CMake to find a package configuration file provided by "Open3D", but
+[0.528s]   CMake did not find one.
+[0.528s] 
+[0.529s]   Could not find a package configuration file provided by "Open3D" with any
+[0.529s]   of the following names:
+[0.529s] 
+[0.529s]     Open3DConfig.cmake
+[0.529s]     open3d-config.cmake
+[0.529s] 
+[0.529s]   Add the installation prefix of "Open3D" to CMAKE_PREFIX_PATH or set
+[0.529s]   "Open3D_DIR" to a directory containing one of the above files.  If "Open3D"
+[0.529s]   provides a separate development package or SDK, be sure it has been
+[0.529s]   installed.
+[0.529s] 
+[0.529s] [0m
+[0.529s] -- Configuring incomplete, errors occurred!
+[0.529s] See also "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node/CMakeFiles/CMakeOutput.log".
+[0.537s] gmake: *** [Makefile:1004: cmake_check_build_system] Error 1
+[0.539s] Invoked command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22

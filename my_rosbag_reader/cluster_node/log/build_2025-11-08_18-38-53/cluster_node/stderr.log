@@ -1,0 +1,15 @@
+[31mCMake Error at CMakeLists.txt:27 (add_executable):
+  add_executable cannot create target "cluster_node" because another target
+  with the same name already exists.  The existing target is a custom target
+  created in source directory
+  "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node".  See
+  documentation for policy CMP0002 for more details.
+
+[0m
+[31mCMake Error at /opt/ros/humble/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:77 (message):
+  ament_target_dependencies() the passed package name 'pcl_conversions' was
+  not found before
+Call Stack (most recent call first):
+  CMakeLists.txt:29 (ament_target_dependencies)
+
+[0m

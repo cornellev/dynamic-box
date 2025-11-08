@@ -1,0 +1,216 @@
+[0.011s] Invoking command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node -DCMAKE_INSTALL_PREFIX=/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node
+[0.018s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.094s] -- Found rclcpp: 16.0.15 (/opt/ros/humble/share/rclcpp/cmake)
+[0.111s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.112s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.116s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.122s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.129s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.146s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.147s] -- Found rmw_fastrtps_cpp: 6.2.8 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.207s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.234s] -- Found sensor_msgs: 4.9.0 (/opt/ros/humble/share/sensor_msgs/cmake)
+[0.263s] -- Checking for module 'eigen3'
+[0.271s] --   Found eigen3, version 3.4.0
+[0.290s] -- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") 
+[0.290s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[0.314s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.65.0") found components: system filesystem date_time iostreams serialization 
+[0.326s] -- Checking for module 'flann'
+[0.333s] --   Found flann, version 1.9.1
+[0.354s] -- Found FLANN: /usr/lib/x86_64-linux-gnu/libflann_cpp.so  
+[0.354s] -- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+[0.383s] -- Found GLEW: /usr/lib/x86_64-linux-gnu/libGLEW.so  
+[0.389s] -- Found OpenGL: /usr/lib/x86_64-linux-gnu/libOpenGL.so  found components: OpenGL GLX 
+[0.566s] -- Found MPI_C: /usr/lib/x86_64-linux-gnu/libmpi.so (found version "3.1") 
+[0.566s] -- Found MPI: TRUE (found version "3.1") found components: C 
+[0.569s] -- Found JsonCpp: /usr/lib/x86_64-linux-gnu/libjsoncpp.so (found suitable version "1.9.5", minimum required is "0.7.0") 
+[0.574s] -- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.2.11") 
+[0.582s] -- Found PNG: /usr/lib/x86_64-linux-gnu/libpng.so (found version "1.6.37") 
+[0.601s] -- Found Eigen3: /usr/include/eigen3 (found version "3.4.0") 
+[0.654s] -- Found X11: /usr/include   
+[0.655s] -- Looking for XOpenDisplay in /usr/lib/x86_64-linux-gnu/libX11.so;/usr/lib/x86_64-linux-gnu/libXext.so
+[0.708s] -- Looking for XOpenDisplay in /usr/lib/x86_64-linux-gnu/libX11.so;/usr/lib/x86_64-linux-gnu/libXext.so - found
+[0.709s] -- Looking for gethostbyname
+[0.750s] -- Looking for gethostbyname - found
+[0.750s] -- Looking for connect
+[0.792s] -- Looking for connect - found
+[0.792s] -- Looking for remove
+[0.832s] -- Looking for remove - found
+[0.832s] -- Looking for shmat
+[0.871s] -- Looking for shmat - found
+[0.871s] -- Looking for IceConnectionNumber in ICE
+[0.915s] -- Looking for IceConnectionNumber in ICE - found
+[0.973s] -- Found EXPAT: /usr/lib/x86_64-linux-gnu/libexpat.so (found version "2.4.7") 
+[0.975s] -- Found double-conversion: /usr/lib/x86_64-linux-gnu/libdouble-conversion.so  
+[0.977s] -- Found LZ4: /usr/lib/x86_64-linux-gnu/liblz4.so (found version "1.9.3") 
+[0.979s] -- Found LZMA: /usr/lib/x86_64-linux-gnu/liblzma.so (found version "5.2.5") 
+[1.036s] -- Found JPEG: /usr/lib/x86_64-linux-gnu/libjpeg.so (found version "80") 
+[1.040s] -- Found TIFF: /usr/lib/x86_64-linux-gnu/libtiff.so (found version "4.3.0")  
+[1.042s] -- Found Freetype: /usr/lib/x86_64-linux-gnu/libfreetype.so (found version "2.11.1") 
+[1.047s] -- Found utf8cpp: /usr/include/utf8cpp  
+[1.101s] -- Checking for module 'libusb-1.0'
+[1.109s] --   Found libusb-1.0, version 1.0.25
+[1.127s] -- Found libusb: /usr/lib/x86_64-linux-gnu/libusb-1.0.so  
+[1.129s] -- Found OpenNI: /usr/lib/libOpenNI.so;libusb::libusb (found version "1.5.4.0") 
+[1.130s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.164s] -- Found OpenNI2: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb (found version "2.2.0.33") 
+[1.164s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[1.164s] [0m** WARNING ** io features related to pcap will be disabled[0m
+[1.258s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[1.262s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.266s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[1.357s] -- Found Qhull version 8.0.2
+[1.445s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.531s] -- looking for PCL_COMMON
+[1.532s] -- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  
+[1.532s] -- looking for PCL_KDTREE
+[1.532s] -- Found PCL_KDTREE: /usr/lib/x86_64-linux-gnu/libpcl_kdtree.so  
+[1.532s] -- looking for PCL_OCTREE
+[1.533s] -- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  
+[1.533s] -- looking for PCL_SEARCH
+[1.533s] -- Found PCL_SEARCH: /usr/lib/x86_64-linux-gnu/libpcl_search.so  
+[1.534s] -- looking for PCL_SAMPLE_CONSENSUS
+[1.534s] -- Found PCL_SAMPLE_CONSENSUS: /usr/lib/x86_64-linux-gnu/libpcl_sample_consensus.so  
+[1.534s] -- looking for PCL_FILTERS
+[1.534s] -- Found PCL_FILTERS: /usr/lib/x86_64-linux-gnu/libpcl_filters.so  
+[1.535s] -- looking for PCL_2D
+[1.535s] -- Found PCL_2D: /usr/include/pcl-1.12  
+[1.535s] -- looking for PCL_GEOMETRY
+[1.535s] -- Found PCL_GEOMETRY: /usr/include/pcl-1.12  
+[1.535s] -- looking for PCL_IO
+[1.536s] -- Found PCL_IO: /usr/lib/x86_64-linux-gnu/libpcl_io.so  
+[1.536s] -- looking for PCL_FEATURES
+[1.536s] -- Found PCL_FEATURES: /usr/lib/x86_64-linux-gnu/libpcl_features.so  
+[1.536s] -- looking for PCL_ML
+[1.537s] -- Found PCL_ML: /usr/lib/x86_64-linux-gnu/libpcl_ml.so  
+[1.537s] -- looking for PCL_SEGMENTATION
+[1.537s] -- Found PCL_SEGMENTATION: /usr/lib/x86_64-linux-gnu/libpcl_segmentation.so  
+[1.537s] -- looking for PCL_VISUALIZATION
+[1.538s] -- Found PCL_VISUALIZATION: /usr/lib/x86_64-linux-gnu/libpcl_visualization.so  
+[1.538s] -- looking for PCL_SURFACE
+[1.538s] -- Found PCL_SURFACE: /usr/lib/x86_64-linux-gnu/libpcl_surface.so  
+[1.539s] -- looking for PCL_REGISTRATION
+[1.539s] -- Found PCL_REGISTRATION: /usr/lib/x86_64-linux-gnu/libpcl_registration.so  
+[1.539s] -- looking for PCL_KEYPOINTS
+[1.539s] -- Found PCL_KEYPOINTS: /usr/lib/x86_64-linux-gnu/libpcl_keypoints.so  
+[1.540s] -- looking for PCL_TRACKING
+[1.540s] -- Found PCL_TRACKING: /usr/lib/x86_64-linux-gnu/libpcl_tracking.so  
+[1.540s] -- looking for PCL_RECOGNITION
+[1.540s] -- Found PCL_RECOGNITION: /usr/lib/x86_64-linux-gnu/libpcl_recognition.so  
+[1.541s] -- looking for PCL_STEREO
+[1.541s] -- Found PCL_STEREO: /usr/lib/x86_64-linux-gnu/libpcl_stereo.so  
+[1.541s] -- looking for PCL_APPS
+[1.542s] -- Found PCL_APPS: /usr/lib/x86_64-linux-gnu/libpcl_apps.so  
+[1.542s] -- looking for PCL_IN_HAND_SCANNER
+[1.542s] -- Found PCL_IN_HAND_SCANNER: /usr/include/pcl-1.12  
+[1.542s] -- looking for PCL_MODELER
+[1.542s] -- Found PCL_MODELER: /usr/include/pcl-1.12  
+[1.542s] -- looking for PCL_POINT_CLOUD_EDITOR
+[1.543s] -- Found PCL_POINT_CLOUD_EDITOR: /usr/include/pcl-1.12  
+[1.543s] -- looking for PCL_OUTOFCORE
+[1.543s] -- Found PCL_OUTOFCORE: /usr/lib/x86_64-linux-gnu/libpcl_outofcore.so  
+[1.543s] -- looking for PCL_PEOPLE
+[1.544s] -- Found PCL_PEOPLE: /usr/lib/x86_64-linux-gnu/libpcl_people.so  
+[1.544s] -- Found PCL: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_visualization;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_recognition;pcl_stereo;pcl_apps;pcl_outofcore;pcl_people;Boost::system;Boost::filesystem;Boost::date_time;Boost::iostreams;Boost::serialization;/usr/lib/libOpenNI.so;libusb::libusb;/usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb;VTK::ChartsCore;VTK::CommonColor;VTK::CommonComputationalGeometry;VTK::CommonCore;VTK::CommonDataModel;VTK::CommonExecutionModel;VTK::CommonMath;VTK::CommonMisc;VTK::CommonTransforms;VTK::FiltersCore;VTK::FiltersExtraction;VTK::FiltersGeneral;VTK::FiltersGeometry;VTK::FiltersModeling;VTK::FiltersSources;VTK::ImagingCore;VTK::ImagingSources;VTK::InteractionImage;VTK::InteractionStyle;VTK::InteractionWidgets;VTK::IOCore;VTK::IOGeometry;VTK::IOImage;VTK::IOLegacy;VTK::IOPLY;VTK::RenderingAnnotation;VTK::RenderingCore;VTK::RenderingContext2D;VTK::RenderingLOD;VTK::RenderingFreeType;VTK::ViewsCore;VTK::ViewsContext2D;VTK::RenderingOpenGL2;VTK::GUISupportQt;FLANN::FLANN;QHULL::QHULL  
+[1.547s] -- Found pcl_conversions: 2.4.5 (/opt/ros/humble/share/pcl_conversions/cmake)
+[1.570s] -- Found pcl_ros: 2.4.5 (/opt/ros/humble/share/pcl_ros/cmake)
+[1.581s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[1.582s] -- Found Eigen3: TRUE (found version "3.4.0") 
+[1.582s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[1.630s] -- Found cev_msgs: 0.0.0 (/home/dev/ws/src/install/cev_msgs/share/cev_msgs/cmake)
+[1.637s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[1.646s] -- Found visualization_msgs: 4.9.0 (/opt/ros/humble/share/visualization_msgs/cmake)
+[1.845s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[2.104s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.207s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.218s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[2.229s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[2.230s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[2.230s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[2.271s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[2.304s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[2.305s] -- Configured cppcheck include dirs: $<BUILD_INTERFACE:/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node/rosidl_generator_c>;$<BUILD_INTERFACE:/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node/rosidl_typesupport_fastrtps_c>;$<BUILD_INTERFACE:/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node/rosidl_generator_cpp>;$<BUILD_INTERFACE:/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node/rosidl_typesupport_fastrtps_cpp>;$<BUILD_INTERFACE:/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node/rosidl_typesupport_introspection_c>;$<BUILD_INTERFACE:/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node/rosidl_typesupport_introspection_cpp>;/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node/rosidl_generator_c;/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node/rosidl_generator_py
+[2.305s] -- Configured cppcheck exclude dirs and/or files: 
+[2.307s] -- Added test 'flake8' to check Python code syntax and style conventions
+[2.309s] -- Added test 'lint_cmake' to check CMake code style
+[2.310s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[2.315s] -- Added test 'uncrustify' to check C / C++ code style
+[2.315s] -- Configured uncrustify additional arguments: 
+[2.316s] -- Added test 'xmllint' to check XML markup files
+[2.319s] -- Configuring done
+[2.473s] -- Generating done
+[2.488s] -- Build files have been written to: /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node
+[2.499s] Invoked command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node -DCMAKE_INSTALL_PREFIX=/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node
+[2.501s] Invoking command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22
+[2.530s] [  2%] [34m[1mGenerating C code for ROS interfaces[0m
+[2.538s] [  4%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[2.538s] [  7%] [32mBuilding CXX object CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o[0m
+[2.545s] [  7%] Built target ament_cmake_python_copy_cluster_node
+[2.681s] running egg_info
+[2.688s] creating cluster_node.egg-info
+[2.689s] writing cluster_node.egg-info/PKG-INFO
+[2.689s] writing dependency_links to cluster_node.egg-info/dependency_links.txt
+[2.689s] writing top-level names to cluster_node.egg-info/top_level.txt
+[2.689s] writing manifest file 'cluster_node.egg-info/SOURCES.txt'
+[2.716s] reading manifest file 'cluster_node.egg-info/SOURCES.txt'
+[2.719s] writing manifest file 'cluster_node.egg-info/SOURCES.txt'
+[2.727s] [  7%] Built target cluster_node__cpp
+[2.734s] [ 12%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[2.735s] [ 14%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[2.735s] [ 14%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[2.735s] [ 17%] [32mBuilding C object CMakeFiles/cluster_node__rosidl_generator_c.dir/rosidl_generator_c/cluster_node/msg/detail/obstacle__functions.c.o[0m
+[2.736s] [ 19%] [32mBuilding C object CMakeFiles/cluster_node__rosidl_generator_c.dir/rosidl_generator_c/cluster_node/msg/detail/obstacle_array__functions.c.o[0m
+[2.741s] [ 19%] Built target ament_cmake_python_build_cluster_node_egg
+[2.779s] [ 21%] [32m[1mLinking C shared library libcluster_node__rosidl_generator_c.so[0m
+[2.808s] [ 21%] Built target cluster_node__rosidl_generator_c
+[2.817s] [ 29%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[2.817s] [ 29%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[2.817s] [ 29%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[2.915s] [ 31%] [32mBuilding CXX object CMakeFiles/cluster_node__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cluster_node/msg/obstacle__type_support.cpp.o[0m
+[2.916s] [ 34%] [32mBuilding CXX object CMakeFiles/cluster_node__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/cluster_node/msg/detail/obstacle_array__type_support.cpp.o[0m
+[2.918s] [ 39%] [32mBuilding CXX object CMakeFiles/cluster_node__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/cluster_node/msg/detail/obstacle__type_support.cpp.o[0m
+[2.918s] [ 39%] [32mBuilding CXX object CMakeFiles/cluster_node__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/cluster_node/msg/obstacle_array__type_support.cpp.o[0m
+[2.935s] [ 41%] [32mBuilding CXX object CMakeFiles/cluster_node__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/cluster_node/msg/detail/dds_fastrtps/obstacle__type_support.cpp.o[0m
+[2.936s] [ 43%] [32mBuilding CXX object CMakeFiles/cluster_node__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/cluster_node/msg/detail/dds_fastrtps/obstacle_array__type_support.cpp.o[0m
+[3.009s] [ 46%] [32mBuilding CXX object CMakeFiles/cluster_node__rosidl_typesupport_c.dir/rosidl_typesupport_c/cluster_node/msg/obstacle_array__type_support.cpp.o[0m
+[3.010s] [ 48%] [32mBuilding CXX object CMakeFiles/cluster_node__rosidl_typesupport_c.dir/rosidl_typesupport_c/cluster_node/msg/obstacle__type_support.cpp.o[0m
+[3.029s] [ 51%] [32mBuilding C object CMakeFiles/cluster_node__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/cluster_node/msg/detail/obstacle__type_support.c.o[0m
+[3.030s] [ 53%] [32mBuilding C object CMakeFiles/cluster_node__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/cluster_node/msg/detail/obstacle_array__type_support.c.o[0m
+[3.057s] [ 56%] [32m[1mLinking CXX shared library libcluster_node__rosidl_typesupport_c.so[0m
+[3.062s] [ 58%] [32mBuilding CXX object CMakeFiles/cluster_node__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/cluster_node/msg/detail/obstacle_array__type_support_c.cpp.o[0m
+[3.065s] [ 60%] [32mBuilding CXX object CMakeFiles/cluster_node__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/cluster_node/msg/detail/obstacle__type_support_c.cpp.o[0m
+[3.071s] [ 63%] [32m[1mLinking C shared library libcluster_node__rosidl_typesupport_introspection_c.so[0m
+[3.099s] [ 63%] Built target cluster_node__rosidl_typesupport_c
+[3.106s] [ 63%] Built target cluster_node__rosidl_typesupport_introspection_c
+[3.215s] [ 65%] [32m[1mLinking CXX shared library libcluster_node__rosidl_typesupport_cpp.so[0m
+[3.252s] [ 65%] Built target cluster_node__rosidl_typesupport_cpp
+[3.312s] [ 68%] [32m[1mLinking CXX shared library libcluster_node__rosidl_typesupport_introspection_cpp.so[0m
+[3.333s] [ 70%] [32m[1mLinking CXX shared library libcluster_node__rosidl_typesupport_fastrtps_c.so[0m
+[3.367s] [ 73%] [32m[1mLinking CXX shared library libcluster_node__rosidl_typesupport_fastrtps_cpp.so[0m
+[3.367s] [ 73%] Built target cluster_node__rosidl_typesupport_introspection_cpp
+[3.384s] [ 73%] Built target cluster_node__rosidl_typesupport_fastrtps_c
+[3.412s] [ 73%] Built target cluster_node__rosidl_typesupport_fastrtps_cpp
+[3.424s] [ 73%] Built target cluster_node
+[3.438s] [ 75%] [34m[1mGenerating Python code for ROS interfaces[0m
+[3.657s] [ 75%] Built target cluster_node__py
+[3.667s] [ 80%] [32mBuilding C object CMakeFiles/cluster_node__rosidl_generator_py.dir/rosidl_generator_py/cluster_node/msg/_obstacle_array_s.c.o[0m
+[3.668s] [ 80%] [32mBuilding C object CMakeFiles/cluster_node__rosidl_generator_py.dir/rosidl_generator_py/cluster_node/msg/_obstacle_s.c.o[0m
+[3.765s] [ 82%] [32m[1mLinking C shared library rosidl_generator_py/cluster_node/libcluster_node__rosidl_generator_py.so[0m
+[3.793s] [ 82%] Built target cluster_node__rosidl_generator_py
+[3.806s] [ 90%] [32mBuilding C object CMakeFiles/cluster_node__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/cluster_node/_cluster_node_s.ep.rosidl_typesupport_c.c.o[0m
+[3.806s] [ 90%] [32mBuilding C object CMakeFiles/cluster_node__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/cluster_node/_cluster_node_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[3.807s] [ 90%] [32mBuilding C object CMakeFiles/cluster_node__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/cluster_node/_cluster_node_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[3.877s] [ 95%] [32m[1mLinking C shared library rosidl_generator_py/cluster_node/cluster_node_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.877s] [ 95%] [32m[1mLinking C shared library rosidl_generator_py/cluster_node/cluster_node_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.878s] [ 97%] [32m[1mLinking C shared library rosidl_generator_py/cluster_node/cluster_node_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.904s] [ 97%] Built target cluster_node__rosidl_typesupport_c__pyext
+[3.904s] [ 97%] Built target cluster_node__rosidl_typesupport_introspection_c__pyext
+[3.905s] [ 97%] Built target cluster_node__rosidl_typesupport_fastrtps_c__pyext
+[4.182s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:9:10:[m[K [01;31m[Kfatal error: [m[Kobstacle/msg/obstacle_array.hpp: No such file or directory
+[4.182s]     9 | #include [01;31m[K<obstacle/msg/obstacle_array.hpp>[m[K
+[4.182s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.182s] compilation terminated.
+[4.186s] gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+[4.186s] gmake[1]: *** [CMakeFiles/Makefile2:592: CMakeFiles/cluster_cpp.dir/all] Error 2
+[4.187s] gmake: *** [Makefile:146: all] Error 2
+[4.189s] Invoked command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22

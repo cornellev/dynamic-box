@@ -1,0 +1,36 @@
+[0.010s] Invoking command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node -DCMAKE_INSTALL_PREFIX=/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node
+[0.018s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.096s] -- Found rclcpp: 16.0.15 (/opt/ros/humble/share/rclcpp/cmake)
+[0.110s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.112s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.115s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.121s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.127s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.147s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.148s] -- Found rmw_fastrtps_cpp: 6.2.8 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.208s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.235s] -- Found sensor_msgs: 4.9.0 (/opt/ros/humble/share/sensor_msgs/cmake)
+[0.252s] -- Found cev_msgs: 0.0.0 (/home/dev/ws/src/install/cev_msgs/share/cev_msgs/cmake)
+[0.260s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.270s] -- Found tf2: 0.25.16 (/opt/ros/humble/share/tf2/cmake)
+[0.272s] -- Found tf2_geometry_msgs: 0.25.16 (/opt/ros/humble/share/tf2_geometry_msgs/cmake)
+[0.274s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[0.275s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[0.320s] -- Found visualization_msgs: 4.9.0 (/opt/ros/humble/share/visualization_msgs/cmake)
+[0.516s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[0.773s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.875s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.885s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[0.895s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[0.895s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[0.895s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[0.927s] [31mCMake Error at /opt/ros/humble/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:77 (message):
+[0.927s]   ament_target_dependencies() the passed package name 'pcl_conversions' was
+[0.927s]   not found before
+[0.927s] Call Stack (most recent call first):
+[0.927s]   CMakeLists.txt:29 (ament_target_dependencies)
+[0.927s] 
+[0.927s] [0m
+[0.927s] -- Configuring incomplete, errors occurred!
+[0.927s] See also "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node/CMakeFiles/CMakeOutput.log".
+[0.932s] Invoked command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node -DCMAKE_INSTALL_PREFIX=/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node

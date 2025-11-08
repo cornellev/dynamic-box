@@ -1,0 +1,64 @@
+[0.022s] Invoking command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22
+[0.114s] [  2%] Built target cluster_node__cpp
+[0.116s] [ 12%] Built target cluster_node__rosidl_generator_c
+[0.128s] [ 12%] Built target ament_cmake_python_copy_cluster_node
+[0.137s] [ 26%] Built target cluster_node__rosidl_typesupport_introspection_cpp
+[0.137s] [ 31%] Built target cluster_node__rosidl_typesupport_cpp
+[0.137s] [ 41%] Built target cluster_node__rosidl_typesupport_fastrtps_cpp
+[0.138s] [ 60%] Built target cluster_node__rosidl_typesupport_fastrtps_c
+[0.138s] [ 60%] Built target cluster_node__rosidl_typesupport_c
+[0.138s] [ 70%] Built target cluster_node__rosidl_typesupport_introspection_c
+[0.151s] [ 70%] Built target cluster_node
+[0.165s] [35m[1mConsolidate compiler generated dependencies of target cluster_cpp[0m
+[0.166s] [ 73%] Built target cluster_node__py
+[0.182s] [ 80%] Built target cluster_node__rosidl_generator_py
+[0.184s] [ 82%] [32mBuilding CXX object CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o[0m
+[0.199s] [ 97%] Built target cluster_node__rosidl_typesupport_introspection_c__pyext
+[0.199s] [ 97%] Built target cluster_node__rosidl_typesupport_c__pyext
+[0.199s] [ 97%] Built target cluster_node__rosidl_typesupport_fastrtps_c__pyext
+[0.256s] running egg_info
+[0.263s] writing cluster_node.egg-info/PKG-INFO
+[0.264s] writing dependency_links to cluster_node.egg-info/dependency_links.txt
+[0.264s] writing top-level names to cluster_node.egg-info/top_level.txt
+[0.285s] reading manifest file 'cluster_node.egg-info/SOURCES.txt'
+[0.286s] writing manifest file 'cluster_node.egg-info/SOURCES.txt'
+[0.305s] [ 97%] Built target ament_cmake_python_build_cluster_node_egg
+[5.211s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kint KdTree<PointT>::search(const PointT&, double*) const[m[K’:
+[5.211s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:54:27:[m[K [01;31m[Kerror: [m[K‘[01m[Knumeric_limits[m[K’ was not declared in this scope
+[5.211s]    54 |         double _minDist = [01;31m[Knumeric_limits[m[K<double>::max();
+[5.211s]       |                           [01;31m[K^~~~~~~~~~~~~~[m[K
+[5.215s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:54:27:[m[K [01;36m[Knote: [m[Ksuggested alternatives:
+[5.216s] In file included from [01m[K/usr/include/c++/11/chrono:41[m[K,
+[5.216s]                  from [01m[K/usr/include/c++/11/mutex:39[m[K,
+[5.216s]                  from [01m[K/usr/include/c++/11/future:38[m[K,
+[5.216s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:18[m[K,
+[5.216s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+[5.216s]                  from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[5.216s] [01m[K/usr/include/c++/11/limits:312:12:[m[K [01;36m[Knote: [m[K  ‘[01m[Kstd::numeric_limits[m[K’
+[5.216s]   312 |     struct [01;36m[Knumeric_limits[m[K : public __numeric_limits_base
+[5.216s]       |            [01;36m[K^~~~~~~~~~~~~~[m[K
+[5.216s] [01m[K/usr/include/c++/11/limits:312:12:[m[K [01;36m[Knote: [m[K  ‘[01m[Kstd::numeric_limits[m[K’
+[5.216s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:54:42:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[Kdouble[m[K’
+[5.216s]    54 |         double _minDist = numeric_limits<[01;31m[Kdouble[m[K>::max();
+[5.216s]       |                                          [01;31m[K^~~~~~[m[K
+[5.218s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kstd::unique_ptr<KdTree<PointT>::Node> KdTree<PointT>::build_recursive(int*, int, int)[m[K’:
+[5.218s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:69:21:[m[K [01;31m[Kerror: [m[K‘[01m[Kmake_unique[m[K’ was not declared in this scope; did you mean ‘[01m[Kstd::make_unique[m[K’?
+[5.218s]    69 |         auto node = [01;31m[Kmake_unique[m[K<Node>();
+[5.218s]       |                     [01;31m[K^~~~~~~~~~~[m[K
+[5.218s]       |                     [32m[Kstd::make_unique[m[K
+[5.218s] In file included from [01m[K/usr/include/c++/11/memory:76[m[K,
+[5.218s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:153[m[K,
+[5.218s]                  from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[5.219s] [01m[K/usr/include/c++/11/bits/unique_ptr.h:973:5:[m[K [01;36m[Knote: [m[K‘[01m[Kstd::make_unique[m[K’ declared here
+[5.219s]   973 |     [01;36m[Kmake_unique[m[K(_Args&&...) = delete;
+[5.219s]       |     [01;36m[K^~~~~~~~~~~[m[K
+[5.219s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:69:37:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K>[m[K’ token
+[5.219s]    69 |         auto node = make_unique<Node[01;31m[K>[m[K();
+[5.219s]       |                                     [01;31m[K^[m[K
+[5.219s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:69:39:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K)[m[K’ token
+[5.219s]    69 |         auto node = make_unique<Node>([01;31m[K)[m[K;
+[5.219s]       |                                       [01;31m[K^[m[K
+[8.219s] gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+[8.219s] gmake[1]: *** [CMakeFiles/Makefile2:594: CMakeFiles/cluster_cpp.dir/all] Error 2
+[8.220s] gmake: *** [Makefile:146: all] Error 2
+[8.222s] Invoked command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22

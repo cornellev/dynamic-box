@@ -1,0 +1,12 @@
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kvoid ClusterNode::listenerCallback(sensor_msgs::msg::PointCloud2_<std::allocator<void> >::SharedPtr)[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:158:31:[m[K [01;31m[Kerror: [m[K‘[01m[Ktaken[m[K’ was not declared in this scope; did you mean ‘[01m[Ktaken_[m[K’?
+  158 |             for (auto &flag : [01;31m[Ktaken[m[K) {
+      |                               [01;31m[K^~~~~[m[K
+      |                               [32m[Ktaken_[m[K
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kstd::tuple<std::vector<std::vector<Eigen::Matrix<double, 4, 1, 0, 4, 1>, std::allocator<Eigen::Matrix<double, 4, 1, 0, 4, 1> > >, std::allocator<std::vector<Eigen::Matrix<double, 4, 1, 0, 4, 1>, std::allocator<Eigen::Matrix<double, 4, 1, 0, 4, 1> > > > >, std::vector<Eigen::Matrix<double, 4, 1, 0, 4, 1>, std::allocator<Eigen::Matrix<double, 4, 1, 0, 4, 1> > > > ClusterNode::euclidean_cluster(Eigen::Vector4d, const MatrixXd&, double, int, const string&, const std::vector<Eigen::Matrix<double, 4, 1> >&, bool, double)[m[K’:
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:241:29:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[KMIN_CLUSTER_SIZE[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  241 |                         [01;35m[Kint MIN_CLUSTER_SIZE = 1[m[K,
+      |                         [01;35m[K~~~~^~~~~~~~~~~~~~~~~~~~[m[K
+gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:594: CMakeFiles/cluster_cpp.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

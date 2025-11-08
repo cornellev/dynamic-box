@@ -1,0 +1,144 @@
+[0.000000] (-) TimerEvent: {}
+[0.000394] (cluster_node) JobQueued: {'identifier': 'cluster_node', 'dependencies': OrderedDict()}
+[0.000427] (cluster_node) JobStarted: {'identifier': 'cluster_node'}
+[0.018145] (cluster_node) JobProgress: {'identifier': 'cluster_node', 'progress': 'cmake'}
+[0.019535] (cluster_node) JobProgress: {'identifier': 'cluster_node', 'progress': 'build'}
+[0.020225] (cluster_node) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node', '--', '-j22', '-l22'], 'cwd': '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node', 'env': OrderedDict([('HOSTNAME', 'XT'), ('GIT_ASKPASS', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/extensions/git/dist/askpass.sh'), ('SHLVL', '2'), ('LD_LIBRARY_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/lib:/home/dev/ws/src/install/rslidar_msg/lib:/home/dev/ws/src/install/obstacle/lib:/home/dev/ws/src/install/cev_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/bin/helpers/browser.sh'), ('HOME', '/root'), ('OLDPWD', '/home/dev/ws/src/dynamic-box/my_rosbag_reader'), ('TERM_PROGRAM_VERSION', '1.105.1'), ('VSCODE_IPC_HOOK_CLI', '/tmp/vscode-ipc-57387dd6-6140-4ece-a484-ce1c2caede6f.sock'), ('WS_DIR', '/home/dev/ws'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/node'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('COLORTERM', 'truecolor'), ('REMOTE_CONTAINERS', 'true'), ('COLCON_PREFIX_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install:/home/dev/ws/src/install'), ('ROS_DISTRO', 'humble'), ('REMOTE_CONTAINERS_IPC', '/tmp/vscode-remote-containers-ipc-f5c091f8-ac64-4334-9fa8-c4afe6062fcd.sock'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/vscode/vscode-server/bin/linux-x64/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/bin/remote-cli:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand'), ('REMOTE_CONTAINERS_SOCKETS', '["/tmp/vscode-ssh-auth-f5c091f8-ac64-4334-9fa8-c4afe6062fcd.sock","/root/.gnupg/S.gpg-agent"]'), ('DISPLAY', ':0'), ('LANG', 'C.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/tmp/vscode-git-727dbb23fb.sock'), ('TERM_PROGRAM', 'vscode'), ('SSH_AUTH_SOCK', '/tmp/vscode-ssh-auth-f5c091f8-ac64-4334-9fa8-c4afe6062fcd.sock'), ('AMENT_PREFIX_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/home/dev/ws/src/install/rslidar_sdk:/home/dev/ws/src/install/rslidar_msg:/home/dev/ws/src/install/obstacle:/home/dev/ws/src/install/cev_msgs:/opt/ros/humble'), ('DEBIAN_FRONTEND', 'noninteractive'), ('SHELL', '/bin/bash'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node'), ('LC_ALL', 'C.UTF-8'), ('PYTHONPATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node/local/lib/python3.10/dist-packages:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader/lib/python3.10/site-packages:/home/dev/ws/src/install/rslidar_msg/local/lib/python3.10/dist-packages:/home/dev/ws/src/install/obstacle/local/lib/python3.10/dist-packages:/home/dev/ws/src/install/cev_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('TZ', 'Etc/UTC'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/install/cluster_node:/home/dev/ws/src/install/rslidar_sdk:/home/dev/ws/src/install/rslidar_msg:/home/dev/ws/src/install/obstacle:/home/dev/ws/src/install/cev_msgs:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble')]), 'shell': False}
+[0.099693] (-) TimerEvent: {}
+[0.108692] (cluster_node) StdoutLine: {'line': b'[  4%] Built target cluster_node__cpp\n'}
+[0.108883] (cluster_node) StdoutLine: {'line': b'[ 12%] Built target cluster_node__rosidl_generator_c\n'}
+[0.120402] (cluster_node) StdoutLine: {'line': b'[ 12%] Built target ament_cmake_python_copy_cluster_node\n'}
+[0.129861] (cluster_node) StdoutLine: {'line': b'[ 29%] Built target cluster_node__rosidl_typesupport_c\n'}
+[0.130068] (cluster_node) StdoutLine: {'line': b'[ 34%] Built target cluster_node__rosidl_typesupport_introspection_c\n'}
+[0.130178] (cluster_node) StdoutLine: {'line': b'[ 41%] Built target cluster_node__rosidl_typesupport_cpp\n'}
+[0.130243] (cluster_node) StdoutLine: {'line': b'[ 51%] Built target cluster_node__rosidl_typesupport_fastrtps_c\n'}
+[0.130368] (cluster_node) StdoutLine: {'line': b'[ 60%] Built target cluster_node__rosidl_typesupport_fastrtps_cpp\n'}
+[0.130687] (cluster_node) StdoutLine: {'line': b'[ 70%] Built target cluster_node__rosidl_typesupport_introspection_cpp\n'}
+[0.143351] (cluster_node) StdoutLine: {'line': b'[ 70%] Built target cluster_node\n'}
+[0.156391] (cluster_node) StdoutLine: {'line': b'[ 73%] Built target cluster_node__py\n'}
+[0.156966] (cluster_node) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target cluster_cpp\x1b[0m\n'}
+[0.172682] (cluster_node) StdoutLine: {'line': b'[ 80%] Built target cluster_node__rosidl_generator_py\n'}
+[0.175698] (cluster_node) StdoutLine: {'line': b'[ 82%] \x1b[32mBuilding CXX object CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o\x1b[0m\n'}
+[0.188240] (cluster_node) StdoutLine: {'line': b'[ 92%] Built target cluster_node__rosidl_typesupport_c__pyext\n'}
+[0.188417] (cluster_node) StdoutLine: {'line': b'[ 92%] Built target cluster_node__rosidl_typesupport_introspection_c__pyext\n'}
+[0.188459] (cluster_node) StdoutLine: {'line': b'[ 97%] Built target cluster_node__rosidl_typesupport_fastrtps_c__pyext\n'}
+[0.199769] (-) TimerEvent: {}
+[0.249678] (cluster_node) StdoutLine: {'line': b'running egg_info\n'}
+[0.256223] (cluster_node) StdoutLine: {'line': b'writing cluster_node.egg-info/PKG-INFO\n'}
+[0.256931] (cluster_node) StdoutLine: {'line': b'writing dependency_links to cluster_node.egg-info/dependency_links.txt\n'}
+[0.257331] (cluster_node) StdoutLine: {'line': b'writing top-level names to cluster_node.egg-info/top_level.txt\n'}
+[0.277458] (cluster_node) StdoutLine: {'line': b"reading manifest file 'cluster_node.egg-info/SOURCES.txt'\n"}
+[0.278383] (cluster_node) StdoutLine: {'line': b"writing manifest file 'cluster_node.egg-info/SOURCES.txt'\n"}
+[0.297768] (cluster_node) StdoutLine: {'line': b'[ 97%] Built target ament_cmake_python_build_cluster_node_egg\n'}
+[0.299843] (-) TimerEvent: {}
+[0.400140] (-) TimerEvent: {}
+[0.500575] (-) TimerEvent: {}
+[0.600964] (-) TimerEvent: {}
+[0.701324] (-) TimerEvent: {}
+[0.801744] (-) TimerEvent: {}
+[0.902050] (-) TimerEvent: {}
+[1.002391] (-) TimerEvent: {}
+[1.102816] (-) TimerEvent: {}
+[1.203212] (-) TimerEvent: {}
+[1.303666] (-) TimerEvent: {}
+[1.404034] (-) TimerEvent: {}
+[1.504383] (-) TimerEvent: {}
+[1.604708] (-) TimerEvent: {}
+[1.705050] (-) TimerEvent: {}
+[1.805386] (-) TimerEvent: {}
+[1.905742] (-) TimerEvent: {}
+[2.006066] (-) TimerEvent: {}
+[2.106429] (-) TimerEvent: {}
+[2.206899] (-) TimerEvent: {}
+[2.307343] (-) TimerEvent: {}
+[2.407709] (-) TimerEvent: {}
+[2.508053] (-) TimerEvent: {}
+[2.608415] (-) TimerEvent: {}
+[2.708800] (-) TimerEvent: {}
+[2.809150] (-) TimerEvent: {}
+[2.909466] (-) TimerEvent: {}
+[3.009834] (-) TimerEvent: {}
+[3.110207] (-) TimerEvent: {}
+[3.210506] (-) TimerEvent: {}
+[3.310871] (-) TimerEvent: {}
+[3.411229] (-) TimerEvent: {}
+[3.511618] (-) TimerEvent: {}
+[3.611932] (-) TimerEvent: {}
+[3.712243] (-) TimerEvent: {}
+[3.812558] (-) TimerEvent: {}
+[3.912948] (-) TimerEvent: {}
+[4.013372] (-) TimerEvent: {}
+[4.114059] (-) TimerEvent: {}
+[4.214386] (-) TimerEvent: {}
+[4.314756] (-) TimerEvent: {}
+[4.415117] (-) TimerEvent: {}
+[4.515532] (-) TimerEvent: {}
+[4.615925] (-) TimerEvent: {}
+[4.716269] (-) TimerEvent: {}
+[4.816606] (-) TimerEvent: {}
+[4.916968] (-) TimerEvent: {}
+[5.017303] (-) TimerEvent: {}
+[5.117648] (-) TimerEvent: {}
+[5.217978] (-) TimerEvent: {}
+[5.237849] (cluster_node) StderrLine: {'line': b'\x1b[01m\x1b[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:159:45:\x1b[m\x1b[K \x1b[01;31m\x1b[Kerror: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[KVector4d\x1b[m\x1b[K\xe2\x80\x99 in namespace \xe2\x80\x98\x1b[01m\x1b[Kstd\x1b[m\x1b[K\xe2\x80\x99 does not name a type; did you mean \xe2\x80\x98\x1b[01m\x1b[Kvector\x1b[m\x1b[K\xe2\x80\x99?\n'}
+[5.238178] (cluster_node) StderrLine: {'line': b'  159 |     std::tuple euclidean_cluster(const std::\x1b[01;31m\x1b[KVector4d\x1b[m\x1b[K seeds,\n'}
+[5.238261] (cluster_node) StderrLine: {'line': b'      |                                             \x1b[01;31m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[5.238326] (cluster_node) StderrLine: {'line': b'      |                                             \x1b[32m\x1b[Kvector\x1b[m\x1b[K\n'}
+[5.238580] (cluster_node) StderrLine: {'line': b'\x1b[01m\x1b[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:164:56:\x1b[m\x1b[K \x1b[01;31m\x1b[Kerror: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[KVector4d\x1b[m\x1b[K\xe2\x80\x99 is not a member of \xe2\x80\x98\x1b[01m\x1b[Kstd\x1b[m\x1b[K\xe2\x80\x99; did you mean \xe2\x80\x98\x1b[01m\x1b[Kvector\x1b[m\x1b[K\xe2\x80\x99?\n'}
+[5.238686] (cluster_node) StderrLine: {'line': b'  164 |                                 const std::vector<std::\x1b[01;31m\x1b[KVector4d\x1b[m\x1b[K>& cloud_prev = {},\n'}
+[5.238738] (cluster_node) StderrLine: {'line': b'      |                                                        \x1b[01;31m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[5.238783] (cluster_node) StderrLine: {'line': b'      |                                                        \x1b[32m\x1b[Kvector\x1b[m\x1b[K\n'}
+[5.238823] (cluster_node) StderrLine: {'line': b'\x1b[01m\x1b[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:164:64:\x1b[m\x1b[K \x1b[01;31m\x1b[Kerror: \x1b[m\x1b[Ktemplate argument 1 is invalid\n'}
+[5.238866] (cluster_node) StderrLine: {'line': b'  164 |                                 const std::vector<std::Vector4d\x1b[01;31m\x1b[K>\x1b[m\x1b[K& cloud_prev = {},\n'}
+[5.238915] (cluster_node) StderrLine: {'line': b'      |                                                                \x1b[01;31m\x1b[K^\x1b[m\x1b[K\n'}
+[5.238955] (cluster_node) StderrLine: {'line': b'\x1b[01m\x1b[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:164:64:\x1b[m\x1b[K \x1b[01;31m\x1b[Kerror: \x1b[m\x1b[Ktemplate argument 2 is invalid\n'}
+[5.238994] (cluster_node) StderrLine: {'line': b'\x1b[01m\x1b[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:159:16:\x1b[m\x1b[K \x1b[01;31m\x1b[Kerror: \x1b[m\x1b[Kdeduced class type \xe2\x80\x98\x1b[01m\x1b[Ktuple\x1b[m\x1b[K\xe2\x80\x99 in function return type\n'}
+[5.239035] (cluster_node) StderrLine: {'line': b'  159 |     std::tuple \x1b[01;31m\x1b[Keuclidean_cluster\x1b[m\x1b[K(const std::Vector4d seeds,\n'}
+[5.239073] (cluster_node) StderrLine: {'line': b'      |                \x1b[01;31m\x1b[K^~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[5.239111] (cluster_node) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/usr/include/c++/11/bits/move.h:57\x1b[m\x1b[K,\n'}
+[5.239148] (cluster_node) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/c++/11/bits/stl_pair.h:59\x1b[m\x1b[K,\n'}
+[5.239193] (cluster_node) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/c++/11/bits/stl_algobase.h:64\x1b[m\x1b[K,\n'}
+[5.239222] (cluster_node) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/usr/include/c++/11/memory:63\x1b[m\x1b[K,\n'}
+[5.239285] (cluster_node) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:153\x1b[m\x1b[K,\n'}
+[5.239320] (cluster_node) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1\x1b[m\x1b[K:\n'}
+[5.239353] (cluster_node) StderrLine: {'line': b'\x1b[01m\x1b[K/usr/include/c++/11/type_traits:45:11:\x1b[m\x1b[K \x1b[01;36m\x1b[Knote: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Ktemplate<class ... _Elements> class std::tuple\x1b[m\x1b[K\xe2\x80\x99 declared here\n'}
+[5.239385] (cluster_node) StderrLine: {'line': b'   45 |     class \x1b[01;36m\x1b[Ktuple\x1b[m\x1b[K;\n'}
+[5.239416] (cluster_node) StderrLine: {'line': b'      |           \x1b[01;36m\x1b[K^~~~~\x1b[m\x1b[K\n'}
+[5.318068] (-) TimerEvent: {}
+[5.418461] (-) TimerEvent: {}
+[5.518884] (-) TimerEvent: {}
+[5.619352] (-) TimerEvent: {}
+[5.719737] (-) TimerEvent: {}
+[5.820342] (-) TimerEvent: {}
+[5.920894] (-) TimerEvent: {}
+[6.021328] (-) TimerEvent: {}
+[6.121726] (-) TimerEvent: {}
+[6.222032] (-) TimerEvent: {}
+[6.322436] (-) TimerEvent: {}
+[6.422991] (-) TimerEvent: {}
+[6.523317] (-) TimerEvent: {}
+[6.623632] (-) TimerEvent: {}
+[6.723952] (-) TimerEvent: {}
+[6.824286] (-) TimerEvent: {}
+[6.924639] (-) TimerEvent: {}
+[7.025014] (-) TimerEvent: {}
+[7.125424] (-) TimerEvent: {}
+[7.225754] (-) TimerEvent: {}
+[7.326123] (-) TimerEvent: {}
+[7.426517] (-) TimerEvent: {}
+[7.526872] (-) TimerEvent: {}
+[7.627191] (-) TimerEvent: {}
+[7.727527] (-) TimerEvent: {}
+[7.827866] (-) TimerEvent: {}
+[7.928217] (-) TimerEvent: {}
+[8.028573] (-) TimerEvent: {}
+[8.128955] (-) TimerEvent: {}
+[8.229405] (-) TimerEvent: {}
+[8.329810] (-) TimerEvent: {}
+[8.430116] (-) TimerEvent: {}
+[8.435068] (cluster_node) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1\n'}
+[8.435484] (cluster_node) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:594: CMakeFiles/cluster_cpp.dir/all] Error 2\n'}
+[8.435613] (cluster_node) StderrLine: {'line': b'gmake: *** [Makefile:146: all] Error 2\n'}
+[8.438174] (cluster_node) CommandEnded: {'returncode': 2}
+[8.460101] (cluster_node) JobEnded: {'identifier': 'cluster_node', 'rc': 2}
+[8.470898] (-) EventReactorShutdown: {}

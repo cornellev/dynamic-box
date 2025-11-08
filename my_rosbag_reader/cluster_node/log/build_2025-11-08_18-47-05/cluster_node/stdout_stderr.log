@@ -1,0 +1,41 @@
+[35m[1mConsolidate compiler generated dependencies of target cluster_node__rosidl_generator_c[0m
+[  2%] Built target cluster_node__cpp
+[  4%] [32mBuilding CXX object CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o[0m
+[ 14%] Built target cluster_node__rosidl_generator_c
+[35m[1mConsolidate compiler generated dependencies of target cluster_node__rosidl_typesupport_cpp[0m
+[35m[1mConsolidate compiler generated dependencies of target cluster_node__rosidl_typesupport_introspection_cpp[0m
+[35m[1mConsolidate compiler generated dependencies of target cluster_node__rosidl_typesupport_fastrtps_cpp[0m
+[ 14%] Built target ament_cmake_python_copy_cluster_node
+[35m[1mConsolidate compiler generated dependencies of target cluster_node__rosidl_typesupport_c[0m
+[35m[1mConsolidate compiler generated dependencies of target cluster_node__rosidl_typesupport_fastrtps_c[0m
+[35m[1mConsolidate compiler generated dependencies of target cluster_node__rosidl_typesupport_introspection_c[0m
+[ 34%] Built target cluster_node__rosidl_typesupport_c
+[ 34%] Built target cluster_node__rosidl_typesupport_cpp
+[ 43%] Built target cluster_node__rosidl_typesupport_introspection_cpp
+[ 53%] Built target cluster_node__rosidl_typesupport_introspection_c
+[ 63%] Built target cluster_node__rosidl_typesupport_fastrtps_c
+[ 73%] Built target cluster_node__rosidl_typesupport_fastrtps_cpp
+[ 73%] Built target cluster_node
+[ 75%] Built target cluster_node__py
+[35m[1mConsolidate compiler generated dependencies of target cluster_node__rosidl_generator_py[0m
+[ 82%] Built target cluster_node__rosidl_generator_py
+[35m[1mConsolidate compiler generated dependencies of target cluster_node__rosidl_typesupport_introspection_c__pyext[0m
+[35m[1mConsolidate compiler generated dependencies of target cluster_node__rosidl_typesupport_fastrtps_c__pyext[0m
+[35m[1mConsolidate compiler generated dependencies of target cluster_node__rosidl_typesupport_c__pyext[0m
+[ 95%] Built target cluster_node__rosidl_typesupport_c__pyext
+[ 97%] Built target cluster_node__rosidl_typesupport_fastrtps_c__pyext
+[ 97%] Built target cluster_node__rosidl_typesupport_introspection_c__pyext
+running egg_info
+writing cluster_node.egg-info/PKG-INFO
+writing dependency_links to cluster_node.egg-info/dependency_links.txt
+writing top-level names to cluster_node.egg-info/top_level.txt
+reading manifest file 'cluster_node.egg-info/SOURCES.txt'
+writing manifest file 'cluster_node.egg-info/SOURCES.txt'
+[ 97%] Built target ament_cmake_python_build_cluster_node_egg
+[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:9:10:[m[K [01;31m[Kfatal error: [m[Kcluster_node/msg/obstacle_array.hpp: No such file or directory
+    9 | #include [01;31m[K<cluster_node/msg/obstacle_array.hpp>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:592: CMakeFiles/cluster_cpp.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

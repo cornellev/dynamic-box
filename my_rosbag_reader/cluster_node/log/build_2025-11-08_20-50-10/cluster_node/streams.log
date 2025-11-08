@@ -1,0 +1,130 @@
+[0.022s] Invoking command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22
+[0.111s] [  2%] Built target cluster_node__cpp
+[0.112s] [ 12%] Built target cluster_node__rosidl_generator_c
+[0.125s] [ 12%] Built target ament_cmake_python_copy_cluster_node
+[0.134s] [ 39%] Built target cluster_node__rosidl_typesupport_introspection_c
+[0.134s] [ 39%] Built target cluster_node__rosidl_typesupport_introspection_cpp
+[0.134s] [ 41%] Built target cluster_node__rosidl_typesupport_cpp
+[0.134s] [ 51%] Built target cluster_node__rosidl_typesupport_fastrtps_cpp
+[0.135s] [ 60%] Built target cluster_node__rosidl_typesupport_fastrtps_c
+[0.135s] [ 70%] Built target cluster_node__rosidl_typesupport_c
+[0.148s] [ 70%] Built target cluster_node
+[0.162s] [35m[1mConsolidate compiler generated dependencies of target cluster_cpp[0m
+[0.162s] [ 73%] Built target cluster_node__py
+[0.178s] [ 80%] Built target cluster_node__rosidl_generator_py
+[0.181s] [ 82%] [32mBuilding CXX object CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o[0m
+[0.195s] [ 92%] Built target cluster_node__rosidl_typesupport_c__pyext
+[0.195s] [ 92%] Built target cluster_node__rosidl_typesupport_fastrtps_c__pyext
+[0.195s] [ 97%] Built target cluster_node__rosidl_typesupport_introspection_c__pyext
+[0.250s] running egg_info
+[0.256s] writing cluster_node.egg-info/PKG-INFO
+[0.256s] writing dependency_links to cluster_node.egg-info/dependency_links.txt
+[0.257s] writing top-level names to cluster_node.egg-info/top_level.txt
+[0.276s] reading manifest file 'cluster_node.egg-info/SOURCES.txt'
+[0.277s] writing manifest file 'cluster_node.egg-info/SOURCES.txt'
+[0.297s] [ 97%] Built target ament_cmake_python_build_cluster_node_egg
+[5.116s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:321:2:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K}[m[K’ at end of input
+[5.116s]   321 | }
+[5.116s]       |  [01;31m[K^[m[K
+[5.116s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:105:41:[m[K [01;36m[Knote: [m[Kto match this ‘[01m[K{[m[K’
+[5.116s]   105 | class ClusterNode : public rclcpp::Node [01;36m[K{[m[K
+[5.116s]       |                                         [01;36m[K^[m[K
+[5.116s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In constructor ‘[01m[KClusterNode::ClusterNode()[m[K’:
+[5.116s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:108:28:[m[K [01;31m[Kerror: [m[Kclass ‘[01m[KClusterNode[m[K’ does not have any field named ‘[01m[Kiter_[m[K’
+[5.116s]   108 |     : Node("cluster_cpp"), [01;31m[Kiter_[m[K(0)
+[5.116s]       |                            [01;31m[K^~~~~[m[K
+[5.132s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:110:9:[m[K [01;31m[Kerror: [m[K‘[01m[KC_prev_[m[K’ was not declared in this scope
+[5.132s]   110 |         [01;31m[KC_prev_[m[K = MatrixXd::Zero(1, 4);
+[5.132s]       |         [01;31m[K^~~~~~~[m[K
+[5.151s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:111:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kdata_[m[K’ was not declared in this scope
+[5.151s]   111 |         [01;31m[Kdata_[m[K = MatrixXd(0, 4);
+[5.151s]       |         [01;31m[K^~~~~[m[K
+[5.166s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:113:9:[m[K [01;31m[Kerror: [m[K‘[01m[Klidar_sub_[m[K’ was not declared in this scope
+[5.166s]   113 |         [01;31m[Klidar_sub_[m[K = this->create_subscription<sensor_msgs::msg::PointCloud2>(
+[5.166s]       |         [01;31m[K^~~~~~~~~~[m[K
+[5.635s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kvoid ClusterNode::listenerCallback(sensor_msgs::msg::PointCloud2_<std::allocator<void> >::SharedPtr)[m[K’:
+[5.635s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:122:11:[m[K [01;31m[Kerror: [m[K‘[01m[Kiter_[m[K’ was not declared in this scope; did you mean ‘[01m[Ktimer_t[m[K’?
+[5.635s]   122 |         ++[01;31m[Kiter_[m[K;
+[5.635s]       |           [01;31m[K^~~~~[m[K
+[5.635s]       |           [32m[Ktimer_t[m[K
+[5.681s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:154:13:[m[K [01;31m[Kerror: [m[K‘[01m[Kdata_[m[K’ was not declared in this scope
+[5.681s]   154 |             [01;31m[Kdata_[m[K = cloud;
+[5.681s]       |             [01;31m[K^~~~~[m[K
+[5.708s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:164:33:[m[K [01;31m[Kerror: [m[K‘[01m[KC_prev_[m[K’ was not declared in this scope
+[5.708s]   164 |             for (int i = 0; i < [01;31m[KC_prev_[m[K.rows(); ++i) {
+[5.708s]       |                                 [01;31m[K^~~~~~~[m[K
+[5.708s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:168:63:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K)[m[K’ token
+[5.708s]   168 |                 Vector3d query_point = C_prev_.row(i).head<3>([01;31m[K)[m[K;
+[5.708s]       |                                                               [01;31m[K^[m[K
+[5.740s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:194:95:[m[K [01;31m[Kerror: [m[K‘[01m[KC_prev_[m[K’ was not declared in this scope
+[5.740s]   194 |                 futures.push_back(std::async(std::launch::async, [this, seed, &data_, iter_, &[01;31m[KC_prev_[m[K]() {
+[5.740s]       |                                                                                               [01;31m[K^~~~~~~[m[K
+[5.740s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In lambda function:
+[5.740s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:195:30:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass ClusterNode[m[K’ has no member named ‘[01m[Kgrow_seed[m[K’
+[5.740s]   195 |                 return this->[01;31m[Kgrow_seed[m[K(seed, data_, iter_, C_prev_);
+[5.740s]       |                              [01;31m[K^~~~~~~~~[m[K
+[5.740s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:195:46:[m[K [01;31m[Kerror: [m[K‘[01m[Kdata_[m[K’ is not captured
+[5.740s]   195 |                 return this->grow_seed(seed, [01;31m[Kdata_[m[K, iter_, C_prev_);
+[5.740s]       |                                              [01;31m[K^~~~~[m[K
+[5.740s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:194:102:[m[K [01;36m[Knote: [m[Kthe lambda has no capture-default
+[5.741s]   194 |                 futures.push_back(std::async(std::launch::async, [this, seed, &data_, iter_, &C_prev_[01;36m[K][m[K() {
+[5.741s]       |                                                                                                      [01;36m[K^[m[K
+[5.741s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:154:13:[m[K [01;36m[Knote: [m[K‘[01m[K<typeprefixerror>data_[m[K’ declared here
+[5.741s]   154 |             [01;36m[Kdata_[m[K = cloud;
+[5.741s]       |             [01;36m[K^~~~~[m[K
+[5.741s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:195:53:[m[K [01;31m[Kerror: [m[K‘[01m[Kiter_[m[K’ is not captured
+[5.741s]   195 |                 return this->grow_seed(seed, data_, [01;31m[Kiter_[m[K, C_prev_);
+[5.741s]       |                                                     [01;31m[K^~~~~[m[K
+[5.741s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:194:102:[m[K [01;36m[Knote: [m[Kthe lambda has no capture-default
+[5.741s]   194 |                 futures.push_back(std::async(std::launch::async, [this, seed, &data_, iter_, &C_prev_[01;36m[K][m[K() {
+[5.741s]       |                                                                                                      [01;36m[K^[m[K
+[5.741s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:122:11:[m[K [01;36m[Knote: [m[K‘[01m[K<typeprefixerror>iter_[m[K’ declared here
+[5.741s]   122 |         ++[01;36m[Kiter_[m[K;
+[5.741s]       |           [01;36m[K^~~~~[m[K
+[5.741s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:195:60:[m[K [01;31m[Kerror: [m[K‘[01m[KC_prev_[m[K’ is not captured
+[5.741s]   195 |                 return this->grow_seed(seed, data_, iter_, [01;31m[KC_prev_[m[K);
+[5.741s]       |                                                            [01;31m[K^~~~~~~[m[K
+[5.741s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:194:102:[m[K [01;36m[Knote: [m[Kthe lambda has no capture-default
+[5.741s]   194 |                 futures.push_back(std::async(std::launch::async, [this, seed, &data_, iter_, &C_prev_[01;36m[K][m[K() {
+[5.741s]       |                                                                                                      [01;36m[K^[m[K
+[5.741s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:194:95:[m[K [01;36m[Knote: [m[K‘[01m[K<typeprefixerror>C_prev_[m[K’ declared here
+[5.741s]   194 |                 futures.push_back(std::async(std::launch::async, [this, seed, &data_, iter_, &[01;36m[KC_prev_[m[K]() {
+[5.741s]       |                                                                                               [01;36m[K^~~~~~~[m[K
+[5.741s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kvoid ClusterNode::listenerCallback(sensor_msgs::msg::PointCloud2_<std::allocator<void> >::SharedPtr)[m[K’:
+[5.741s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:198:13:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[Kstd[m[K’
+[5.741s]   198 |             [01;31m[Kstd[m[K::vector<std::vector<Vector4d>> C;
+[5.741s]       |             [01;31m[K^~~[m[K
+[5.741s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:194:45:[m[K [01;36m[Knote: [m[Kto match this ‘[01m[K([m[K’
+[5.741s]   194 |                 futures.push_back(std::async[01;36m[K([m[Kstd::launch::async, [this, seed, &data_, iter_, &C_prev_]() {
+[5.741s]       |                                             [01;36m[K^[m[K
+[5.753s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:201:17:[m[K [01;31m[Kerror: [m[K‘[01m[KC[m[K’ was not declared in this scope
+[5.753s]   201 |                 [01;31m[KC[m[K.insert(C.end(), clusters.begin(), clusters.end());
+[5.753s]       |                 [01;31m[K^[m[K
+[5.754s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:207:131:[m[K [01;31m[Kerror: [m[Ka function-definition is not allowed here before ‘[01m[K{[m[K’ token
+[5.754s]   207 |     vector<vector<Eigen::Vector4d>> grow_seed(const Vector4d seed, const MatrixXd& data, int itr, const vector<Vector4d>& C_prev) [01;31m[K{[m[K
+[5.754s]       |                                                                                                                                   [01;31m[K^[m[K
+[5.754s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:226:27:[m[K [01;31m[Kerror: [m[Ka function-definition is not allowed here before ‘[01m[K{[m[K’ token
+[5.754s]   226 |                         ) [01;31m[K{[m[K
+[5.754s]       |                           [01;31m[K^[m[K
+[5.755s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kint ClusterNode::main(int, char**)[m[K’:
+[5.755s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:317:39:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KClusterNode::make_shared<ClusterNode>()[m[K’
+[5.755s]   317 |   auto node = [01;31m[Kmake_shared<ClusterNode>()[m[K;
+[5.755s]       |               [01;31m[K~~~~~~~~~~~~~~~~~~~~~~~~^~[m[K
+[5.755s] In file included from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/context.hpp:35[m[K,
+[5.755s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:34[m[K,
+[5.755s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+[5.755s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+[5.755s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+[5.755s]                  from [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:1[m[K:
+[5.755s] [01m[K/opt/ros/humble/include/rclcpp/rclcpp/node.hpp:80:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kstatic std::shared_ptr<rclcpp::Node> rclcpp::Node::make_shared(Args&& ...) [with Args = {ClusterNode}][m[K’
+[5.755s]    80 |   [01;36m[KRCLCPP_SMART_PTR_DEFINITIONS[m[K(Node)
+[5.755s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[5.756s] [01m[K/opt/ros/humble/include/rclcpp/rclcpp/node.hpp:80:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[5.756s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K At global scope:
+[5.756s] [01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:321:2:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id at end of input
+[5.756s]   321 | }
+[5.756s]       |  [01;31m[K^[m[K
+[8.213s] gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
+[8.213s] gmake[1]: *** [CMakeFiles/Makefile2:594: CMakeFiles/cluster_cpp.dir/all] Error 2
+[8.213s] gmake: *** [Makefile:146: all] Error 2
+[8.216s] Invoked command in '/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/dev/ws/src/dynamic-box/my_rosbag_reader/install/my_rosbag_reader:/opt/ros/humble /usr/bin/cmake --build /home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/build/cluster_node -- -j22 -l22
