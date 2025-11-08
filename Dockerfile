@@ -1,5 +1,5 @@
 # Use your base
-FROM nvcr.io/nvidia/isaac/ros:aarch64-ros2_humble_adc428c7077de4984a00b63c55903b0a
+FROM ros:humble-ros-base-jammy
 
 SHELL ["/bin/bash", "-lc"]
 ENV DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC
@@ -60,6 +60,13 @@ RUN git clone https://github.com/RoboSense-LiDAR/rslidar_msg.git /home/${USERNAM
 COPY /my_rosbag_reader/my_rosbag_reader/requirements.txt .
 
 RUN pip install --no-cache-dir --ignore-installed -r requirements.txt
+RUN --mount=type=ssh \
+  if git ls-remote https://github.com/cornellev/Obstacle_node.git &> /dev/null; then \
+    echo "Access granted: cloning Obstacle_node"; \
+    git clone --branch tmp_changes https://github.com/cornellev/Obstacle_node.git /home/${USERNAME}/ws/src/Obstacle_node; \
+  else \
+    echo "No access to Obstacle_node, skipping clone"; \
+  fi
 
 RUN source /opt/ros/$ROS_DISTRO/setup.bash \
     && cd /home/dev/ws/src \
