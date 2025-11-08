@@ -70,7 +70,7 @@ RUN --mount=type=ssh \
 
 RUN source /opt/ros/$ROS_DISTRO/setup.bash \
     && cd /home/dev/ws/src \
-    && colcon build --packages-select rslidar_msg rslidar_sdk cev_msgs \
+    && colcon build --packages-select rslidar_msg rslidar_sdk cev_msgs obstacle \
     && source install/setup.bash \
     && cd /home/dev/ws/src/dynamic-box/my_rosbag_reader \
     && colcon build --packages-select my_rosbag_reader \
