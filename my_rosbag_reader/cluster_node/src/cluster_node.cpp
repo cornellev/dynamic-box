@@ -24,16 +24,17 @@ using namespace std;
 template<typename PointT>
 class KdTree {
 public:
-    KdTree() : dim_(3) {}
+    KdTree(int leaf_size = 10) : dim_(3), leaf_size_(leaf_size) {}
 
-    KdTree(const vector<PointT>& points, int dim = -1) {
-        build(points, dim);
+    KdTree(const vector<PointT>& points, int dim = -1, int leaf_size = 10) {
+        build(points, dim, leaf_size);
     }
 
-    void build(const vector<PointT>& points, int dim = -1) {
+    void build(const vector<PointT>& points, int dim = -1, int leaf_size = 10) {
         clear();
         points_ = points;
         dim_ = (dim > 0) ? dim : 3;
+        leaf_size_ = leaf_size;
 
         vector<int> indices(points.size());
         iota(indices.begin(), indices.end(), 0);
@@ -47,9 +48,13 @@ public:
     }
 
     struct Node {
-        int idx = -1;
-        array<unique_ptr<Node>, 2> next;
         int axis = -1;
+        double split_value = 0.0;
+        array<unique_ptr<Node>, 2> next;
+        
+        vector<int> point_indices;
+        
+        bool is_leaf() const { return !point_indices.empty(); }
     };
 
     int search(const PointT& query, double* minDist = nullptr) const {
@@ -60,17 +65,30 @@ public:
         return guess;
     }
 
+    vector<int> search_radius(const PointT& query, double radius) const {
+        vector<int> result;
+        search_radius_recursive(query, root_.get(), radius, result);
+        return result;
+    }
+
 private:
     unique_ptr<Node> build_recursive(int* indices, int npoints, int depth) {
         if (npoints <= 0) return nullptr;
+
+        auto node = make_unique<Node>();
+        
+        if (npoints <= leaf_size_) {
+            node->point_indices.assign(indices, indices + npoints);
+            return node;
+        }
+
         int axis = depth % dim_;
         int mid = (npoints - 1) / 2;
 
         nth_element(indices, indices + mid, indices + npoints,
                     [&](int lhs, int rhs){ return points_[lhs][axis] < points_[rhs][axis]; });
 
-        auto node = make_unique<Node>();
-        node->idx = indices[mid];
+        node->split_value = points_[indices[mid]][axis];
         node->axis = axis;
         node->next[0] = build_recursive(indices, mid, depth + 1);
         node->next[1] = build_recursive(indices + mid + 1, npoints - mid - 1, depth + 1);
@@ -78,28 +96,94 @@ private:
     }
 
     static double distance(const PointT& p, const PointT& q) {
-        double dist = 0;
-        for (int i = 0; i < p.size(); i++) dist += (p[i] - q[i])*(p[i] - q[i]);
-        return sqrt(dist);
+        double dx = p[0] - q[0];
+        double dy = p[1] - q[1];
+        double dz = p[2] - q[2];
+        return sqrt(dx*dx + dy*dy + dz*dz);
     }
 
-    void search_recursive(const PointT& query, const Node* node, int* guess, double* minDist) const {
+    void search_recursive(const PointT& query, const Node* node, 
+                         int* guess, double* minDist) const {
         if (!node) return;
-        const PointT& train = points_[node->idx];
-        double dist = distance(query, train);
-        if (dist < *minDist) { *minDist = dist; *guess = node->idx; }
-
+        
+        if (node->is_leaf()) {
+            for (int idx : node->point_indices) {
+                double dist = distance(query, points_[idx]);
+                if (dist < *minDist) {
+                    *minDist = dist;
+                    *guess = idx;
+                }
+            }
+            return;
+        }
+        
         int axis = node->axis;
-        int dir = query[axis] < train[axis] ? 0 : 1;
+        int dir = query[axis] < node->split_value ? 0 : 1;
         search_recursive(query, node->next[dir].get(), guess, minDist);
-
-        double diff = fabs(query[axis] - train[axis]);
-        if (diff < *minDist) search_recursive(query, node->next[dir==0].get(), guess, minDist);
+        
+        double diff = fabs(query[axis] - node->split_value);
+        if (diff < *minDist) {
+            search_recursive(query, node->next[1 - dir].get(), guess, minDist);
+        }
+    }
+    
+    void search_radius_recursive(const PointT& query, const Node* node, 
+                                double radius, vector<int>& result) const {
+        if (!node) return;
+        
+        // Leaf node: check all points
+        if (node->is_leaf()) {
+            for (int idx : node->point_indices) {
+                double dist = distance(query, points_[idx]);
+                if (dist != 0 && dist <= radius) {
+                    result.push_back(idx);
+                }
+            }
+            return;
+        }
+        
+        // Internal node
+        int axis = node->axis;
+        double diff = query[axis] - node->split_value;
+        
+        if (diff < 0) {
+            search_radius_recursive(query, node->next[0].get(), radius, result);
+            if (-diff <= radius) {
+                search_radius_recursive(query, node->next[1].get(), radius, result);
+            }
+        } else {
+            search_radius_recursive(query, node->next[1].get(), radius, result);
+            if (diff <= radius) {
+                search_radius_recursive(query, node->next[0].get(), radius, result);
+            }
+        }
     }
 
     unique_ptr<Node> root_;
     vector<PointT> points_;
     int dim_;
+    int leaf_size_;
+};
+
+struct AtomicBoolWrapper {
+    std::atomic<bool> flag;
+    AtomicBoolWrapper() : flag(false) {}
+    AtomicBoolWrapper(const AtomicBoolWrapper& other) : flag(other.flag.load()) {}
+    AtomicBoolWrapper& operator=(const AtomicBoolWrapper& other) {
+        flag.store(other.flag.load());
+        return *this;
+    }
+};
+
+struct TupleCompare {
+    bool operator()(const std::tuple<double,double,double,double>& a,
+                    const std::tuple<double,double,double,double>& b) const {
+        constexpr double eps = 1e-6;
+        if (std::fabs(std::get<0>(a) - std::get<0>(b)) > eps) return std::get<0>(a) < std::get<0>(b);
+        if (std::fabs(std::get<1>(a) - std::get<1>(b)) > eps) return std::get<1>(a) < std::get<1>(b);
+        if (std::fabs(std::get<2>(a) - std::get<2>(b)) > eps) return std::get<2>(a) < std::get<2>(b);
+        return std::get<3>(a) < std::get<3>(b);
+    }
 };
 
 class ClusterNode : public rclcpp::Node {
@@ -110,8 +194,6 @@ public:
         C_prev_ = MatrixXd::Zero(1, 4);
         data_ = MatrixXd(0, 4);
 
-        taken_;
-
         lidar_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
             "/rslidar_points", 10, 
             bind(&ClusterNode::listenerCallback, this, std::placeholders::_1));
@@ -120,7 +202,6 @@ public:
     }
 
 private:
-
     void listenerCallback(const sensor_msgs::msg::PointCloud2::SharedPtr msg) {
         ++iter_;
 
@@ -145,21 +226,20 @@ private:
         size_t n = pts.size();
 
         MatrixXd mat(n, 3);
-        for (size_t i = 0; i < n; ++i)
-            mat.row(i) = pts[i];
+        for (size_t i = 0; i < n; ++i) mat.row(i) = pts[i];
 
         MatrixXd cloud(n, 4);
         cloud.leftCols<3>() = mat;
-        cloud.col(3) = mat.col(2); 
+        
+        for (size_t i = 0; i < n; ++i) cloud(i, 3) = static_cast<double>(i);
 
         if (cloud.size() > 0) {
             RCLCPP_INFO(this->get_logger(), "LIVE: Recieved %zu points", cloud.rows());
             data_ = cloud;
-            taken_.clear();
+            RCLCPP_INFO(this->get_logger(), "TAKEN: %zu size", data_.rows());
             taken_.resize(data_.rows());
-
-            for (auto &flag : taken_) {
-                flag.store(false);
+            for (size_t i = 0; i < data_.rows(); ++i) {
+                taken_[i].flag.store(false, std::memory_order_relaxed);
             }
 
             // turn this into a get seeds function
@@ -200,15 +280,12 @@ private:
             }
 
             // ###########################
+            RCLCPP_INFO(this->get_logger(), "Unique Seeds: %zu", C_prev_.rows());
             std::vector<std::future<std::vector<std::vector<Vector4d>>>> futures;
             for (auto& seed : unique_seeds) {
                 futures.push_back(std::async(std::launch::async,
                     [this, seed]() {
-                        std::vector<Vector4d> C_prev_vec;
-                        for (int i = 0; i < this->C_prev_.rows(); ++i)
-                            C_prev_vec.push_back(this->C_prev_.row(i));
-
-                        return this->grow_seed(seed, this->data_, this->iter_, C_prev_vec);
+                        return this->grow_seed(seed, this->data_, this->iter_);
                     }
                 ));
             }
@@ -218,6 +295,48 @@ private:
                 auto clusters = f.get();
                 C.insert(C.end(), clusters.begin(), clusters.end());
             }
+            
+            MatrixXd remaining_cloud(0, 4);
+            std::vector<Vector4d> unclaimed_points;
+            for (int i = 0; i < data_.rows(); ++i) {
+                int idx = static_cast<int>(data_.row(i)[3]);
+                if (!taken_[idx].flag.load(std::memory_order_acquire)) {
+                    unclaimed_points.push_back(data_.row(i).transpose());
+                }
+            }
+            
+            // Rebuild data_ matrix with only unclaimed points
+            if (!unclaimed_points.empty()) {
+                remaining_cloud.resize(unclaimed_points.size(), 4);
+                for (size_t i = 0; i < unclaimed_points.size(); ++i) {
+                    remaining_cloud.row(i) = unclaimed_points[i].transpose();
+                }
+                auto clusters = euclidean_cluster(remaining_cloud.row(0), remaining_cloud, 0.1, 10, "cartesian", false);
+                C.insert(C.end(), clusters.begin(), clusters.end());
+            }
+
+            int MIN_CLUSTER_SIZE = 10;
+            for (int i = static_cast<int>(C.size()) - 1; i >= 0; --i) {
+                if (C[i].size() < MIN_CLUSTER_SIZE) {
+                    C.erase(C.begin() + i);
+                } 
+                // else {
+            //         // Convert cluster to MatrixXd
+            //         int n = static_cast<int>(C[i].size());
+            //         MatrixXd cluster_mat(n, 4);
+            //         for (int j = 0; j < n; ++j) {
+            //             cluster_mat.row(j) = C[i][j].transpose(); // Vector4d -> row
+            //         }
+
+            //         // Append to C_prev_
+            //         int old_rows = C_prev_.rows();
+            //         C_prev_.conservativeResize(old_rows + n, 4);
+            //         C_prev_.block(old_rows, 0, n, 4) = cluster_mat;
+            //     }
+            }
+
+            RCLCPP_INFO(this->get_logger(), "Clusters: %zu", C.size());
+
 
         }
     }
@@ -225,29 +344,35 @@ private:
     vector<vector<Eigen::Vector4d>> grow_seed(
         const Vector4d seed, 
         const MatrixXd& data, 
-        int itr, 
-        const vector<Vector4d>& C_prev
+        int itr
     ) {
         if (itr == 0) {
-            auto [c, prev] = euclidean_cluster(seed, data, 0.1, 10, "cartesian", C_prev, false);
-            return c;
+            return euclidean_cluster(seed, data, 0.1, 10, "cartesian", false);
         } else {
-            auto [c, prev] = euclidean_cluster(seed, data, 0.1, 10, "cartesian", C_prev, false, 1);
-            return c;
+            return euclidean_cluster(seed, data, 0.1, 10, "cartesian", false);
         }
     }
 
-    std::tuple<std::vector<std::vector<Eigen::Vector4d>>, std::vector<Eigen::Vector4d>> 
+    bool set_atomic_flag(int idx) {
+        bool expected = false;
+        return taken_[idx].flag.compare_exchange_strong(expected, true,
+                                                    std::memory_order_acquire,
+                                                    std::memory_order_relaxed);
+    }
+
+    std::vector<std::vector<Eigen::Vector4d>> 
         euclidean_cluster(const Vector4d seeds,
                         const MatrixXd& cloud_input,
                         double radius,
                         int MIN_CLUSTER_SIZE = 1,
                         const string& mode = "cartesian",
-                        const vector<Vector4d>& cloud_prev = {},
                         bool reorder = true, 
                         double MAX_CLUSTER_NUM = numeric_limits<double>::infinity()
                         ) {
         // WANT REMOVAL OF POINTS FROM CLOUD_INPUT TO PROPAGATE TO ALL THREADS
+        std::vector<std::vector<Eigen::Vector4d>> cheese;
+        std::vector<Eigen::Vector4d> burgers;
+
         VectorXd x, y, z;
         if (reorder) {
             if (mode == "spherical") {
@@ -271,67 +396,95 @@ private:
         cloud.col(2) = z;
         cloud.col(3) = cloud_input.col(3);
 
-        vector<Vector4d> points(cloud.rows());
-        for (int i = 0; i < cloud.rows(); ++i) points[i] = cloud.row(i).transpose();
+        // only consider cloud points that are not atomic flagged
+        vector<Vector4d> points;
+        for (int i = 0; i < cloud.rows(); ++i) {
+            int idx = static_cast<int>(cloud(i, 3));
+            if (taken_[idx].flag.load(std::memory_order_acquire)) {
+                continue;
+            }
+            points.push_back(cloud.row(i).transpose());
+        };
 
         // Build KD-tree
-        KdTree<Vector4d> kd_tree(points);
+        KdTree<Vector4d> kd_tree(points, 3);
 
         // Initialize unexplored set
-        set<tuple<double,double,double>> unexplored;
+        set<int> unexplored;
         for (const auto& p : points)
-            unexplored.insert(make_tuple(p[0], p[1], p[2]));
+            unexplored.insert(static_cast<int>(p[3]));
 
         vector<vector<Vector4d>> C;
-        vector<Vector4d> prev;
-
-        vector<vector<Vector4d>> cloud_prev_clusters;
-        if (!cloud_prev.empty()) cloud_prev_clusters.push_back(cloud_prev);
 
         int iter = 0;
+        std::set<int> visited_indices;
         while (!unexplored.empty() && C.size() < MAX_CLUSTER_NUM) {
+            // RCLCPP_INFO(this->get_logger(), "Iter %zu :: Unexplored size %zu", iter_, unexplored.size());
             Vector4d next_point;
-            if (iter == 0) next_point = seeds;
-            else {
-                auto it = unexplored.begin();
-                next_point << get<0>(*it), get<1>(*it), get<2>(*it), 0.0;
-            }
+            int next_idx;
 
+            if (iter == 0) {
+                next_point = seeds; // if seeds immediately is an outlier, try searching its neighbors, really need icp here
+                next_idx = static_cast<int>(seeds[3]);
+            } else {
+                next_idx = *unexplored.begin();
+                unexplored.erase(next_idx);
+                next_point = points[next_idx];
+            }
+            iter++;
+
+            unexplored.erase(next_idx);
+            if (taken_[next_idx].flag.load(std::memory_order_acquire)) {
+                continue;
+            }
+            if (visited_indices.count(next_idx)) {
+                continue;
+            }
             C.push_back({next_point});
-            unexplored.erase(make_tuple(next_point[0], next_point[1], next_point[2]));
+            // next_point is the first point to query in new cluster, need to set atomic flag after getting more neighbors
 
             vector<Vector4d> stack = {next_point};
             while (!stack.empty()) {
+                int sz = stack.size();
                 Vector4d query = stack.back();
                 stack.pop_back();
+                // should be safe to set_atomic_flag here, will prevent other threads from searching this point, but allows for kd_tree search still here
+                int query_idx = static_cast<int>(query[3]);
+                if (taken_[query_idx].flag.load(std::memory_order_acquire)) continue;
+                if (visited_indices.count(query_idx)) continue;
+                // should be safe to set_atomic_flag here, will prevent other threads from searching this point, but allows for kd_tree search still here
+                // only set atomic_flag when the point is actively being explored
+                set_atomic_flag(static_cast<int>(query_idx));
 
-                for (const auto& p : points) {
-                    Vector3d diff = (p.head<3>() - query.head<3>()).cwiseAbs();
-                    double local_radius = radius;
-                    if (query.head<3>().norm() > 5.0) local_radius *= 2;
+                vector<int> neighbors = kd_tree.search_radius(query, radius);
+                for (int idx_n : neighbors) {
+                    // RCLCPP_INFO(this->get_logger(), "found %zu neighbors", neighbors.size());
+                    if (idx_n == query[3]) continue;
+                    const auto& p = points[idx_n];
+                    int point_idx = static_cast<int>(p[3]);
 
-                    if (diff[0] < local_radius && diff[1] < local_radius && diff[2] < 2*local_radius) {
-                        tuple<double,double,double> key = make_tuple(p[0], p[1], p[2]);
-                        if (unexplored.find(key) != unexplored.end()) {
-                            C.back().push_back(p);
-                            stack.push_back(p);
-                            unexplored.erase(key);
-                        }
-                    }
+                    if (taken_[point_idx].flag.load(std::memory_order_acquire)) continue;
+                    if (!unexplored.count(point_idx)) continue;
+                    if (visited_indices.count(point_idx)) continue;
+
+                    // don't set atomic flag here, or else can't explore above
+                    C.back().push_back(p);
+                    stack.push_back(p);
+                    unexplored.erase(point_idx);
                 }
+
+                // add to visited once new neighbors discovered
+                visited_indices.insert(query_idx);
             }
-
-            prev.push_back(Vector4d::Zero());
-            iter++;
         }
-
-        return make_tuple(C, prev);
+        return C;
     }
 
     int iter_;
     MatrixXd C_prev_;
     MatrixXd data_;
-    std::vector<std::atomic<bool>> taken_;
+    // check device, if CPU, use std::atomic_flag, if GPU use CUDA's atomic
+    std::vector<AtomicBoolWrapper> taken_;
 
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr lidar_sub_;
 };
