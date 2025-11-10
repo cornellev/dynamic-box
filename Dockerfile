@@ -15,6 +15,7 @@ RUN apt-get update \
   && apt-get install -y \
   git openssh-client \
   libopencv-dev \
+  libopen3d-dev \
   ros-humble-pcl-ros
   
 # ---- Non-root dev user ----
