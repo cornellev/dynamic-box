@@ -9,7 +9,7 @@
 #include <cev_msgs/msg/obstacles.hpp>
 // #include <cluster_node/msg/obstacle_array.hpp>
 #include <vector>
-#include <set>
+#include <unordered_set>
 #include <chrono>
 #include <tuple>
 #include <memory>
@@ -288,7 +288,7 @@ private:
 
             // ###########################
             RCLCPP_INFO(this->get_logger(), "Unique Seeds: %zu", C_prev_.rows());
-            vector<std::future<std::tuple<vector<vector<Vector4d>>, std::set<int>>>> futures;
+            vector<std::future<std::tuple<vector<vector<Vector4d>>, std::unordered_set<int>>>> futures;
             for (auto& seed : unique_seeds) {
                 futures.push_back(std::async(std::launch::async,
                     [this, seed]() {
@@ -298,13 +298,16 @@ private:
             }
 
             // threadpool, waiting for all futures to complete before continuing
-            std::set<int> visited_indices;
+            std::unordered_set<int> visited_indices;
             vector<vector<Vector4d>> C;
             for (auto& f : futures) {
-                auto [clusters, visited_indices] = f.get();
+                auto [clusters, visited] = f.get();
                 C.insert(C.end(), clusters.begin(), clusters.end());
+                visited_indices.insert(visited.begin(), visited.end());
             }
 
+
+            RCLCPP_INFO(this->get_logger(), "FINAL: %zu indices", visited_indices.size());
             vector<Vector4d> unclaimed_points;
             for (int i = 0; i < data_.rows(); ++i) {
                 if (!visited_indices.count(i)) {
@@ -427,12 +430,12 @@ private:
         return sum;
     }
 
-    std::tuple<vector<vector<Eigen::Vector4d>>, std::set<int>> grow_seed(
+    std::tuple<vector<vector<Eigen::Vector4d>>, std::unordered_set<int>> grow_seed(
         const Vector4d seed, 
         const MatrixXd& data, 
         int itr
     ) {
-        std::set<int> visited_indices;
+        std::unordered_set<int> visited_indices;
         if (itr == 0) {
             return euclidean_cluster(seed, data, visited_indices, 0.1, 10, "cartesian", false, true);
         } else {
@@ -447,10 +450,10 @@ private:
                                                     std::memory_order_relaxed);
     }
 
-    std::tuple<vector<vector<Eigen::Vector4d>>, std::set<int>>
+    std::tuple<vector<vector<Eigen::Vector4d>>, std::unordered_set<int>>
         euclidean_cluster(const Vector4d seeds,
                         const MatrixXd& cloud_input, 
-                        std::set<int> visited_indices,
+                        std::unordered_set<int> visited_indices,
                         double radius,
                         int MIN_CLUSTER_SIZE = 1,
                         const string& mode = "cartesian",
@@ -459,9 +462,6 @@ private:
                         double MAX_CLUSTER_NUM = numeric_limits<double>::infinity()
                         ) {
         // WANT REMOVAL OF POINTS FROM CLOUD_INPUT TO PROPAGATE TO ALL THREADS
-        vector<vector<Eigen::Vector4d>> cheese;
-        vector<Eigen::Vector4d> burgers;
-
         VectorXd x, y, z;
         if (reorder) {
             if (mode == "spherical") {
@@ -488,10 +488,6 @@ private:
         // only consider cloud points that are not atomic flagged
         vector<Vector4d> points;
         for (int i = 0; i < cloud.rows(); ++i) {
-            int idx = static_cast<int>(cloud(i, 3));
-            if (is_parallel && taken_[idx].flag.load(std::memory_order_acquire)) {
-                continue;
-            }
             points.push_back(cloud.row(i).transpose());
         };
 
@@ -499,9 +495,13 @@ private:
         KdTree<Vector4d> kd_tree(points, 3);
 
         // Initialize unexplored set
-        set<int> unexplored;
-        for (const auto& p : points)
-            unexplored.insert(static_cast<int>(p[3]));
+        unordered_set<int> unexplored;
+        for (int idx = 0; idx < points.size(); ++idx) {
+            if (is_parallel && taken_[idx].flag.load(std::memory_order_acquire)) {
+                continue;
+            }
+            unexplored.insert(static_cast<int>(points[idx][3]));
+        }
 
         vector<vector<Vector4d>> C;
 
@@ -516,7 +516,16 @@ private:
             } else {
                 next_idx = *unexplored.begin();
                 unexplored.erase(next_idx);
-                next_point = points[next_idx];
+                // next_point = points[next_idx];
+                bool found = false;
+                for (const auto& p : points) {
+                    if (static_cast<int>(p[3]) == next_idx) {
+                        next_point = p;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) continue;
             }
             iter++;
 
@@ -532,7 +541,6 @@ private:
 
             vector<Vector4d> stack = {next_point};
             while (!stack.empty()) {
-                int sz = stack.size();
                 Vector4d query = stack.back();
                 stack.pop_back();
                 // should be safe to set_atomic_flag here, will prevent other threads from searching this point, but allows for kd_tree search still here
@@ -541,11 +549,12 @@ private:
                 if (visited_indices.count(query_idx)) continue;
                 // should be safe to set_atomic_flag here, will prevent other threads from searching this point, but allows for kd_tree search still here
                 // only set atomic_flag when the point is actively being explored
-                set_atomic_flag(static_cast<int>(query_idx));
+                set_atomic_flag(query_idx);
 
                 vector<int> neighbors = kd_tree.search_radius(query, radius);
                 for (int idx_n : neighbors) {
                     if (idx_n == query[3]) continue;
+
                     const auto& p = points[idx_n];
                     int point_idx = static_cast<int>(p[3]);
 
@@ -565,6 +574,141 @@ private:
         }
         return make_tuple(C, visited_indices);
     }
+
+    // std::tuple<vector<vector<Eigen::Vector4d>>, std::unordered_set<int>>
+    // euclidean_cluster(const Vector4d seeds,
+    //                 const MatrixXd& cloud_input, 
+    //                 std::unordered_set<int> visited_indices,
+    //                 double radius,
+    //                 int MIN_CLUSTER_SIZE = 1,
+    //                 const string& mode = "cartesian",
+    //                 bool reorder = true, 
+    //                 bool is_parallel = false,
+    //                 double MAX_CLUSTER_NUM = numeric_limits<double>::infinity()
+    //                 ) {
+    //     VectorXd x, y, z;
+    //     if (reorder) {
+    //         if (mode == "spherical") {
+    //             z = cloud_input.col(0).array() * (cloud_input.col(2).array().sin() * cloud_input.col(1).array().cos());
+    //             x = cloud_input.col(0).array() * (cloud_input.col(2).array().sin() * cloud_input.col(1).array().sin());
+    //             y = cloud_input.col(0).array() * cloud_input.col(2).array().cos();
+    //         } else {
+    //             x = cloud_input.col(0);
+    //             y = cloud_input.col(1);
+    //             z = cloud_input.col(2);
+    //         }
+    //     } else {
+    //         x = cloud_input.col(0);
+    //         y = cloud_input.col(1);
+    //         z = cloud_input.col(2);
+    //     }
+
+    //     MatrixXd cloud(cloud_input.rows(), 4);
+    //     cloud.col(0) = x;
+    //     cloud.col(1) = y;
+    //     cloud.col(2) = z;
+    //     cloud.col(3) = cloud_input.col(3);
+
+    //     // Build points vector with mapping
+    //     vector<Vector4d> points;
+    //     vector<int> point_to_original_idx;
+    //     unordered_map<int, int> original_to_point_idx;  // NEW: Reverse mapping
+        
+    //     for (int i = 0; i < cloud.rows(); ++i) {
+    //         int original_idx = static_cast<int>(cloud(i, 3));
+    //         if (is_parallel && taken_[original_idx].flag.load(std::memory_order_acquire)) {
+    //             continue;
+    //         }
+    //         original_to_point_idx[original_idx] = points.size();  // NEW
+    //         point_to_original_idx.push_back(original_idx);
+    //         points.push_back(cloud.row(i).transpose());
+    //     }
+
+    //     // Build KD-tree
+    //     KdTree<Vector4d> kd_tree(points, 3);
+
+    //     // Initialize unexplored set with ORIGINAL indices
+    //     unordered_set<int> unexplored;
+    //     for (int points_idx = 0; points_idx < points.size(); ++points_idx) {
+    //         unexplored.insert(point_to_original_idx[points_idx]);
+    //     }
+
+    //     vector<vector<Vector4d>> C;
+
+    //     int iter = 0;
+    //     while (!unexplored.empty() && C.size() < MAX_CLUSTER_NUM) {
+    //         Vector4d next_point;
+    //         int next_original_idx;
+    //         int next_points_idx;
+
+    //         if (iter == 0) {
+    //             // Seed iteration
+    //             next_original_idx = static_cast<int>(seeds[3]);
+                
+    //             // Check if seed exists in points vector
+    //             if (original_to_point_idx.find(next_original_idx) == original_to_point_idx.end()) {
+    //                 // Seed was filtered out, skip
+    //                 iter++;
+    //                 continue;
+    //             }
+                
+    //             next_points_idx = original_to_point_idx[next_original_idx];
+    //             next_point = points[next_points_idx];
+    //         } else {
+    //             // Pick any unexplored point
+    //             next_original_idx = *unexplored.begin();
+    //             unexplored.erase(next_original_idx);
+                
+    //             if (original_to_point_idx.find(next_original_idx) == original_to_point_idx.end()) {
+    //                 continue;
+    //             }
+                
+    //             next_points_idx = original_to_point_idx[next_original_idx];
+    //             next_point = points[next_points_idx];
+    //         }
+    //         iter++;
+
+    //         unexplored.erase(next_original_idx);
+    //         if (is_parallel && taken_[next_original_idx].flag.load(std::memory_order_acquire)) {
+    //             continue;
+    //         }
+    //         if (visited_indices.count(next_original_idx)) {
+    //             continue;
+    //         }
+            
+    //         C.push_back({next_point});
+
+    //         vector<Vector4d> stack = {next_point};
+    //         while (!stack.empty()) {
+    //             Vector4d query = stack.back();
+    //             stack.pop_back();
+                
+    //             int query_original_idx = static_cast<int>(query[3]);
+    //             if (is_parallel && taken_[query_original_idx].flag.load(std::memory_order_acquire)) continue;
+    //             if (visited_indices.count(query_original_idx)) continue;
+                
+    //             set_atomic_flag(query_original_idx);
+
+    //             // Search returns indices into points[] vector
+    //             vector<int> neighbors = kd_tree.search_radius(query, radius);
+    //             for (int neighbor_points_idx : neighbors) {
+    //                 const auto& p = points[neighbor_points_idx];
+    //                 int neighbor_original_idx = point_to_original_idx[neighbor_points_idx];
+
+    //                 if (is_parallel && taken_[neighbor_original_idx].flag.load(std::memory_order_acquire)) continue;
+    //                 if (!unexplored.count(neighbor_original_idx)) continue;
+    //                 if (visited_indices.count(neighbor_original_idx)) continue;
+
+    //                 C.back().push_back(p);
+    //                 stack.push_back(p);
+    //                 unexplored.erase(neighbor_original_idx);
+    //             }
+
+    //             visited_indices.insert(query_original_idx);
+    //         }
+    //     }
+    //     return make_tuple(C, visited_indices);
+    // }
 
     int iter_;
     MatrixXd C_prev_;
