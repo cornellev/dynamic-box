@@ -210,14 +210,21 @@ public:
             "/rslidar_points", 10, 
             bind(&ClusterNode::listenerCallback, this, std::placeholders::_1));
 
-        obs_pub_ = this->create_publisher<cev_msgs::msg::Obstacles>(
+        obs_pub_ = this->create_publisher<sensor_msgs::msg::PointCloud2>(
+            "/rslidar_clusters", 10);
+
+        obs_arr_pub_ = this->create_publisher<cev_msgs::msg::Obstacles>(
             "/rslidar_obstacles", 10);
 
+        
         RCLCPP_INFO(this->get_logger(), "ClusterNode started - waiting for PointCloud2 on '/rslidar_points'");
     }
 
 private:
     void listenerCallback(const sensor_msgs::msg::PointCloud2::SharedPtr msg) {
+        sensor_msgs::msg::PointCloud2 obs_points;
+        obs_points.header = msg->header;
+
         sensor_msgs::PointCloud2ConstIterator<float> iter_x(*msg, "x");
         sensor_msgs::PointCloud2ConstIterator<float> iter_y(*msg, "y");
         sensor_msgs::PointCloud2ConstIterator<float> iter_z(*msg, "z");
@@ -367,7 +374,7 @@ private:
             //     }
             // }
 
-            outputClusters(C);
+            outputClusters(C, obs_points, total_points);
             auto end = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
             RCLCPP_INFO(this->get_logger(), "RAN FOR: %ld ms", duration.count());
@@ -375,9 +382,29 @@ private:
         ++iter_;
     }
 
-   void outputClusters(const vector<vector<Vector4d>>& clusters) {
+   void outputClusters(const vector<vector<Vector4d>>& clusters, sensor_msgs::msg::PointCloud2 obs_points, int max_num_points) {
         cev_msgs::msg::Obstacles obstacles_msg;
         obstacles_msg.obstacles.reserve(clusters.size());
+
+        obs_points.header.frame_id = "rslidar";
+        obs_points.height = 1;
+
+        sensor_msgs::PointCloud2Modifier modifier(obs_points);
+        modifier.setPointCloud2Fields(
+            4,
+            "x", 1, sensor_msgs::msg::PointField::FLOAT32,
+            "y", 1, sensor_msgs::msg::PointField::FLOAT32,
+            "z", 1, sensor_msgs::msg::PointField::FLOAT32,
+            "id", 1, sensor_msgs::msg::PointField::UINT32
+        );
+        modifier.resize(max_num_points);
+
+        sensor_msgs::PointCloud2Iterator<float> out_x(obs_points, "x");
+        sensor_msgs::PointCloud2Iterator<float> out_y(obs_points, "y");
+        sensor_msgs::PointCloud2Iterator<float> out_z(obs_points, "z");
+        sensor_msgs::PointCloud2Iterator<float> out_id(obs_points, "id");
+
+        int actual_num_points = 0;
 
         for (size_t i = 0; i < clusters.size(); ++i) {
             const auto& cluster = clusters[i];
@@ -427,6 +454,11 @@ private:
                 float y = static_cast<float>(point[1]);
                 float z = static_cast<float>(point[2]);
                 uint32_t id = static_cast<uint32_t>(i);
+
+                *out_x = x;
+                *out_y = y;
+                *out_z = z;
+                *out_id = id;
                 
                 std::memcpy(ptr, &x, sizeof(float));
                 ptr += sizeof(float);
@@ -436,12 +468,17 @@ private:
                 ptr += sizeof(float);
                 std::memcpy(ptr, &id, sizeof(uint32_t));
                 ptr += sizeof(uint32_t);
+
+                ++out_x; ++out_y; ++out_z; ++out_id;
+                ++actual_num_points;
             }
             
             obstacles_msg.obstacles.push_back(pc_msg);
         }
         
-        obs_pub_->publish(obstacles_msg);
+        modifier.resize(actual_num_points);
+        obs_pub_->publish(obs_points);
+        obs_arr_pub_->publish(obstacles_msg);
         RCLCPP_INFO(this->get_logger(), "Published %zu obstacles", obstacles_msg.obstacles.size());
     }
 
@@ -753,13 +790,17 @@ private:
     vector<AtomicBoolWrapper> taken_;
     std::mutex callback_mutex_;
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr lidar_sub_;
-    rclcpp::Publisher<cev_msgs::msg::Obstacles>::SharedPtr obs_pub_;
+    rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr obs_pub_;
+    rclcpp::Publisher<cev_msgs::msg::Obstacles>::SharedPtr obs_arr_pub_;
 };
 
 int main(int argc, char ** argv) {
   rclcpp::init(argc, argv);
+  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 10);
   auto node = make_shared<ClusterNode>();
-  rclcpp::spin(node);
+  executor.add_node(node);
+executor.spin();
+//   rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;
 }
