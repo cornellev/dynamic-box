@@ -1,0 +1,7 @@
+{
+  "package_name": "cluster_node",
+  "non_idl_tuples": [
+    "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node:msg/Obstacle.msg",
+    "/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node:msg/ObstacleArray.msg"
+  ]
+}
