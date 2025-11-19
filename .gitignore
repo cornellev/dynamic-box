@@ -8,3 +8,4 @@ my_rosbag_reader/cluster_node/build/*
 my_rosbag_reader/cluster_node/install/*
 my_rosbag_reader/cluster_node/log/*
 baggies/*
+.notes
