@@ -1,6 +1,8 @@
 # dynamic-box
 3D point cloud segmentation algorithm for consecutive LiDAR scans using kd-tree-based euclidean cluster extraction. These obstacle clusters can be converted to birds-eye view for visualization, 3D-oriented bounding boxes for capturing obstacle poses, occupancy grids for planning, etc.
 
+![demo clustering](demo/scan.gif)
+
 ## Euclidean Cluster Extraction ROS2 Package:
 It is recommended that the ROS2-integrated Euclidean Cluster Extraction algorithm be run in the provided Docker container, which has already packaged all required code and dependencies. 
 
