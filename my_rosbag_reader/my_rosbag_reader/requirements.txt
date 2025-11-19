@@ -9,3 +9,4 @@ websocket-client
 pybind11
 open3d[full]
 numpy<2.0
+
