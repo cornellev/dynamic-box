@@ -1,8 +1,0 @@
-[0m** WARNING ** io features related to pcap will be disabled[0m
-[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:9:10:[m[K [01;31m[Kfatal error: [m[Kobstacle/msg/obstacle_array.hpp: No such file or directory
-    9 | #include [01;31m[K<obstacle/msg/obstacle_array.hpp>[m[K
-      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
-compilation terminated.
-gmake[2]: *** [CMakeFiles/cluster_cpp.dir/build.make:76: CMakeFiles/cluster_cpp.dir/src/cluster_node.cpp.o] Error 1
-gmake[1]: *** [CMakeFiles/Makefile2:592: CMakeFiles/cluster_cpp.dir/all] Error 2
-gmake: *** [Makefile:146: all] Error 2

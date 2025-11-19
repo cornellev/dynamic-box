@@ -69,6 +69,7 @@ class MinimalSubscriber(Node):
         # POINT CLOUD PREPROCESSING
         cloud = pc2.read_points(msg, field_names=("x", "y", "z", "intensity"), skip_nans=True)
         cloud = np.array(cloud.tolist())
+        # print(cloud)
 
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(cloud[:, :3])

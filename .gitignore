@@ -1,0 +1,10 @@
+my_rosbag_reader/build/*
+my_rosbag_reader/install/*
+my_rosbag_reader/log/*
+my_rosbag_reader/my_rosbag_reader/build/*
+my_rosbag_reader/my_rosbag_reader/install/*
+my_rosbag_reader/my_rosbag_reader/log/*
+my_rosbag_reader/cluster_node/build/*
+my_rosbag_reader/cluster_node/install/*
+my_rosbag_reader/cluster_node/log/*
+baggies/*

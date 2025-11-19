@@ -1,4 +1,0 @@
-[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:[m[K In member function ‘[01m[Kvoid ClusterNode::euclidean_cluster(Eigen::Vector4d, const MatrixXd&, double, int, const string&, const std::vector<Eigen::Matrix<double, 4, 1> >&, bool, double)[m[K’:
-[01m[K/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/src/cluster_node.cpp:162:37:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[KMIN_CLUSTER_SIZE[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
-  162 |                                 [01;35m[Kint MIN_CLUSTER_SIZE = 1[m[K,
-      |                                 [01;35m[K~~~~^~~~~~~~~~~~~~~~~~~~[m[K
