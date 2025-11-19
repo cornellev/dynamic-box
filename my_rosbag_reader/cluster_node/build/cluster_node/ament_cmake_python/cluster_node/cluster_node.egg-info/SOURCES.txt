@@ -1,9 +1,0 @@
-setup.py
-cluster_node/__init__.py
-cluster_node.egg-info/PKG-INFO
-cluster_node.egg-info/SOURCES.txt
-cluster_node.egg-info/dependency_links.txt
-cluster_node.egg-info/top_level.txt
-cluster_node/msg/__init__.py
-cluster_node/msg/_obstacle.py
-cluster_node/msg/_obstacle_array.py
