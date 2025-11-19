@@ -1,6 +1,8 @@
 # dynamic-box
 3D point cloud segmentation algorithm for consecutive LiDAR scans using kd-tree-based euclidean cluster extraction.
 
+![clustering demo](demo/scan.gif)
+
 ## Euclidean Cluster Extraction ROS2 Package:
 It is recommended that the ROS2-integrated Euclidean Cluster Extraction algorithm is run using ... Docker container, as the container contain all dependencies:
 
