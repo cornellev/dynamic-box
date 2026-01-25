@@ -215,7 +215,6 @@ public:
 
         obs_arr_pub_ = this->create_publisher<cev_msgs::msg::Obstacles>(
             "/rslidar_obstacles", 10);
-
         
         RCLCPP_INFO(this->get_logger(), "ClusterNode started - waiting for PointCloud2 on '/rslidar_points'");
     }
@@ -224,6 +223,7 @@ private:
     void listenerCallback(const sensor_msgs::msg::PointCloud2::SharedPtr msg) {
         sensor_msgs::msg::PointCloud2 obs_points;
         obs_points.header = msg->header;
+        obs_points.header.stamp = msg->header.stamp;
 
         sensor_msgs::PointCloud2ConstIterator<float> iter_x(*msg, "x");
         sensor_msgs::PointCloud2ConstIterator<float> iter_y(*msg, "y");
@@ -267,112 +267,9 @@ private:
                 taken_[i].flag.store(false, std::memory_order_relaxed);
             }
 
-            // open3d::geometry::PointCloud pcd;
-            // for (int i = 0; i < this->data_.rows(); ++i) {
-            //     pcd.points_.push_back(this->data_.row(i).head<3>());  // Extract x, y, z
-            // }
-            // open3d::geometry::KDTreeFlann kdtree(pcd);
-
-            // Find closest point for each past centroid
-            // vector<Vector4d> seeds;
-            // seeds.reserve(C_prev_.rows());
-
             std::unordered_set<int> visited_indices;
             C_prev_.resize(0, 4);
             auto [C, visited_inds] = euclidean_cluster(this->data_.row(0), this->data_, visited_indices, 0.1, 10, "cartesian", false, false);
-
-            // for (int i = 0; i < C_prev_.rows(); ++i) {
-            //     Vector4d centroid_4d = C_prev_.row(i);
-                
-            //     // Check validity
-            //     if (!std::isfinite(centroid_4d[0]) || !std::isfinite(centroid_4d[1]) || !std::isfinite(centroid_4d[2])) {
-            //         RCLCPP_WARN(this->get_logger(), "Skipping invalid centroid at index %d", i);
-            //         continue;
-            //     }
-            
-            //     // Search for nearest neighbor
-            //     Vector3d query_point = centroid_4d.head<3>();
-            //     vector<int> indices(1);
-            //     vector<double> dists(1);
-                
-            //     int found = kdtree.SearchKNN(query_point, 1, indices, dists);
-                
-            //     if (found > 0 && indices[0] >= 0 && indices[0] < this->data_.rows()) {
-            //         Vector4d nearest_point = this->data_.row(indices[0]);
-            //         seeds.push_back(nearest_point);
-            //     } else {
-            //         RCLCPP_WARN(this->get_logger(), "KNN search failed for centroid %d", i);
-            //     }
-            // }
-
-            // // --- Remove duplicates (like np.unique) ---
-            // auto hash_vec4d = [](const Vector4d& v) -> size_t {
-            //     size_t h1 = std::hash<double>{}(v[0]);
-            //     size_t h2 = std::hash<double>{}(v[1]);
-            //     size_t h3 = std::hash<double>{}(v[2]);
-            //     size_t h4 = std::hash<double>{}(v[3]);
-            //     return h1 ^ (h2 << 1) ^ (h3 << 2) ^ (h4 << 3);
-            // };
-
-            // std::unordered_set<size_t> unique_hashes;
-            // vector<Vector4d> unique_seeds;
-            // for (auto& s : seeds) {
-            //     size_t h = hash_vec4d(s);
-            //     if (unique_hashes.insert(h).second)
-            //         unique_seeds.push_back(s);
-            // }
-
-            // // ###########################
-            // RCLCPP_INFO(this->get_logger(), "Unique Seeds: %zu", C_prev_.rows());
-            // vector<std::future<std::tuple<vector<vector<Vector4d>>, std::unordered_set<int>>>> futures;
-            // for (auto& seed : unique_seeds) {
-            //     futures.push_back(std::async(std::launch::async,
-            //         [this, seed]() {
-            //             return this->grow_seed(seed, this->data_, this->iter_);
-            //         }
-            //     ));
-            // }
-
-            // // threadpool, waiting for all futures to complete before continuing
-            // std::unordered_set<int> visited_indices;
-            // vector<vector<Vector4d>> C;
-            // for (auto& f : futures) {
-            //     auto [clusters, visited] = f.get();
-            //     C.insert(C.end(), clusters.begin(), clusters.end());
-            //     visited_indices.insert(visited.begin(), visited.end());
-            // }
-
-
-            // RCLCPP_INFO(this->get_logger(), "FINAL: %zu indices", visited_indices.size());
-            // vector<Vector4d> unclaimed_points;
-            // for (int i = 0; i < data_.rows(); ++i) {
-            //     if (!visited_indices.count(i)) {
-            //         unclaimed_points.push_back(data_.row(i).transpose());
-            //     }
-            // }
-            
-            // // Rebuild data_ matrix with only unclaimed points
-            // if (!unclaimed_points.empty()) {
-            //     MatrixXd remaining_cloud(unclaimed_points.size(), 4);
-            //     for (size_t i = 0; i < unclaimed_points.size(); ++i) {
-            //         remaining_cloud.row(i) = unclaimed_points[i].transpose();
-            //     }
-            //     auto [clusters, visited_inds] = euclidean_cluster(remaining_cloud.row(0), remaining_cloud, visited_indices, 0.1, 10, "cartesian", false, false);
-            //     C.insert(C.end(), clusters.begin(), clusters.end());
-            // }
-
-            // int MIN_CLUSTER_SIZE = 15;
-            // C_prev_.resize(0, 4);
-            // for (int i = static_cast<int>(C.size()) - 1; i >= 0; --i) {
-            //     if (C[i].size() < MIN_CLUSTER_SIZE) {
-            //         C.erase(C.begin() + i);
-            //     } 
-            //     else {
-            //         Vector4d centroid = computeMean(C[i]);
-            //         C_prev_.conservativeResize(C_prev_.rows() + 1, Eigen::NoChange);
-            //         C_prev_.row(C_prev_.rows() - 1) = centroid.transpose();
-            //     }
-            // }
 
             outputClusters(C, obs_points, total_points);
             auto end = std::chrono::high_resolution_clock::now();
@@ -516,131 +413,6 @@ private:
                                                     std::memory_order_relaxed);
     }
 
-    // std::tuple<vector<vector<Eigen::Vector4d>>, std::unordered_set<int>>
-    //     euclidean_cluster(const Vector4d seeds,
-    //                     const MatrixXd& cloud_input, 
-    //                     std::unordered_set<int> visited_indices,
-    //                     double radius,
-    //                     int MIN_CLUSTER_SIZE = 1,
-    //                     const string& mode = "cartesian",
-    //                     bool reorder = true, 
-    //                     bool is_parallel = false,
-    //                     double MAX_CLUSTER_NUM = numeric_limits<double>::infinity()
-    //                     ) {
-    //     // WANT REMOVAL OF POINTS FROM CLOUD_INPUT TO PROPAGATE TO ALL THREADS
-    //     VectorXd x, y, z;
-    //     if (reorder) {
-    //         if (mode == "spherical") {
-    //             z = cloud_input.col(0).array() * (cloud_input.col(2).array().sin() * cloud_input.col(1).array().cos());
-    //             x = cloud_input.col(0).array() * (cloud_input.col(2).array().sin() * cloud_input.col(1).array().sin());
-    //             y = cloud_input.col(0).array() * cloud_input.col(2).array().cos();
-    //         } else {
-    //             x = cloud_input.col(0);
-    //             y = cloud_input.col(1);
-    //             z = cloud_input.col(2);
-    //         }
-    //     } else {
-    //         x = cloud_input.col(0);
-    //         y = cloud_input.col(1);
-    //         z = cloud_input.col(2);
-    //     }
-
-    //     MatrixXd cloud(cloud_input.rows(), 4);
-    //     cloud.col(0) = x;
-    //     cloud.col(1) = y;
-    //     cloud.col(2) = z;
-    //     cloud.col(3) = cloud_input.col(3);
-
-    //     // only consider cloud points that are not atomic flagged
-    //     vector<Vector4d> points;
-    //     for (int i = 0; i < cloud.rows(); ++i) {
-    //         points.push_back(cloud.row(i).transpose());
-    //     };
-
-    //     // Build KD-tree
-    //     KdTree<Vector4d> kd_tree(points, 3);
-
-    //     // Initialize unexplored set
-    //     unordered_set<int> unexplored;
-    //     for (int idx = 0; idx < points.size(); ++idx) {
-    //         if (is_parallel && taken_[idx].flag.load(std::memory_order_acquire)) {
-    //             continue;
-    //         }
-    //         unexplored.insert(static_cast<int>(points[idx][3]));
-    //     }
-
-    //     vector<vector<Vector4d>> C;
-
-    //     int iter = 0;
-    //     while (!unexplored.empty() && C.size() < MAX_CLUSTER_NUM) {
-    //         Vector4d next_point;
-    //         int next_idx;
-
-    //         if (iter == 0) {
-    //             next_point = seeds; // if seeds immediately is an outlier, try searching its neighbors, really need icp here
-    //             next_idx = static_cast<int>(seeds[3]);
-    //         } else {
-    //             next_idx = *unexplored.begin();
-    //             unexplored.erase(next_idx);
-    //             // next_point = points[next_idx];
-    //             bool found = false;
-    //             for (const auto& p : points) {
-    //                 if (static_cast<int>(p[3]) == next_idx) {
-    //                     next_point = p;
-    //                     found = true;
-    //                     break;
-    //                 }
-    //             }
-    //             if (!found) continue;
-    //         }
-    //         iter++;
-
-    //         unexplored.erase(next_idx);
-    //         if (is_parallel && taken_[next_idx].flag.load(std::memory_order_acquire)) {
-    //             continue;
-    //         }
-    //         if (visited_indices.count(next_idx)) {
-    //             continue;
-    //         }
-    //         C.push_back({next_point});
-    //         // next_point is the first point to query in new cluster, need to set atomic flag after getting more neighbors
-
-    //         vector<Vector4d> stack = {next_point};
-    //         while (!stack.empty()) {
-    //             Vector4d query = stack.back();
-    //             stack.pop_back();
-    //             // should be safe to set_atomic_flag here, will prevent other threads from searching this point, but allows for kd_tree search still here
-    //             int query_idx = static_cast<int>(query[3]);
-    //             if (is_parallel && taken_[query_idx].flag.load(std::memory_order_acquire)) continue;
-    //             if (visited_indices.count(query_idx)) continue;
-    //             // should be safe to set_atomic_flag here, will prevent other threads from searching this point, but allows for kd_tree search still here
-    //             // only set atomic_flag when the point is actively being explored
-    //             set_atomic_flag(query_idx);
-
-    //             vector<int> neighbors = kd_tree.search_radius(query, radius);
-    //             for (int idx_n : neighbors) {
-    //                 if (idx_n == query[3]) continue;
-
-    //                 const auto& p = points[idx_n];
-    //                 int point_idx = static_cast<int>(p[3]);
-
-    //                 if (is_parallel && taken_[point_idx].flag.load(std::memory_order_acquire)) continue;
-    //                 if (!unexplored.count(point_idx)) continue;
-    //                 if (visited_indices.count(point_idx)) continue;
-
-    //                 // don't set atomic flag here, or else can't explore above
-    //                 C.back().push_back(p);
-    //                 stack.push_back(p);
-    //                 unexplored.erase(point_idx);
-    //             }
-
-    //             // add to visited once new neighbors discovered
-    //             visited_indices.insert(query_idx);
-    //         }
-    //     }
-    //     return make_tuple(C, visited_indices);
-    // }
-
     std::tuple<vector<vector<Eigen::Vector4d>>, std::unordered_set<int>>
     euclidean_cluster(const Vector4d seeds,
                     const MatrixXd& cloud_input, 
@@ -775,6 +547,7 @@ private:
             if (C.back().size() < 10) {
                 C.pop_back();
             } else {
+                RCLCPP_INFO(this->get_logger(), "cluster size %d\n", C.back().size());
                 Vector4d centroid = computeMean(C.back());
                 C_prev_.conservativeResize(C_prev_.rows() + 1, Eigen::NoChange);
                 C_prev_.row(C_prev_.rows() - 1) = centroid.transpose();
@@ -796,11 +569,8 @@ private:
 
 int main(int argc, char ** argv) {
   rclcpp::init(argc, argv);
-  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 10);
   auto node = make_shared<ClusterNode>();
-  executor.add_node(node);
-executor.spin();
-//   rclcpp::spin(node);
+  rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;
 }
