@@ -203,11 +203,16 @@ public:
     ClusterNode()
     : Node("cluster_cpp"), iter_(0)
     {
+        auto qos = rclcpp::QoS(rclcpp::KeepLast(10)).best_effort();
         C_prev_ = MatrixXd::Zero(1, 4);
         data_ = MatrixXd(0, 4);
 
+        // lidar_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
+        //     "/rslidar_points", 10, 
+        //     bind(&ClusterNode::listenerCallback, this, std::placeholders::_1));
+
         lidar_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
-            "/rslidar_points", 10, 
+            "/sensing/lidar/top/rectified/pointcloud", qos, 
             bind(&ClusterNode::listenerCallback, this, std::placeholders::_1));
 
         obs_pub_ = this->create_publisher<sensor_msgs::msg::PointCloud2>(
@@ -234,7 +239,7 @@ private:
 
         size_t total_points = 0;
         for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z) {
-            if (!std::isfinite(*iter_x) || !std::isfinite(*iter_y) || !std::isfinite(*iter_z))
+            if (*iter_z < -1.2 || !std::isfinite(*iter_x) || !std::isfinite(*iter_y) || !std::isfinite(*iter_z))
                 continue;
             cloud_init.push_back({*iter_x, *iter_y, *iter_z});
             ++total_points;
@@ -547,7 +552,7 @@ private:
             if (C.back().size() < 10) {
                 C.pop_back();
             } else {
-                RCLCPP_INFO(this->get_logger(), "cluster size %d\n", C.back().size());
+                // RCLCPP_INFO(this->get_logger(), "cluster size %d\n", C.back().size());
                 Vector4d centroid = computeMean(C.back());
                 C_prev_.conservativeResize(C_prev_.rows() + 1, Eigen::NoChange);
                 C_prev_.row(C_prev_.rows() - 1) = centroid.transpose();
