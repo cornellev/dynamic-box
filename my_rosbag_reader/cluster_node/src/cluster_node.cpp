@@ -224,6 +224,8 @@ public:
         RCLCPP_INFO(this->get_logger(), "ClusterNode started - waiting for PointCloud2 on '/rslidar_points'");
     }
 
+// define the ground plane given PCA of all points cut off z < height of the car:
+// axis align bounding box to a ground plane
 private:
     void listenerCallback(const sensor_msgs::msg::PointCloud2::SharedPtr msg) {
         sensor_msgs::msg::PointCloud2 obs_points;
@@ -239,7 +241,8 @@ private:
 
         size_t total_points = 0;
         for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z) {
-            if (*iter_z < -1.2 || !std::isfinite(*iter_x) || !std::isfinite(*iter_y) || !std::isfinite(*iter_z))
+            //|| *iter_y > 0 || *iter_y < -10 || *iter_x < -6 || *iter_x > 6 ||
+            if (*iter_z < -1.2 || *iter_y > 20 || *iter_y < -20 || *iter_x > 20 || *iter_x < -20 || !std::isfinite(*iter_x) || !std::isfinite(*iter_y) || !std::isfinite(*iter_z))
                 continue;
             cloud_init.push_back({*iter_x, *iter_y, *iter_z});
             ++total_points;
@@ -419,6 +422,9 @@ private:
     }
 
     std::tuple<vector<vector<Eigen::Vector4d>>, std::unordered_set<int>>
+    // add something here that will, for each cluster, keep track of the z_min of that cluster, such that when we have finished
+    // growing this cluster, we can determine whether this obstacle will actually even be vertically in range of our car
+    // and we can remove a cluster from the list of cluster if z_min >> range of the car.
     euclidean_cluster(const Vector4d seeds,
                     const MatrixXd& cloud_input, 
                     std::unordered_set<int> visited_indices,
