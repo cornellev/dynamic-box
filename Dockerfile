@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   build-essential git sudo \
   python3-pip python3-setuptools python3-wheel \
   python3-colcon-common-extensions python3-rosdep python3-vcstool \
+  gnome-terminal dbus-x11 \
   && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \
@@ -53,6 +54,8 @@ RUN git clone https://github.com/RoboSense-LiDAR/rslidar_sdk.git /home/${USERNAM
   && apt-get install -y libyaml-cpp-dev libpcap-dev libgl1-mesa-glx libgl1-mesa-dev
 
 RUN cp /home/dev/ws/src/dynamic-box/config.yaml /home/dev/ws/src/rslidar_sdk/config/config.yaml
+
+RUN cp /home/dev/ws/src/dynamic-box/Makefile /home/dev/ws/src/Makefile
 
 RUN apt-get install ros-$ROS_DISTRO-rviz2 -y
 
