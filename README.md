@@ -90,19 +90,23 @@ After building the docker image ```dbimage```, directories should appear in a la
 /home/dev/ws/src/
 ├── ./
 ├── ../
-├── dynamic-box/my_rosbag_reader/
-│   ├── my_rosbag_reader/ 
-│   │   ├── __init__.py
-│   │   ├── requirements.txt
-│   │   ├── cluster.cpp
-│   │   ├── live.py
-│   │   ├── setup.py        
-│   │   └── test_cloud.pcap
-│   ├── package.xml  
-│   ├── resource/ 
-│   │   └── my_rosbag_reader 
-│   ├── setup.cfg
-│   └── setup.py  
+├── cev_msgs/
+├── dynamic-box/
+│   ├── baggies/
+│   │   └── rosbag2_2022-04_14-ped_vehicle/
+│   │       └── rosbag2_2022_04_14-16_52_40_0.db3
+│   └── my_rosbag_reader/ 
+│       ├── cluster_node/
+│       │   ├── CMakeLists.txt
+│       │   ├── msg/
+│       │   ├── package.xml
+│       │   └── src/cluster_node.cpp
+│       ├── package.xml  
+│       ├── my_rosbag_reader/
+│       ├── resource/ 
+│       ├── setup.cfg
+│       └── setup.py  
+├── Obstacle_node/
 ├── rslidar_msg/
 └── rslidar_sdk/
 ```
