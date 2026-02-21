@@ -397,10 +397,10 @@ private:
         }
     }
 
-    std::tuple<vector<vector<Eigen::Vector4d>>, std::unordered_set<int>>
     // add something here that will, for each cluster, keep track of the z_min of that cluster, such that when we have finished
     // growing this cluster, we can determine whether this obstacle will actually even be vertically in range of our car
     // and we can remove a cluster from the list of cluster if z_min >> range of the car.
+    std::tuple<vector<vector<Eigen::Vector4d>>, std::unordered_set<int>>
     kd_euclidean_cluster(const Vector4d seeds,
                     const MatrixXd& cloud_input, 
                     std::unordered_set<int> visited_indices,
@@ -410,7 +410,7 @@ private:
                     bool reorder = true, 
                     bool is_parallel = false,
                     double MAX_CLUSTER_NUM = numeric_limits<double>::infinity()
-                    ) {
+    ) {
         VectorXd x, y, z;
         if (reorder) {
             if (mode == "spherical") {
@@ -434,21 +434,15 @@ private:
         cloud.col(2) = z;
         cloud.col(3) = cloud_input.col(3);
 
-        // Build points vector with mapping
         vector<Vector4d> points;
+        unordered_set<int> unexplored;
         
         for (int i = 0; i < cloud.rows(); ++i) {
             points.push_back(cloud.row(i).transpose());
+            unexplored.insert(i);
         }
 
-        // Build KD-tree
         KdTree<Vector4d> kd_tree(points, 3);
-
-        // Initialize unexplored set with ORIGINAL indices
-        unordered_set<int> unexplored;
-        for (int points_idx = 0; points_idx < points.size(); ++points_idx) {
-            unexplored.insert(points_idx);
-        }
 
         vector<vector<Vector4d>> C;
 
@@ -511,9 +505,126 @@ private:
     }
 
     // this is clustering with euclidean distance matrix -> vectorized and for hardware acceleration
-    // mtx_euclidean_cluster() {
+    // should i use flattened 1d vector for matrix?
+    void mtx_euclidean_cluster(
+                    const Vector4d seeds,
+                    const MatrixXd& cloud_input, 
+                    std::unordered_set<int> visited_indices,
+                    double radius,
+                    int MIN_CLUSTER_SIZE = 1,
+                    const string& mode = "cartesian",
+                    bool reorder = true, 
+                    bool is_parallel = false,
+                    double MAX_CLUSTER_NUM = numeric_limits<double>::infinity()
+                    
+    ) {
+        VectorXd x, y, z;
+        if (reorder) {
+            if (mode == "spherical") {
+                z = cloud_input.col(0).array() * (cloud_input.col(2).array().sin() * cloud_input.col(1).array().cos());
+                x = cloud_input.col(0).array() * (cloud_input.col(2).array().sin() * cloud_input.col(1).array().sin());
+                y = cloud_input.col(0).array() * cloud_input.col(2).array().cos();
+            } else {
+                x = cloud_input.col(0);
+                y = cloud_input.col(1);
+                z = cloud_input.col(2);
+            }
+        } else {
+            x = cloud_input.col(0);
+            y = cloud_input.col(1);
+            z = cloud_input.col(2);
+        }
 
-    // }
+        MatrixXd cloud(cloud_input.rows(), 4);
+        cloud.col(0) = x;
+        cloud.col(1) = y;
+        cloud.col(2) = z;
+        cloud.col(3) = cloud_input.col(3);
+
+        vector<Vector4d> points;
+        unordered_set<int> unexplored;
+        
+        std::vector<std::vector<float>> dists(cloud.rows(), std::vector<float>(cloud.rows(), std::numeric_limits<float>::max()));
+        // std::vector<float> dists(cloud.rows() * cloud.rows(), std::numeric_limits<float>::max());
+        for (int i = 0; i < cloud.rows(); ++i) {
+            points.push_back(cloud.row(i).transpose());
+            unexplored.insert(i);
+
+            for (int j = 0; j < cloud.rows(); ++j) {
+                double dx = points[i][0] - points[j][0];
+                double dy = points[i][1] - points[j][1];
+                double dz = (points[i][2] - points[j][2])/2;
+                double dist = sqrt(dx*dx + dy*dy + dz*dz);
+                // only if actually neighbor
+                if (dist <= radius) { dists[i][j] = dist; }
+            }
+        }
+
+        vector<vector<Vector4d>> C;
+
+        int iter = 0;
+        while (!unexplored.empty() && C.size() < MAX_CLUSTER_NUM) {
+            Vector4d next_point;
+            int next_idx;
+
+            if (iter == 0) {
+                next_point = points[static_cast<int>(seeds[3])];
+            } else {
+                // Pick any unexplored point
+                next_idx = *unexplored.begin();
+                unexplored.erase(next_idx);
+                next_point = points[next_idx];
+            }
+            iter++;
+
+            unexplored.erase(next_idx);
+
+            if (visited_indices.count(next_idx)) {
+                continue;
+            }
+            
+            C.push_back({next_point});
+
+            vector<Vector4d> stack = {next_point};
+            while (!stack.empty()) {
+                Vector4d query = stack.back();
+                stack.pop_back();
+                
+                int query_idx = static_cast<int>(query[3]);
+                if (visited_indices.count(query_idx)) continue;
+
+                // Search returns indices into points[] vector
+                // either find a way to map actual (x,y,z) point to list index or die
+                std::vector<int> indices;
+                indices.reserve(dists[next_idx].size());
+                std::vector<int> neighbors(dists[next_idx].size());
+                std::copy_if(neighbors.begin(), neighbors.end(),
+                             std::back_inserter(indices),
+                             [&](int j){ return dists[next_idx][j] <= radius && !visited_indices.count(j); });
+                            
+                for (int neighbor_idx : neighbors) {
+                    const auto& p = points[neighbor_idx];
+
+                    if (!unexplored.count(neighbor_idx)) continue;
+                    if (visited_indices.count(neighbor_idx)) continue;
+
+                    C.back().push_back(p);
+                    stack.push_back(p);
+                    unexplored.erase(neighbor_idx);
+                }
+
+                visited_indices.insert(query_idx);
+            }
+            if (C.back().size() < 10) {
+                C.pop_back();
+            } else {
+                Vector4d centroid = computeMean(C.back());
+                C_prev_.conservativeResize(C_prev_.rows() + 1, Eigen::NoChange);
+                C_prev_.row(C_prev_.rows() - 1) = centroid.transpose();
+            }
+        }
+        // return make_tuple(C, visited_indices);
+    }
 
     int iter_;
     MatrixXd C_prev_;
