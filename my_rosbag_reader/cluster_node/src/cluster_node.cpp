@@ -158,7 +158,6 @@ private:
                 double dz = (points_[idx][2] - query[2]) / 2;
 
                 if (sqrt(dx*dx + dy*dy) <= (radius + dist_xy) && dz <= 2 * (radius + dist_z)) {
-                // if (std::abs(dx) < radius && std::abs(dy) < radius && std::abs(dz) < 2 * radius) {
                     result.push_back(idx);
                 }
             }
@@ -186,16 +185,6 @@ private:
     vector<PointT> points_;
     int dim_;
     int leaf_size_;
-};
-
-struct AtomicBoolWrapper {
-    std::atomic<bool> flag;
-    AtomicBoolWrapper() : flag(false) {}
-    AtomicBoolWrapper(const AtomicBoolWrapper& other) : flag(other.flag.load()) {}
-    AtomicBoolWrapper& operator=(const AtomicBoolWrapper& other) {
-        flag.store(other.flag.load());
-        return *this;
-    }
 };
 
 class ClusterNode : public rclcpp::Node {
@@ -235,7 +224,6 @@ private:
         sensor_msgs::PointCloud2ConstIterator<float> iter_x(*msg, "x");
         sensor_msgs::PointCloud2ConstIterator<float> iter_y(*msg, "y");
         sensor_msgs::PointCloud2ConstIterator<float> iter_z(*msg, "z");
-        std::lock_guard<std::mutex> lock(callback_mutex_);
 
         vector<Vector3d> cloud_init;
 
@@ -269,15 +257,10 @@ private:
 
             RCLCPP_INFO(this->get_logger(), "LIVE: Recieved %zu points", cloud.rows());
             data_ = cloud;
-            taken_.clear();
-            taken_.resize(data_.rows());
-            for (size_t i = 0; i < data_.rows(); ++i) {
-                taken_[i].flag.store(false, std::memory_order_relaxed);
-            }
 
             std::unordered_set<int> visited_indices;
             C_prev_.resize(0, 4);
-            auto [C, visited_inds] = euclidean_cluster(this->data_.row(0), this->data_, visited_indices, 0.1, 10, "cartesian", false, false);
+            auto [C, visited_inds] = kd_euclidean_cluster(this->data_.row(0), this->data_, visited_indices, 0.1, 10, "cartesian", false, false);
 
             outputClusters(C, obs_points, total_points);
             auto end = std::chrono::high_resolution_clock::now();
@@ -408,24 +391,17 @@ private:
     ) {
         std::unordered_set<int> visited_indices;
         if (true) {
-            return euclidean_cluster(seed, data, visited_indices, 0.1, 10, "cartesian", false, true);
+            return kd_euclidean_cluster(seed, data, visited_indices, 0.1, 10, "cartesian", false, true);
         } else {
-            return euclidean_cluster(seed, data, visited_indices, 0.1, 10, "cartesian", false, true, 2);
+            return kd_euclidean_cluster(seed, data, visited_indices, 0.1, 10, "cartesian", false, true, 2);
         }
-    }
-
-    bool set_atomic_flag(int idx) {
-        bool expected = false;
-        return taken_[idx].flag.compare_exchange_strong(expected, true,
-                                                    std::memory_order_acquire,
-                                                    std::memory_order_relaxed);
     }
 
     std::tuple<vector<vector<Eigen::Vector4d>>, std::unordered_set<int>>
     // add something here that will, for each cluster, keep track of the z_min of that cluster, such that when we have finished
     // growing this cluster, we can determine whether this obstacle will actually even be vertically in range of our car
     // and we can remove a cluster from the list of cluster if z_min >> range of the car.
-    euclidean_cluster(const Vector4d seeds,
+    kd_euclidean_cluster(const Vector4d seeds,
                     const MatrixXd& cloud_input, 
                     std::unordered_set<int> visited_indices,
                     double radius,
@@ -460,16 +436,8 @@ private:
 
         // Build points vector with mapping
         vector<Vector4d> points;
-        vector<int> point_to_original_idx;
-        unordered_map<int, int> original_to_point_idx;  // NEW: Reverse mapping
         
         for (int i = 0; i < cloud.rows(); ++i) {
-            int original_idx = static_cast<int>(cloud(i, 3));
-            if (is_parallel && taken_[original_idx].flag.load(std::memory_order_acquire)) {
-                continue;
-            }
-            original_to_point_idx[original_idx] = points.size();  // NEW
-            point_to_original_idx.push_back(original_idx);
             points.push_back(cloud.row(i).transpose());
         }
 
@@ -479,7 +447,7 @@ private:
         // Initialize unexplored set with ORIGINAL indices
         unordered_set<int> unexplored;
         for (int points_idx = 0; points_idx < points.size(); ++points_idx) {
-            unexplored.insert(point_to_original_idx[points_idx]);
+            unexplored.insert(points_idx);
         }
 
         vector<vector<Vector4d>> C;
@@ -487,41 +455,22 @@ private:
         int iter = 0;
         while (!unexplored.empty() && C.size() < MAX_CLUSTER_NUM) {
             Vector4d next_point;
-            int next_original_idx;
-            int next_points_idx;
+            int next_idx;
 
             if (iter == 0) {
                 // Seed iteration
-                next_original_idx = static_cast<int>(seeds[3]);
-                
-                // Check if seed exists in points vector
-                if (original_to_point_idx.find(next_original_idx) == original_to_point_idx.end()) {
-                    // Seed was filtered out, skip
-                    iter++;
-                    continue;
-                }
-                
-                next_points_idx = original_to_point_idx[next_original_idx];
-                next_point = points[next_points_idx];
+                next_point = points[static_cast<int>(seeds[3])];
             } else {
                 // Pick any unexplored point
-                next_original_idx = *unexplored.begin();
-                unexplored.erase(next_original_idx);
-                
-                if (original_to_point_idx.find(next_original_idx) == original_to_point_idx.end()) {
-                    continue;
-                }
-                
-                next_points_idx = original_to_point_idx[next_original_idx];
-                next_point = points[next_points_idx];
+                next_idx = *unexplored.begin();
+                unexplored.erase(next_idx);
+                next_point = points[next_idx];
             }
             iter++;
 
-            unexplored.erase(next_original_idx);
-            if (is_parallel && taken_[next_original_idx].flag.load(std::memory_order_acquire)) {
-                continue;
-            }
-            if (visited_indices.count(next_original_idx)) {
+            unexplored.erase(next_idx);
+
+            if (visited_indices.count(next_idx)) {
                 continue;
             }
             
@@ -532,33 +481,27 @@ private:
                 Vector4d query = stack.back();
                 stack.pop_back();
                 
-                int query_original_idx = static_cast<int>(query[3]);
-                if (is_parallel && taken_[query_original_idx].flag.load(std::memory_order_acquire)) continue;
-                if (visited_indices.count(query_original_idx)) continue;
-                
-                set_atomic_flag(query_original_idx);
+                int query_idx = static_cast<int>(query[3]);
+                if (visited_indices.count(query_idx)) continue;
 
                 // Search returns indices into points[] vector
                 vector<int> neighbors = kd_tree.search_radius(query, radius);
-                for (int neighbor_points_idx : neighbors) {
-                    const auto& p = points[neighbor_points_idx];
-                    int neighbor_original_idx = point_to_original_idx[neighbor_points_idx];
+                for (int neighbor_idx : neighbors) {
+                    const auto& p = points[neighbor_idx];
 
-                    if (is_parallel && taken_[neighbor_original_idx].flag.load(std::memory_order_acquire)) continue;
-                    if (!unexplored.count(neighbor_original_idx)) continue;
-                    if (visited_indices.count(neighbor_original_idx)) continue;
+                    if (!unexplored.count(neighbor_idx)) continue;
+                    if (visited_indices.count(neighbor_idx)) continue;
 
                     C.back().push_back(p);
                     stack.push_back(p);
-                    unexplored.erase(neighbor_original_idx);
+                    unexplored.erase(neighbor_idx);
                 }
 
-                visited_indices.insert(query_original_idx);
+                visited_indices.insert(query_idx);
             }
             if (C.back().size() < 10) {
                 C.pop_back();
             } else {
-                // RCLCPP_INFO(this->get_logger(), "cluster size %d\n", C.back().size());
                 Vector4d centroid = computeMean(C.back());
                 C_prev_.conservativeResize(C_prev_.rows() + 1, Eigen::NoChange);
                 C_prev_.row(C_prev_.rows() - 1) = centroid.transpose();
@@ -567,12 +510,14 @@ private:
         return make_tuple(C, visited_indices);
     }
 
+    // this is clustering with euclidean distance matrix -> vectorized and for hardware acceleration
+    // mtx_euclidean_cluster() {
+
+    // }
+
     int iter_;
     MatrixXd C_prev_;
     MatrixXd data_;
-    // check device, if CPU, use std::atomic_flag, if GPU use CUDA's atomic
-    vector<AtomicBoolWrapper> taken_;
-    std::mutex callback_mutex_;
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr lidar_sub_;
     rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr obs_pub_;
     rclcpp::Publisher<cev_msgs::msg::Obstacles>::SharedPtr obs_arr_pub_;
