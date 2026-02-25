@@ -506,7 +506,7 @@ private:
 
     // this is clustering with euclidean distance matrix -> vectorized and for hardware acceleration
     // should i use flattened 1d vector for matrix?
-    void mtx_euclidean_cluster(
+    std::tuple<vector<vector<Eigen::Vector4d>>, std::unordered_set<int>> mtx_euclidean_cluster(
                     const Vector4d seeds,
                     const MatrixXd& cloud_input, 
                     std::unordered_set<int> visited_indices,
@@ -623,8 +623,20 @@ private:
                 C_prev_.row(C_prev_.rows() - 1) = centroid.transpose();
             }
         }
-        // return make_tuple(C, visited_indices);
+        return make_tuple(C, visited_indices);
     }
+
+    std::tuple<vector<vector<Eigen::Vector4d>>, std::unordered_set<int>>
+    two_layer_euclidean_cluster(const Vector4d seeds,
+                    const MatrixXd& cloud_input, 
+                    std::unordered_set<int> visited_indices,
+                    double radius,
+                    int MIN_CLUSTER_SIZE = 1,
+                    const string& mode = "cartesian",
+                    bool reorder = true, 
+                    bool is_parallel = false,
+                    double MAX_CLUSTER_NUM = numeric_limits<double>::infinity()
+    ) {
 
     int iter_;
     MatrixXd C_prev_;
