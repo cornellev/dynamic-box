@@ -31,9 +31,23 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 )
 
 add_executable(cluster_cpp src/cluster_node.cpp)
+add_executable(two_layer_cpp src/two_layer_graph.cpp)
 
 ament_target_dependencies(
   cluster_cpp
+  rclcpp 
+  cev_msgs
+  sensor_msgs 
+  std_msgs
+  pcl_conversions
+  pcl_ros
+  Open3D
+  geometry_msgs
+  visualization_msgs
+)
+
+ament_target_dependencies(
+  two_layer_cpp
   rclcpp 
   cev_msgs
   sensor_msgs 
@@ -59,6 +73,17 @@ target_link_libraries(cluster_cpp
   ${Open3D_LIBRARIES}
 )
 
+rosidl_target_interfaces(two_layer_cpp
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+install(TARGETS
+  two_layer_cpp
+  DESTINATION lib/${PROJECT_NAME})
+
+target_link_libraries(two_layer_cpp
+  ${OpenCV_LIBS}
+  ${PCL_LIBRARIES}
+  ${Open3D_LIBRARIES}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

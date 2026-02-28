@@ -187,10 +187,10 @@ private:
     int leaf_size_;
 };
 
-class ClusterNode : public rclcpp::Node {
+class TwoLayerNode : public rclcpp::Node {
 public:
-    ClusterNode()
-    : Node("cluster_cpp"), iter_(0)
+    TwoLayerNode()
+    : Node("two_layer_cpp"), iter_(0)
     {
         auto qos = rclcpp::QoS(rclcpp::KeepLast(10)).best_effort();
         C_prev_ = MatrixXd::Zero(1, 4);
@@ -198,11 +198,11 @@ public:
 
         // lidar_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
         //     "/rslidar_points", 10, 
-        //     bind(&ClusterNode::listenerCallback, this, std::placeholders::_1));
+        //     bind(&TwoLayerNode::listenerCallback, this, std::placeholders::_1));
 
         lidar_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
             "/sensing/lidar/top/rectified/pointcloud", qos, 
-            bind(&ClusterNode::listenerCallback, this, std::placeholders::_1));
+            bind(&TwoLayerNode::listenerCallback, this, std::placeholders::_1));
 
         obs_pub_ = this->create_publisher<sensor_msgs::msg::PointCloud2>(
             "/rslidar_clusters", 10);
@@ -210,7 +210,7 @@ public:
         obs_arr_pub_ = this->create_publisher<cev_msgs::msg::Obstacles>(
             "/rslidar_obstacles", 10);
         
-        RCLCPP_INFO(this->get_logger(), "ClusterNode started - waiting for PointCloud2 on '/rslidar_points'");
+        RCLCPP_INFO(this->get_logger(), "TwoLayerNode started - waiting for PointCloud2 on '/rslidar_points'");
     }
 
 // define the ground plane given PCA of all points cut off z < height of the car:
@@ -525,7 +525,7 @@ private:
 
 int main(int argc, char ** argv) {
   rclcpp::init(argc, argv);
-  auto node = make_shared<ClusterNode>();
+  auto node = make_shared<TwoLayerNode>();
   rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;
