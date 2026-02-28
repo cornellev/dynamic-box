@@ -14,6 +14,7 @@
 #include <tuple>
 #include <memory>
 #include <cmath>
+#include <queue>
 #include <algorithm>
 #include <numeric>
 #include <limits>
@@ -187,11 +188,39 @@ private:
     int leaf_size_;
 };
 
+constexpr double deg2rad(double deg) {
+    return deg * M_PI / 180.0;
+};
+
+static constexpr int NUM_RINGS = 32;
+static constexpr double AZ_RES = deg2rad(0.4);
+static constexpr int NUM_COLS = static_cast<int>(2.0 * M_PI / AZ_RES);
+
+/* Helios-32 vertical angles (official pattern) */
+static const std::array<double, NUM_RINGS> HELIOS32_VERT_DEG = {
+    -25,-23,-21,-19,-17,-15,-13,-11,
+     -9, -7, -5, -3, -1,  1,  3,  5,
+      7,  9, 11, 13, 15,-24,-22,-20,
+    -18,-16,-14,-12,-10, -8, -6, -4
+};
+
+struct RangeNode {
+    float range = 0.f;
+    int point_idx = -1;
+    bool valid = false;
+};
+
 class TwoLayerNode : public rclcpp::Node {
 public:
     TwoLayerNode()
     : Node("two_layer_cpp"), iter_(0)
     {
+        for (int i = 0; i < NUM_RINGS; ++i)
+            vert_angles_rad_[i] = deg2rad(HELIOS32_VERT_DEG[i]);
+
+        range_image_.resize(NUM_RINGS * NUM_COLS);
+        labels_.resize(NUM_RINGS * NUM_COLS);
+
         auto qos = rclcpp::QoS(rclcpp::KeepLast(10)).best_effort();
         C_prev_ = MatrixXd::Zero(1, 4);
         data_ = MatrixXd(0, 4);
@@ -221,56 +250,169 @@ private:
         obs_points.header = msg->header;
         obs_points.header.stamp = msg->header.stamp;
 
+        vector<Vector3d> points;
+        points.reserve(msg->width * msg->height);
+
+        sensor_msgs::PointCloud2ConstIterator<float> ix(*msg,"x"), iy(*msg,"y"), iz(*msg,"z");
+
+        size_t total_points = 0;
+        for (; ix != ix.end(); ++ix, ++iy, ++iz) {
+            if (!std::isfinite(*ix) || !std::isfinite(*iy) || !std::isfinite(*iz))
+                continue;
+            if (*iz < -1.2 || std::abs(*ix) > 20 || std::abs(*iy) > 20)
+                continue;
+            points.emplace_back(*ix,*iy,*iz);
+            ++total_points;
+        }
+
+        if (points.empty()) return;
+
+        constructRangeGraph(msg);
+        int nclusters = rangeGraphClustering();
+
+        auto C = extractClusters(points);
+        outputClusters(C, msg->header);
+    }
+
+    void constructRangeGraph(const sensor_msgs::msg::PointCloud2::SharedPtr msg) {
+        std::fill(range_image_.begin(), range_image_.end(), RangeNode{});
+        std::fill(labels_.begin(), labels_.end(), -1);
+
         sensor_msgs::PointCloud2ConstIterator<float> iter_x(*msg, "x");
         sensor_msgs::PointCloud2ConstIterator<float> iter_y(*msg, "y");
         sensor_msgs::PointCloud2ConstIterator<float> iter_z(*msg, "z");
 
         vector<Vector3d> cloud_init;
 
-        size_t total_points = 0;
+        size_t i = 0;
         for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z) {
-            //|| *iter_y > 0 || *iter_y < -10 || *iter_x < -6 || *iter_x > 6 ||
             if (*iter_z < -1.2 || *iter_y > 20 || *iter_y < -20 || *iter_x > 20 || *iter_x < -20 || !std::isfinite(*iter_x) || !std::isfinite(*iter_y) || !std::isfinite(*iter_z))
                 continue;
-            cloud_init.push_back({*iter_x, *iter_y, *iter_z});
-            ++total_points;
+
+            double x = *iter_x, y = *iter_y, z = *iter_z;
+            double r = std::sqrt(x*x + y*y + z*z);
+            if (r < 0.1) continue;
+
+            double az = std::atan2(y,x);
+            if (az < 0) az += 2*M_PI;
+            int col = static_cast<int>(az / AZ_RES);
+            if (col < 0 || col >= NUM_COLS) continue;
+
+            double el = std::asin(z / r);
+            int ring = -1;
+            double md = 1e9;
+
+            for (int k=0;k<NUM_RINGS;k++) {
+                double d = std::abs(el - vert_angles_rad_[k]);
+                if (d < md) { md = d; ring = k; }
+            }
+
+            int idx = ring * NUM_COLS + col;
+            if (!range_image_[idx].valid || r < range_image_[idx].range)
+                range_image_[idx] = {static_cast<float>(r),(int)i,true};
+
+            i++;
         }
-
-        open3d::geometry::PointCloud pcd;
-        pcd.points_.assign(cloud_init.begin(), cloud_init.end());
-
-        auto downsampled = pcd.VoxelDownSample(0.05);
-
-        const auto& pts = downsampled->points_;
-        size_t n = pts.size();
-
-        MatrixXd mat(n, 3);
-        for (size_t i = 0; i < n; ++i) mat.row(i) = pts[i];
-
-        MatrixXd cloud(n, 4);
-        cloud.leftCols<3>() = mat;
-        
-        for (size_t i = 0; i < n; ++i) cloud(i, 3) = static_cast<double>(i);
-
-        if (cloud.size() > 0) {
-            auto start = std::chrono::high_resolution_clock::now();
-
-            RCLCPP_INFO(this->get_logger(), "LIVE: Recieved %zu points", cloud.rows());
-            data_ = cloud;
-
-            std::unordered_set<int> visited_indices;
-            C_prev_.resize(0, 4);
-            auto [C, visited_inds] = kd_euclidean_cluster(this->data_.row(0), this->data_, visited_indices, 0.1, 10, "cartesian", false, false);
-
-            outputClusters(C, obs_points, total_points);
-            auto end = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-            RCLCPP_INFO(this->get_logger(), "RAN FOR: %ld ms", duration.count());
-        }
-        ++iter_;
     }
 
-   void outputClusters(const vector<vector<Vector4d>>& clusters, sensor_msgs::msg::PointCloud2 obs_points, int max_num_points) {
+    inline void neighbors(int r,int c,vector<int>& out) {
+        out.clear();
+        int l=(c-1+NUM_COLS)%NUM_COLS, rr=(c+1)%NUM_COLS;
+        out.push_back(r*NUM_COLS+l);
+        out.push_back(r*NUM_COLS+rr);
+        if (r>0) out.push_back((r-1)*NUM_COLS+c);
+        if (r<NUM_RINGS-1) out.push_back((r+1)*NUM_COLS+c);
+    }
+
+    int rangeGraphClustering() {
+        int cid = 0;
+        std::queue<int> q;
+        vector<int> nbrs;
+
+        for (int r=0;r<NUM_RINGS;r++) {
+            for (int c=0;c<NUM_COLS;c++) {
+                int idx=r*NUM_COLS+c;
+                if (!range_image_[idx].valid || labels_[idx]!=-1) continue;
+
+                labels_[idx]=cid;
+                q.push(idx);
+
+                while(!q.empty()) {
+                    int u=q.front(); q.pop();
+                    int ur=u/NUM_COLS, uc=u%NUM_COLS;
+                    neighbors(ur,uc,nbrs);
+
+                    for(int v:nbrs) {
+                        if(!range_image_[v].valid || labels_[v]!=-1) continue;
+                        if(std::abs(range_image_[u].range-range_image_[v].range)<0.6f) {
+                            labels_[v]=cid;
+                            q.push(v);
+                        }
+                    }
+                }
+                cid++;
+            }
+        }
+        return cid;
+    }
+
+    vector<vector<Vector3d>> extractClusters(const vector<Vector3d>& pts) {
+        std::unordered_map<int,vector<Vector3d>> mp;
+
+        for (size_t i=0;i<range_image_.size();i++) {
+            if (!range_image_[i].valid) continue;
+            int c=labels_[i];
+            mp[c].push_back(pts[range_image_[i].point_idx]);
+        }
+
+        vector<vector<Vector3d>> out;
+        for(auto& kv:mp)
+            if(kv.second.size()>=10)
+                out.push_back(std::move(kv.second));
+        return out;
+    }
+
+
+    void publishClusters(const vector<vector<Vector3d>>& clusters,
+                     const std_msgs::msg::Header& header) {
+
+        cev_msgs::msg::Obstacles obs;
+
+        for (size_t i=0;i<clusters.size();i++) {
+            sensor_msgs::msg::PointCloud2 pc;
+            pc.header=header;
+            pc.height=1;
+            pc.width=clusters[i].size();
+            pc.is_dense=true;
+            pc.is_bigendian=false;
+            pc.point_step=16;
+            pc.row_step=pc.width*pc.point_step;
+
+            pc.fields.resize(4);
+            pc.fields[0]={"x",0,sensor_msgs::msg::PointField::FLOAT32,1};
+            pc.fields[1]={"y",4,sensor_msgs::msg::PointField::FLOAT32,1};
+            pc.fields[2]={"z",8,sensor_msgs::msg::PointField::FLOAT32,1};
+            pc.fields[3]={"id",12,sensor_msgs::msg::PointField::UINT32,1};
+
+            pc.data.resize(pc.row_step);
+            uint8_t* ptr=pc.data.data();
+
+            for(auto& p:clusters[i]) {
+                float x=p(0),y=p(1),z=p(2);
+                uint32_t id=i;
+                memcpy(ptr,&x,4); ptr+=4;
+                memcpy(ptr,&y,4); ptr+=4;
+                memcpy(ptr,&z,4); ptr+=4;
+                memcpy(ptr,&id,4); ptr+=4;
+            }
+            obs.obstacles.push_back(pc);
+        }
+
+        pub_obs_->publish(obs);
+    }
+
+
+    void outputClusters(const vector<vector<Vector4d>>& clusters, sensor_msgs::msg::PointCloud2 obs_points, int max_num_points) {
         cev_msgs::msg::Obstacles obstacles_msg;
         obstacles_msg.obstacles.reserve(clusters.size());
 
@@ -510,14 +652,13 @@ private:
         return make_tuple(C, visited_indices);
     }
 
-    // this is clustering with euclidean distance matrix -> vectorized and for hardware acceleration
-    // mtx_euclidean_cluster() {
-
-    // }
-
     int iter_;
     MatrixXd C_prev_;
     MatrixXd data_;
+    std::array<double,NUM_RINGS> vert_angles_rad_;
+    vector<RangeNode> range_image_;
+    vector<int> labels_;
+
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr lidar_sub_;
     rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr obs_pub_;
     rclcpp::Publisher<cev_msgs::msg::Obstacles>::SharedPtr obs_arr_pub_;
