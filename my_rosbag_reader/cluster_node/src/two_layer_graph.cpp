@@ -55,7 +55,7 @@ public:
             vert_angles_rad_[i] = deg2rad(HELIOS32_VERT_DEG[i]);
 
         range_image_.resize(NUM_RINGS * NUM_COLS);
-        labels_.resize(NUM_RINGS * NUM_COLS);
+        cluster_ids_.resize(NUM_RINGS * NUM_COLS);
 
         auto qos = rclcpp::QoS(rclcpp::KeepLast(10)).best_effort();
         C_prev_ = MatrixXd::Zero(1, 4);
@@ -115,11 +115,16 @@ private:
         RCLCPP_INFO(this->get_logger(), "RAN FOR: %ld ms", duration.count());
     }
 
+    // discretize point cloud into bins determined by horizontal angles (basically rows of lidar rays)
+    // and vertical angles
     void constructRangeGraph(const vector<Vector3d>& points) {
+        // each cell of range_image_ stores range, point index, valid flag
         std::fill(range_image_.begin(), range_image_.end(), RangeNode{});
-        std::fill(labels_.begin(), labels_.end(), -1);
+        // 
+        std::fill(cluster_ids_.begin(), cluster_ids_.end(), -1);
 
         for (size_t i = 0; i < points.size(); ++i) {
+            // iterate over each point, then compute the angle of this point to the origin to determine channel
             const double x = points[i][0];
             const double y = points[i][1];
             const double z = points[i][2];
@@ -129,19 +134,22 @@ private:
 
             double az = std::atan2(y, x);
             if (az < 0) az += 2*M_PI;
+            // AZ_RES is horizontal angle resolution, each index of range_graph corresponsds to 
+            // a horizontal angle det by az / AZ_RES
             int col = static_cast<int>(az / AZ_RES);
             if (col < 0 || col >= NUM_COLS) continue;
 
             double el = std::asin(z / r);
-
             int ring = -1;
             double md = 1e9;
+            // determine the closest vertical angle
             for (int k = 0; k < NUM_RINGS; ++k) {
                 double d = std::abs(el - vert_angles_rad_[k]);
                 if (d < md) { md = d; ring = k; }
             }
             if (ring < 0) continue;
 
+            // index into range graph determined by vertical and horizontal angle
             int idx = ring * NUM_COLS + col;
 
             if (!range_image_[idx].valid || r < range_image_[idx].range) {
@@ -163,44 +171,140 @@ private:
         if (r<NUM_RINGS-1) out.push_back((r+1)*NUM_COLS+c);
     }
 
-    int rangeGraphClustering() {
-        int cid = 0;
-        std::queue<int> q;
-        vector<int> nbrs;
+    inline bool isClose3D(int u, int v, float Thd) {
+        int i1 = range_image_[u].point_index;
+        int i2 = range_image_[v].point_index;
 
-        for (int r=0;r<NUM_RINGS;r++) {
-            for (int c=0;c<NUM_COLS;c++) {
-                int idx=r*NUM_COLS+c;
-                if (!range_image_[idx].valid || labels_[idx]!=-1) continue;
+        const auto& p1 = points_[i1];
+        const auto& p2 = points_[i2];
 
-                labels_[idx]=cid;
-                q.push(idx);
+        return (p1 - p2).norm() < Thd;
+    }
 
-                while(!q.empty()) {
-                    int u=q.front(); q.pop();
-                    int ur=u/NUM_COLS, uc=u%NUM_COLS;
-                    neighbors(ur,uc,nbrs);
+    void channelClustering() {
+        for (int r = 0; r < NUM_RINGS; r++) {
+            int current_seg = 0;
+            int prev_col = -1;
 
-                    for(int v:nbrs) {
-                        if(!range_image_[v].valid || labels_[v]!=-1) continue;
-                        if(std::abs(range_image_[u].range-range_image_[v].range)<0.6f) {
-                            labels_[v]=cid;
-                            q.push(v);
-                        }
-                    }
+            for (int c = 0; c < NUM_COLS; c++) {
+                int idx = r * NUM_COLS + c;
+                if (!range_image_[idx].valid) continue;
+
+                if (prev_col == -1) {
+                    channel_ids_[idx] = current_seg;
+                    prev_col = c;
+                    continue;
                 }
-                cid++;
+
+                int prev_idx = r * NUM_COLS + prev_col;
+
+                float dr = abs(range_image_[idx].range -
+                       range_image_[prev_idx].range);
+
+                if (dr > 0.05) {
+                    current_seg++;
+                }
+
+                channel_ids_[idx] = current_seg;
+                prev_col = c;
             }
         }
-        return cid;
     }
+
+    int rangeGraphClustering(float Thd)
+    {
+        int cluster_id = 0;
+        int N = NUM_RINGS * NUM_COLS;
+
+        cluster_ids_.assign(N, -1);
+        visited_.assign(N, false);
+
+        std::queue<int> Q;
+        std::vector<int> nbrs;
+
+        for (int idx = 0; idx < N; ++idx)
+        {
+            // skip invalid or already visited
+            if (!range_image_[idx].valid || visited_[idx])
+                continue;
+
+            // start new cluster
+            Q.push(idx);
+            visited_[idx] = true;
+            cluster_ids_[idx] = cluster_id;
+
+            while (!Q.empty())
+            {
+                int current = Q.front();
+                Q.pop();
+
+                int r = current / NUM_COLS;
+                int c = current % NUM_COLS;
+
+                neighbors(r, c, nbrs);   // get adjacent pixels
+
+                for (int neighbor : nbrs)
+                {
+                    if (!range_image_[neighbor].valid)
+                        continue;
+
+                    if (visited_[neighbor])
+                        continue;
+
+                    if (std::abs(range_image_[current].range -
+                                range_image_[neighbor].range) < Thd)
+                    {
+                        visited_[neighbor] = true;
+                        cluster_ids_[neighbor] = cluster_id;
+                        Q.push(neighbor);
+                    }
+                }
+            }
+
+            cluster_id++;
+        }
+
+        return cluster_id;
+    }
+
+    // int rangeGraphClustering() {
+    //     int cid = 0;
+    //     std::queue<int> q;
+    //     vector<int> nbrs;
+
+    //     for (int r=0;r<NUM_RINGS;r++) {
+    //         for (int c=0;c<NUM_COLS;c++) {
+    //             int idx=r*NUM_COLS+c;
+    //             if (!range_image_[idx].valid || cluster_ids_[idx]!=-1) continue;
+
+    //             cluster_ids_[idx]=cid;
+    //             q.push(idx);
+
+    //             while(!q.empty()) {
+    //                 int u=q.front(); q.pop();
+    //                 int ur=u/NUM_COLS, uc=u%NUM_COLS;
+    //                 neighbors(ur,uc,nbrs);
+
+    //                 for(int v:nbrs) {
+    //                     if(!range_image_[v].valid || cluster_ids_[v]!=-1) continue;
+    //                     if(std::abs(range_image_[u].range-range_image_[v].range)<0.6f) {
+    //                         cluster_ids_[v]=cid;
+    //                         q.push(v);
+    //                     }
+    //                 }
+    //             }
+    //             cid++;
+    //         }
+    //     }
+    //     return cid;
+    // }
 
     vector<vector<Vector3d>> extractClusters(const vector<Vector3d>& pts) {
         std::unordered_map<int,vector<Vector3d>> mp;
 
         for (size_t i=0;i<range_image_.size();i++) {
             if (!range_image_[i].valid) continue;
-            int c=labels_[i];
+            int c=cluster_ids_[i];
             mp[c].push_back(pts[range_image_[i].point_idx]);
         }
 
@@ -330,7 +434,9 @@ private:
     MatrixXd data_;
     std::array<double,NUM_RINGS> vert_angles_rad_;
     vector<RangeNode> range_image_;
-    vector<int> labels_;
+    vector<int> cluster_ids_;
+    vector<int> channel_ids_;
+    vector<bool> visited_; 
 
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr lidar_sub_;
     rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr obs_pub_;
