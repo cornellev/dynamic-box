@@ -41,10 +41,20 @@ static const std::array<double, NUM_RINGS> HELIOS32_VERT_DEG = {
 };
 
 struct RangeNode {
-    float range = 0.f;
-    int point_idx = -1;
-    bool valid = false;
+    float range     = 0.f;
+    int point_idx   = -1;
+    bool valid      = false;
+    int alpha       = 01
 };
+
+struct GraphNode {
+    float range     = 0.f; 
+    int   alpha     = -1;
+    int   cluster   = -1;
+    // indices into G_r that belong to this node
+    vector<int> members;
+};
+
 
 class TwoLayerNode : public rclcpp::Node {
 public:
@@ -54,7 +64,7 @@ public:
         for (int i = 0; i < NUM_RINGS; ++i)
             vert_angles_rad_[i] = deg2rad(HELIOS32_VERT_DEG[i]);
 
-        range_image_.resize(NUM_RINGS * NUM_COLS);
+        G_r.resize(NUM_RINGS * NUM_COLS);
         cluster_ids_.resize(NUM_RINGS * NUM_COLS);
 
         auto qos = rclcpp::QoS(rclcpp::KeepLast(10)).best_effort();
@@ -104,8 +114,12 @@ private:
         if (points.empty()) return;
 
         auto start = std::chrono::high_resolution_clock::now();
+
+        // constructing the range graph
         constructRangeGraph(points);
-        int nclusters = rangeGraphClustering();
+
+        // channel-level segmentation to fill RangeNode::alpha
+        int nclusters = rangeGraphClustering(0.05);
 
         auto C = extractClusters(points);
         outputClusters(C, obs_points, total_points);
@@ -118,9 +132,8 @@ private:
     // discretize point cloud into bins determined by horizontal angles (basically rows of lidar rays)
     // and vertical angles
     void constructRangeGraph(const vector<Vector3d>& points) {
-        // each cell of range_image_ stores range, point index, valid flag
-        std::fill(range_image_.begin(), range_image_.end(), RangeNode{});
-        // 
+        // each cell of G_r stores range, point index, valid flag
+        std::fill(G_r.begin(), G_r.end(), RangeNode{});
         std::fill(cluster_ids_.begin(), cluster_ids_.end(), -1);
 
         for (size_t i = 0; i < points.size(); ++i) {
@@ -152,11 +165,11 @@ private:
             // index into range graph determined by vertical and horizontal angle
             int idx = ring * NUM_COLS + col;
 
-            if (!range_image_[idx].valid || r < range_image_[idx].range) {
-                range_image_[idx] = {
+            if (!G_r[idx].valid || r < G_r[idx].range) {
+                G_r[idx] = {
                     static_cast<float>(r),
                     static_cast<int>(i),
-                    true
+                    true, -1
                 };
             }
         }
@@ -171,100 +184,132 @@ private:
         if (r<NUM_RINGS-1) out.push_back((r+1)*NUM_COLS+c);
     }
 
-    inline bool isClose3D(int u, int v, float Thd) {
-        int i1 = range_image_[u].point_index;
-        int i2 = range_image_[v].point_index;
-
-        const auto& p1 = points_[i1];
-        const auto& p2 = points_[i2];
-
-        return (p1 - p2).norm() < Thd;
-    }
-
-    void channelClustering() {
-        for (int r = 0; r < NUM_RINGS; r++) {
-            int current_seg = 0;
-            int prev_col = -1;
-
-            for (int c = 0; c < NUM_COLS; c++) {
-                int idx = r * NUM_COLS + c;
-                if (!range_image_[idx].valid) continue;
-
-                if (prev_col == -1) {
-                    channel_ids_[idx] = current_seg;
-                    prev_col = c;
-                    continue;
-                }
-
-                int prev_idx = r * NUM_COLS + prev_col;
-
-                float dr = abs(range_image_[idx].range -
-                       range_image_[prev_idx].range);
-
-                if (dr > 0.05) {
-                    current_seg++;
-                }
-
-                channel_ids_[idx] = current_seg;
-                prev_col = c;
-            }
-        }
-    }
-
-    int rangeGraphClustering(float Thd)
+    void firstSegmentation(float Th_d, float Th_z)
     {
-        int cluster_id = 0;
-        int N = NUM_RINGS * NUM_COLS;
-
-        cluster_ids_.assign(N, -1);
-        visited_.assign(N, false);
-
-        std::queue<int> Q;
-        std::vector<int> nbrs;
-
-        for (int idx = 0; idx < N; ++idx)
+        for (int i = 0; i < NUM_RINGS; ++i) // for i = 0; i < row; i++ do
         {
-            // skip invalid or already visited
-            if (!range_image_[idx].valid || visited_[idx])
-                continue;
+            int L_cnt   = 0;                // L_cnt = 0
+            int pre_pos = -1;               
 
-            // start new cluster
-            Q.push(idx);
-            visited_[idx] = true;
-            cluster_ids_[idx] = cluster_id;
-
-            while (!Q.empty())
+            for (int j = 0; j < NUM_COLS; ++j) // for j = 1; j < col; j++ do
             {
-                int current = Q.front();
-                Q.pop();
+                int idx = i * NUM_COLS + j; 
+                if (!G_r[idx].valid) continue; // if G_r(i,j) -> valid = F (False) then continue
 
-                int r = current / NUM_COLS;
-                int c = current % NUM_COLS;
+                if (L_cnt == 0) {              // if L_cnt == 0 then
+                    L_cnt++;                   // L_cnt++;
+                    pre_pos = j;               // Start Pos = j; Pre Pose = j;
+                    G_r[idx].alpha = L_cnt;    // G_r(i,j) -> alpha = L_cnt
+                } else {                       // else
+                    int pre_idx = i * NUM_COLS + pre_pos;
 
-                neighbors(r, c, nbrs);   // get adjacent pixels
+                    float dist  = pointDist(idx, pre_idx);  // Dis(G-r(i,j))
+                    float angle = bisectorAngle(idx, pre_idx, i);   // Ang(G_r(i,j), G_r(i, Pre Pos))
 
-                for (int neighbor : nbrs)
-                {
-                    if (!range_image_[neighbor].valid)
-                        continue;
-
-                    if (visited_[neighbor])
-                        continue;
-
-                    if (std::abs(range_image_[current].range -
-                                range_image_[neighbor].range) < Thd)
+                    // if Dis(G_r(i,j), G_r(i, Pre Pos)) > Th_d || (Ang(G_r(i,j), G_r(i, Pre Pos)) < Th_z & V_angle-bisectorV_o-m > 0) then
+                    if (dist > Th_d || (angle < Th_z && bisectorPositive(idx, pre_idx)))
                     {
-                        visited_[neighbor] = true;
-                        cluster_ids_[neighbor] = cluster_id;
-                        Q.push(neighbor);
+                        L_cnt++;                // L_cnt++;
+                        pre_pos = j;            // Start Pos = j; Pre Pos = j
+                        G_r[idx].alpha = L_cnt; // G_r(i,j) -> alpha = L_cnt
+                    } else {
+                        pre_pos = j;            // Pre Pos = j;
+                        G_r[idx].alpha = L_cnt; // G_r(i,j) -> alpha = L_cnt
                     }
                 }
             }
+        }
+    }
 
-            cluster_id++;
+    void buildSetGraph()
+    {
+        G_c.assign(NUM_RINGS, {});
+
+        for (int i = 0; i < NUM_RINGS; ++i)
+        {
+            std::unordered_map<int, GraphNode> seg_map;
+
+            for (int j = 0; j < NUM_COLS; ++j)
+            {
+                int idx = i * NUM_COLS + j;
+                if (!range_image_[idx].valid) continue;
+
+                int a = range_image_[idx].alpha;
+                auto& node = seg_map[a];
+                node.alpha = a;
+                node.members.push_back(idx);
+                node.range += range_image_[idx].range;
+            }
+
+            for (auto& kv : seg_map)
+            {
+                kv.second.range /= static_cast<float>(kv.second.members.size());
+                G_c[i].push_back(std::move(kv.second));
+            }
+
+            // sort by alpha so that segment ordering is deterministic
+            std::sort(G_c[i].begin(), G_c[i].end(),
+                      [](const GraphNode& a, const GraphNode& b){
+                          return a.alpha < b.alpha;
+                      });
+        }
+    }
+
+    int secondSegmentation(float Th_d)
+    {
+        for (int i = 0; i < NUM_RINGS; ++i) {   // Init(V_m), visit map
+            for (auto& n : G_c[i]) {
+                n.cluster = -1;
+            }
+        }
+        int L_cnt = 0;                          // L_cnt = 0
+
+        std::queue<std::pair<int,int>> Q;       // (ring, node-index)
+
+        for (int i = 0; i < NUM_RINGS; ++i) {   // for i = 0; i < row; i++ do
+            for (int j = 0; j < static_cast<int>(G_c[i].size()); ++j)  // 
+            {
+                GraphNode& cur = G_c[i][j];
+
+                if (cur.cluster != -1) { continue; }                 // line 5-6 (visited)
+
+                // line 7-10: unvisited → start new cluster
+                L_cnt++;
+                Q.push({i, j});
+                cur.cluster = L_cnt;
+
+                while (!Q.empty())                                    // line 11
+                {
+                    auto [ri, ci] = Q.front(); Q.pop();               // line 12
+                    GraphNode& N_deal = G_c[ri][ci];
+                    // line 13: N_deal->N = L_cnt  (already set before push)
+
+                    // line 14: for each neighbor of N_deal
+                    for (auto& [rn, cn] : getNeighbors(ri, ci))
+                    {
+                        GraphNode& N_link = G_c[rn][cn];
+
+                        if (N_link.cluster != -1) { continue; }      // line 16-17
+
+                        // line 18-19
+                        if (nodeDist(N_deal, N_link) < Th_d)
+                        {
+                            N_link.cluster = L_cnt;
+                            Q.push({rn, cn});
+                        }
+                    }
+                }
+            }
         }
 
-        return cluster_id;
+        // Propagate cluster IDs back to range_image_ cells so that
+        // extractClusters() can group raw 3-D points.
+        for (int i = 0; i < NUM_RINGS; ++i)
+            for (auto& node : G_c[i])
+                for (int idx : node.members)
+                    cluster_ids_[idx] = node.cluster;
+
+        return L_cnt;
     }
 
     // int rangeGraphClustering() {
@@ -275,7 +320,7 @@ private:
     //     for (int r=0;r<NUM_RINGS;r++) {
     //         for (int c=0;c<NUM_COLS;c++) {
     //             int idx=r*NUM_COLS+c;
-    //             if (!range_image_[idx].valid || cluster_ids_[idx]!=-1) continue;
+    //             if (!G_r[idx].valid || cluster_ids_[idx]!=-1) continue;
 
     //             cluster_ids_[idx]=cid;
     //             q.push(idx);
@@ -286,8 +331,8 @@ private:
     //                 neighbors(ur,uc,nbrs);
 
     //                 for(int v:nbrs) {
-    //                     if(!range_image_[v].valid || cluster_ids_[v]!=-1) continue;
-    //                     if(std::abs(range_image_[u].range-range_image_[v].range)<0.6f) {
+    //                     if(!G_r[v].valid || cluster_ids_[v]!=-1) continue;
+    //                     if(std::abs(G_r[u].range-G_r[v].range)<0.6f) {
     //                         cluster_ids_[v]=cid;
     //                         q.push(v);
     //                     }
@@ -302,10 +347,10 @@ private:
     vector<vector<Vector3d>> extractClusters(const vector<Vector3d>& pts) {
         std::unordered_map<int,vector<Vector3d>> mp;
 
-        for (size_t i=0;i<range_image_.size();i++) {
-            if (!range_image_[i].valid) continue;
+        for (size_t i=0;i<G_r.size();i++) {
+            if (!G_r[i].valid) continue;
             int c=cluster_ids_[i];
-            mp[c].push_back(pts[range_image_[i].point_idx]);
+            mp[c].push_back(pts[G_r[i].point_idx]);
         }
 
         vector<vector<Vector3d>> out;
@@ -433,7 +478,7 @@ private:
     MatrixXd C_prev_;
     MatrixXd data_;
     std::array<double,NUM_RINGS> vert_angles_rad_;
-    vector<RangeNode> range_image_;
+    vector<RangeNode> G_r;
     vector<int> cluster_ids_;
     vector<int> channel_ids_;
     vector<bool> visited_; 
