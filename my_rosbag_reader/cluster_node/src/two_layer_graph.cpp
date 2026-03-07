@@ -285,9 +285,7 @@ private:
 
             // sort by alpha so that segment ordering is deterministic
             std::sort(G_c[i].begin(), G_c[i].end(),
-                      [](const GraphNode& a, const GraphNode& b){
-                          return a.alpha < b.alpha;
-                      });
+    [](const GraphNode& a, const GraphNode& b){ return a.start_pos < b.start_pos; });
         }
     }
 
@@ -363,7 +361,7 @@ private:
                 float dx = cand.x_mean - cur.x_mean;
                 float dy = cand.y_mean - cur.y_mean;
                 float xy_dist = std::sqrt(dx*dx + dy*dy);
-                if (xy_dist < Thd_)
+                if (xy_dist < Thd_ * 3.0f)
                     nbrs.push_back({rn, cn});
             }
         }
@@ -426,38 +424,6 @@ private:
 
         return std::array<Eigen::Vector2f, 2>{V1, V2};
     }
-
-    // int rangeGraphClustering() {
-    //     int cid = 0;
-    //     std::queue<int> q;
-    //     vector<int> nbrs;
-
-    //     for (int r=0;r<NUM_RINGS;r++) {
-    //         for (int c=0;c<NUM_COLS;c++) {
-    //             int idx=r*NUM_COLS+c;
-    //             if (!G_r[idx].valid || cluster_ids_[idx]!=-1) continue;
-
-    //             cluster_ids_[idx]=cid;
-    //             q.push(idx);
-
-    //             while(!q.empty()) {
-    //                 int u=q.front(); q.pop();
-    //                 int ur=u/NUM_COLS, uc=u%NUM_COLS;
-    //                 neighbors(ur,uc,nbrs);
-
-    //                 for(int v:nbrs) {
-    //                     if(!G_r[v].valid || cluster_ids_[v]!=-1) continue;
-    //                     if(std::abs(G_r[u].range-G_r[v].range)<0.6f) {
-    //                         cluster_ids_[v]=cid;
-    //                         q.push(v);
-    //                     }
-    //                 }
-    //             }
-    //             cid++;
-    //         }
-    //     }
-    //     return cid;
-    // }
 
     vector<vector<Vector3d>> extractClusters(const vector<Vector3d>& pts) {
         std::unordered_map<int,vector<Vector3d>> mp;
@@ -592,8 +558,8 @@ private:
     }
 
     int iter_;
-    float Thd_ = 0.05f;
-    float Thz_ = static_cast<float>(deg2rad(0.4));
+    float Thd_ = 0.5f;
+    float Thz_ = static_cast<float>(deg2rad(1.0));
 
     MatrixXd C_prev_;
     MatrixXd data_;
