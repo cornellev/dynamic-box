@@ -41,16 +41,24 @@ static const std::array<double, NUM_RINGS> HELIOS32_VERT_DEG = {
 };
 
 struct RangeNode {
-    float range     = 0.f;
+    float x         = 0.f;
+    float y         = 0.f;
+    float z         = 0.f;
+    float range     = 0.f;  // d
     int point_idx   = -1;
     bool valid      = false;
-    int alpha       = 01
+    int alpha       = -1;
+    int beta        = -1;
 };
 
 struct GraphNode {
     float range     = 0.f; 
+    float x_mean    = 0.f;
+    float y_mean    = 0.f;
     int   alpha     = -1;
     int   cluster   = -1;
+    int   start_pos = -1;
+    int   end_pos   = -1;
     // indices into G_r that belong to this node
     vector<int> members;
 };
@@ -118,11 +126,18 @@ private:
         // constructing the range graph
         constructRangeGraph(points);
 
-        // channel-level segmentation to fill RangeNode::alpha
-        int nclusters = rangeGraphClustering(0.05);
+        // 1st segmentation
+        firstSegmentation(Thd_, Thz_);
+
+        // build set graph G_c
+        buildSetGraph();
+
+        // 2nd segmentation
+        int nclusters = secondSegmentation(Thd_);
 
         auto C = extractClusters(points);
         outputClusters(C, obs_points, total_points);
+        
         RCLCPP_INFO(this->get_logger(), "LIVE: Recieved %zu points", total_points);
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
@@ -167,9 +182,12 @@ private:
 
             if (!G_r[idx].valid || r < G_r[idx].range) {
                 G_r[idx] = {
+                    static_cast<float>(x),
+                    static_cast<float>(y),
+                    static_cast<float>(z),
                     static_cast<float>(r),
                     static_cast<int>(i),
-                    true, -1
+                    true, -1, -1
                 };
             }
         }
@@ -203,11 +221,21 @@ private:
                 } else {                       // else
                     int pre_idx = i * NUM_COLS + pre_pos;
 
-                    float dist  = pointDist(idx, pre_idx);  // Dis(G-r(i,j))
-                    float angle = bisectorAngle(idx, pre_idx, i);   // Ang(G_r(i,j), G_r(i, Pre Pos))
-
-                    // if Dis(G_r(i,j), G_r(i, Pre Pos)) > Th_d || (Ang(G_r(i,j), G_r(i, Pre Pos)) < Th_z & V_angle-bisectorV_o-m > 0) then
-                    if (dist > Th_d || (angle < Th_z && bisectorPositive(idx, pre_idx)))
+                    float dist = pointDist(idx, pre_idx);  // Dis(G_r(i,j), G_r(i,Pre Pos))
+                    auto vecs = getVecs(idx, pre_idx, i);  // init V1, V2
+                    if (!vecs) {
+                        pre_pos = j;
+                        G_r[idx].alpha = L_cnt;
+                        continue;
+                    }
+                    auto [V1, V2] = *vecs;
+                    float angle = std::acos( V1.dot(V2) / (V1.norm() * V2.norm()) ); // Ang(G_r(i,j), G_r(i, Pre Pos))
+                    Eigen::Vector2f V_anglebisector = (V1 + V2) / (V1 + V2).norm();
+                    Eigen::Vector2f V_mo(-(G_r[idx].x + G_r[pre_idx].x)/2.f, -(G_r[idx].y + G_r[pre_idx].y)/2.f);
+        
+                    // RCLCPP_INFO(this->get_logger(), "dist %f < Th_d %f, angle %f < Th_z %f", dist, Th_d, angle, Th_z);
+                    // if Dis(G_r(i,j), G_r(i, Pre Pos)) > Th_d || (Ang(G_r(i,j), G_r(i, Pre Pos)) < Th_z & V_angle-bisectorV_m-o > 0) then
+                    if (dist > Th_d || (angle < Th_z && V_mo.dot(V_anglebisector) > 0))
                     {
                         L_cnt++;                // L_cnt++;
                         pre_pos = j;            // Start Pos = j; Pre Pos = j
@@ -232,18 +260,26 @@ private:
             for (int j = 0; j < NUM_COLS; ++j)
             {
                 int idx = i * NUM_COLS + j;
-                if (!range_image_[idx].valid) continue;
+                if (!G_r[idx].valid) continue;
 
-                int a = range_image_[idx].alpha;
+                int a = G_r[idx].alpha;
                 auto& node = seg_map[a];
                 node.alpha = a;
                 node.members.push_back(idx);
-                node.range += range_image_[idx].range;
+                node.range += G_r[idx].range;
+                node.x_mean += G_r[idx].x;
+                node.y_mean += G_r[idx].y;
+
+                if (node.start_pos == -1 || j < node.start_pos) node.start_pos = j;
+                if (node.end_pos  == -1 || j > node.end_pos)   node.end_pos   = j;
             }
 
             for (auto& kv : seg_map)
             {
-                kv.second.range /= static_cast<float>(kv.second.members.size());
+                float n = static_cast<float>(kv.second.members.size());
+                kv.second.x_mean /= n;
+                kv.second.y_mean /= n;
+                kv.second.range /= n;
                 G_c[i].push_back(std::move(kv.second));
             }
 
@@ -263,46 +299,37 @@ private:
             }
         }
         int L_cnt = 0;                          // L_cnt = 0
-
         std::queue<std::pair<int,int>> Q;       // (ring, node-index)
 
         for (int i = 0; i < NUM_RINGS; ++i) {   // for i = 0; i < row; i++ do
-            for (int j = 0; j < static_cast<int>(G_c[i].size()); ++j)  // 
+            for (int j = 0; j < static_cast<int>(G_c[i].size()); ++j)  // for j = 1; j < Node(i) -> size; j++ do
             {
                 GraphNode& cur = G_c[i][j];
 
-                if (cur.cluster != -1) { continue; }                 // line 5-6 (visited)
+                if (cur.cluster != -1) { continue; }        // if v_m(i, j) = T (True, != -1) then 
+                L_cnt++;                                    // L_cnt++; 
+                Q.push({i, j});                             // Q -> push(Node(i,j))
+                cur.cluster = L_cnt;                        // V_m(i,j) = T (True, != -1)
 
-                // line 7-10: unvisited → start new cluster
-                L_cnt++;
-                Q.push({i, j});
-                cur.cluster = L_cnt;
+                while (!Q.empty()) {                        // while Q -> empty = F (False) do
+                    auto [ri, ci] = Q.front(); Q.pop();     // ri = front    
+                    GraphNode& N_deal = G_c[ri][ci];        // N_deal = Q.front
 
-                while (!Q.empty())                                    // line 11
-                {
-                    auto [ri, ci] = Q.front(); Q.pop();               // line 12
-                    GraphNode& N_deal = G_c[ri][ci];
-                    // line 13: N_deal->N = L_cnt  (already set before push)
+                    for (auto& [rn, cn] : getNeighbors(ri, ci)) {   // for N_link in neighbor of N_deal do
+                        GraphNode& N_link = G_c[rn][cn];            // N_link
 
-                    // line 14: for each neighbor of N_deal
-                    for (auto& [rn, cn] : getNeighbors(ri, ci))
-                    {
-                        GraphNode& N_link = G_c[rn][cn];
+                        if (N_link.cluster != -1) { continue; }     // if V_m(N_link) = T (True, != -1) then
 
-                        if (N_link.cluster != -1) { continue; }      // line 16-17
-
-                        // line 18-19
-                        if (nodeDist(N_deal, N_link) < Th_d)
-                        {
-                            N_link.cluster = L_cnt;
-                            Q.push({rn, cn});
+                        if (nodeDist(N_deal, N_link) < Th_d * 3.0f) {   // if Dis(N_deal, N_link) < Th_d then
+                            N_link.cluster = L_cnt;             
+                            Q.push({rn, cn});                       // Q -> push(N_link)
                         }
                     }
                 }
             }
         }
 
-        // Propagate cluster IDs back to range_image_ cells so that
+        // Propagate cluster IDs back to G_r cells so that
         // extractClusters() can group raw 3-D points.
         for (int i = 0; i < NUM_RINGS; ++i)
             for (auto& node : G_c[i])
@@ -310,6 +337,94 @@ private:
                     cluster_ids_[idx] = node.cluster;
 
         return L_cnt;
+    }
+
+    vector<pair<int,int>> getNeighbors(int ri, int ci) const
+    {
+        // search the nodes near the current node (the nodes in upper and lower adjacent channels, 
+        // which are connected to the current node and the first unconnected node on both sides
+        vector<pair<int,int>> nbrs;
+        const GraphNode& cur = G_c[ri][ci];
+
+        for (int dr : {-1, 1})
+        {
+            int rn = ri + dr;
+            if (rn < 0 || rn >= NUM_RINGS) continue;
+
+            for (int cn = 0; cn < static_cast<int>(G_c[rn].size()); ++cn)
+            {
+                const GraphNode& cand = G_c[rn][cn];
+
+                // horizontal: column spans must overlap (cylindrical adjacency)
+                if (cand.end_pos   < cur.start_pos) continue;
+                if (cand.start_pos > cur.end_pos)   break;    // sorted by start_pos, can early exit
+
+                // vertical: XY plane distance must be within Th_Dis_ (equation 8)
+                float dx = cand.x_mean - cur.x_mean;
+                float dy = cand.y_mean - cur.y_mean;
+                float xy_dist = std::sqrt(dx*dx + dy*dy);
+                if (xy_dist < Thd_)
+                    nbrs.push_back({rn, cn});
+            }
+        }
+        return nbrs;
+    }
+
+    // ==============================================================
+    // Distance between two graph nodes (mean-range difference)
+    // ==============================================================
+    float nodeDist(const GraphNode& a, const GraphNode& b) const
+    {
+        float dx = a.x_mean - b.x_mean;
+        float dy = a.y_mean - b.y_mean;
+        return std::sqrt(dx*dx + dy*dy);
+    }
+
+    // ==============================================================
+    // Euclidean distance between two range-image cells
+    // ==============================================================
+    float pointDist(int idx_a, int idx_b) const
+    {
+        float dx = G_r[idx_a].x - G_r[idx_b].x;
+        float dy = G_r[idx_a].y - G_r[idx_b].y;
+        return std::sqrt(dx*dx + dy*dy);
+    }
+
+    std::optional<std::array<Eigen::Vector2f, 2>> getVecs(int idx_cur, int idx_pre, int ring) const
+    {
+        // in one horizontal ring, this is represented by one row in G_r: after seg, we get
+        // |** * ***|        |*** * ****|, 2 different pcs
+        //       idx_pre  idx_cur
+        // idx_pre is the last cell of the previous segment (Pre Pos in Alg 1)
+        // idx_cur is the first cell of the current segment
+
+        int col_pre = idx_pre % NUM_COLS;                           // furthest in V1
+        int col_cur = idx_cur % NUM_COLS;                           // furthest in V2
+
+        int col_pre_inner = (col_pre - 1 + NUM_COLS) % NUM_COLS;    // 2nd furthest in V1
+        int idx_pre_inner = ring * NUM_COLS + col_pre_inner;
+        int col_cur_inner = (col_cur + 1) % NUM_COLS;               // 2nd furthest in V2
+        int idx_cur_inner = ring * NUM_COLS + col_cur_inner;
+
+        // Need inner cells to be valid for a meaningful vector
+        if (!G_r[idx_pre_inner].valid || !G_r[idx_cur_inner].valid)
+            return std::nullopt;
+
+        // V2: direction along previous segment, pointing away from boundary
+        Eigen::Vector2f p_pre(G_r[idx_pre].x,
+                            G_r[idx_pre].y);
+        Eigen::Vector2f p_pre_in(G_r[idx_pre_inner].x,
+                                G_r[idx_pre_inner].y);
+        Eigen::Vector2f V2 = p_pre_in - p_pre;  // boundary → interior of seg_pre
+
+        // V1: direction along current segment, pointing away from boundary
+        Eigen::Vector2f p_cur(G_r[idx_cur].x,
+                            G_r[idx_cur].y);
+        Eigen::Vector2f p_cur_in(G_r[idx_cur_inner].x,
+                                G_r[idx_cur_inner].y);
+        Eigen::Vector2f V1 = p_cur_in - p_cur;  // boundary → interior of seg_cur
+
+        return std::array<Eigen::Vector2f, 2>{V1, V2};
     }
 
     // int rangeGraphClustering() {
@@ -350,10 +465,12 @@ private:
         for (size_t i=0;i<G_r.size();i++) {
             if (!G_r[i].valid) continue;
             int c=cluster_ids_[i];
+            // int c = G_r[i].alpha;
             mp[c].push_back(pts[G_r[i].point_idx]);
         }
 
         vector<vector<Vector3d>> out;
+        out.reserve(mp.size());
         for(auto& kv:mp)
             if(kv.second.size()>=10)
                 out.push_back(std::move(kv.second));
@@ -475,10 +592,14 @@ private:
     }
 
     int iter_;
+    float Thd_ = 0.05f;
+    float Thz_ = static_cast<float>(deg2rad(0.4));
+
     MatrixXd C_prev_;
     MatrixXd data_;
     std::array<double,NUM_RINGS> vert_angles_rad_;
     vector<RangeNode> G_r;
+    vector<vector<GraphNode>> G_c;
     vector<int> cluster_ids_;
     vector<int> channel_ids_;
     vector<bool> visited_; 
