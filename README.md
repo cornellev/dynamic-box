@@ -139,15 +139,15 @@ ros2 bag play rosbag2_2022_04_14-16_52_40_0.db3 --loop
 
 Then, in a separate terminal, after sourcing ```cev_msgs``` and ```my_rosbag_reader``` and going to directory ```/home/dev/ws/src/dynamic-box/my_rosbag_reader/cluster_node/```, run
 ```
-colcon build --packages-select cluster_node cluster_cpp
+colcon build --packages-select cluster_node cluster_cpp --cmake-args -DCMAKE_BUILD_TYPE=Debug
 source install/setup.bash
-ros2 run cluster_cpp cluster_node
+ros2 run --prefix 'gdb -ex run --args' cluster_cpp cluster_node
 ```
 which will begin outputting ```PointCloud2``` clusters to the ```\rslidar_obstacles``` topic!
 
 In a fourth terminal, go to directory ```/home/dev/ws/src/Obstacle_node/``` and run:
 ```
-colcon build --packages-select obstacle 
+colcon build --packages-select obstacle --cmake-args -DCMAKE_BUILD_TYPE=Debug
 ```
 
 ### Getting Online LiDAR Inputs via Ethernet
