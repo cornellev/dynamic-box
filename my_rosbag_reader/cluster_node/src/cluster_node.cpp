@@ -196,13 +196,13 @@ public:
         C_prev_ = MatrixXd::Zero(1, 4);
         data_ = MatrixXd(0, 4);
 
-        // lidar_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
-        //     "/rslidar_points", 10, 
-        //     bind(&ClusterNode::listenerCallback, this, std::placeholders::_1));
-
         lidar_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
-            "/sensing/lidar/top/rectified/pointcloud", qos, 
+            "/rslidar_points", 10, 
             bind(&ClusterNode::listenerCallback, this, std::placeholders::_1));
+
+        // lidar_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
+        //     "/sensing/lidar/top/rectified/pointcloud", qos, 
+        //     bind(&ClusterNode::listenerCallback, this, std::placeholders::_1));
 
         obs_pub_ = this->create_publisher<sensor_msgs::msg::PointCloud2>(
             "/rslidar_clusters", 10);
