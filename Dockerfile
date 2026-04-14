@@ -1,5 +1,5 @@
 # Use your base
-SHELL ["/bin/bash", "-lc"]
+# SHELL ["/bin/bash", "-lc"]
 ENV DEBIAN_FRONTEND=noninteractive \
     ROS_DISTRO=humble \
     ROS_ROOT=/opt/ros/humble \
