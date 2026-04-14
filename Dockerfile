@@ -1,5 +1,5 @@
 # Use your base
-FROM ros:humble-ros-base-jammy
+FROM nvcr.io/nvidia/isaac/ros:aarch64-ros2_humble_adc428c7077de4984a00b63c55903b0a
 
 SHELL ["/bin/bash", "-lc"]
 ENV DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC
