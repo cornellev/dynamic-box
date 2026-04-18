@@ -173,7 +173,14 @@ sudo ip link set enP8p1s0 up
 sudo ip addr ad 192.168.1.100/24 dev enP8p1s0
 ```
 
-Pray and hope that ```ping 192.168.1.100``` outputs something.
+OR 
+
+```
+sudo ip link set enP8p1s0 up
+sudo ip addr ad 192.168.1.102/24 dev enP8p1s0
+```
+
+Pray and hope that ```ping 192.168.1.100``` and then ```sudo tcpdump -i enP8p1s0 -n port 6699 or port 7788``` outputs something.
 
 
 ## Euclidean Cluster Extraction Important links:
