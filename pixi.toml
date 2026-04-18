@@ -1,0 +1,57 @@
+[workspace]
+name = "dynamic-box-env"
+version = "0.1.0"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+python = "3.10"
+pip = "*"
+setuptools = "*"
+wheel = "*"
+
+# C++ build tools
+cmake = "*"
+make = "*"
+gcc = "*"
+gxx = "*"
+
+# Core libs
+opencv = "*"
+open3d = "*"
+eigen = "*"
+yaml-cpp = "*"
+libpcap = "*"
+
+# Graphics (SDL + OpenGL equivalents)
+sdl2 = "*"
+sdl2_image = "*"
+mesa-libgl-cos7-x86_64 = "*"
+
+# Python deps (move from requirements.txt ideally)
+numpy = "*"
+openssl = ">=3.6.2,<4"
+ca-certificates = ">=2026.2.25,<2027"
+
+[tasks]
+
+clone-deps = """
+git clone https://github.com/RoboSense-LiDAR/rslidar_sdk.git ../rslidar_sdk || true &&
+git clone https://github.com/RoboSense-LiDAR/rslidar_msg.git ../rslidar_msg || true &&
+git clone https://github.com/cornellev/cev_msgs.git ../cev_msgs || true &&
+git clone https://github.com/cornellev/icp.git ../cev_icp || true 
+"""
+
+build-icp = """
+cd src/cev_icp
+make install LIB_INSTALL=$CONDA_PREFIX/lib HEADER_INSTALL=$CONDA_PREFIX/include
+"""
+
+pip-install = """
+pip install -r my_rosbag_reader/my_rosbag_reader/requirements.txt
+"""
+
+build-python = """
+cd my_rosbag_reader/my_rosbag_reader
+python setup.py build_ext --inplace
+"""
