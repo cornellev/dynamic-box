@@ -1,8 +1,11 @@
-# Use your base
-FROM nvcr.io/nvidia/isaac/ros:aarch64-ros2_humble_adc428c7077de4984a00b63c55903b0a
+FROM ros:humble-ros-base-jammy
 
 SHELL ["/bin/bash", "-lc"]
-ENV DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=Etc/UTC \
+    ROS_DISTRO=humble \
+    ROS_ROOT=/opt/ros/humble \
+    PYTHONDONTWRITEBYTECODE=1
 
 # ---- Tools you likely need (adjust as you like) ----
 RUN apt-get update && apt-get install --no-install-recommends -y \
