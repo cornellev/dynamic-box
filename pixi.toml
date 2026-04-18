@@ -5,10 +5,13 @@ channels = ["conda-forge"]
 platforms = ["linux-64"]
 
 [dependencies]
-python = "3.10"
-pip = "*"
+python = ">=3.10"
 setuptools = "*"
 wheel = "*"
+ninja = "*"
+empy = ">=3.3.4,<4"
+catkin_pkg = ">=1.1.0,<2"
+numpy = "*"
 
 # C++ build tools
 cmake = "*"
@@ -18,40 +21,42 @@ gxx = "*"
 
 # Core libs
 opencv = "*"
-open3d = "*"
 eigen = "*"
 yaml-cpp = "*"
 libpcap = "*"
+pcl = "*"
+spdlog = "*"
+console_bridge = "*"
 
-# Graphics (SDL + OpenGL equivalents)
+# Graphics
 sdl2 = "*"
 sdl2_image = "*"
-mesa-libgl-cos7-x86_64 = "*"
+libgl-devel = "*"
 
-# Python deps (move from requirements.txt ideally)
-numpy = "*"
-openssl = ">=3.6.2,<4"
-ca-certificates = ">=2026.2.25,<2027"
+# Python deps
+openssl = "*"
+ca-certificates = "*"
 
 [tasks]
+setup = { cmd = "bash -c 'sudo apt-get update && sudo apt-get install -y libopencv-dev libopen3d-dev ros-humble-pcl-ros libyaml-cpp-dev libpcap-dev libgl1-mesa-dev libsdl2-dev libsdl2-image-dev libboost-all-dev libpcl-dev'" }
 
-clone-deps = """
-git clone https://github.com/RoboSense-LiDAR/rslidar_sdk.git ../rslidar_sdk || true &&
-git clone https://github.com/RoboSense-LiDAR/rslidar_msg.git ../rslidar_msg || true &&
-git clone https://github.com/cornellev/cev_msgs.git ../cev_msgs || true &&
-git clone https://github.com/cornellev/icp.git ../cev_icp || true 
-"""
+build = { 
+  cmd = "bash -c 'source /opt/ros/humble/setup.bash && cd /home/dev/ws && colcon build'",
+  env = { CMAKE_PREFIX_PATH = "/opt/ros/humble:/usr" }
+}
 
-build-icp = """
-cd src/cev_icp
-make install LIB_INSTALL=$CONDA_PREFIX/lib HEADER_INSTALL=$CONDA_PREFIX/include
-"""
+build-obstacle = { 
+  cmd = "bash -c 'source /opt/ros/humble/setup.bash && cd /home/dev/ws && colcon build --packages-select obstacle'
+  && source install/setup.bash",
+  env = { CMAKE_PREFIX_PATH = "/opt/ros/humble:/usr" }
+}
 
-pip-install = """
-pip install -r my_rosbag_reader/my_rosbag_reader/requirements.txt
-"""
+pip-install = { cmd = "pip install -r my_rosbag_reader/my_rosbag_reader/requirements.txt" }
 
-build-python = """
-cd my_rosbag_reader/my_rosbag_reader
-python setup.py build_ext --inplace
-"""
+clone-deps = { cmd = """bash -c '
+  git clone https://github.com/RoboSense-LiDAR/rslidar_sdk.git /home/dev/ws/src/rslidar_sdk || true &&
+  cd /home/dev/ws/src/rslidar_sdk && git submodule init && git submodule update &&
+  git clone https://github.com/RoboSense-LiDAR/rslidar_msg.git /home/dev/ws/src/rslidar_msg || true &&
+  git clone https://github.com/cornellev/cev_msgs.git /home/dev/ws/src/cev_msgs || true &&
+  git clone --branch tmp_changes https://github.com/cornellev/Obstacle_node.git /home/dev/ws/src/Obstacle_node || true
+'""" }
