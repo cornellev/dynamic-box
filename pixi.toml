@@ -46,8 +46,7 @@ build = {
 }
 
 build-obstacle = { 
-  cmd = "bash -c 'source /opt/ros/humble/setup.bash && cd /home/dev/ws && colcon build --packages-select obstacle'
-  && source install/setup.bash",
+  cmd = "bash -c 'source /opt/ros/humble/setup.bash && cd /home/dev/ws && colcon build --packages-select obstacle && source install/setup.bash'",
   env = { CMAKE_PREFIX_PATH = "/opt/ros/humble:/usr" }
 }
 
@@ -60,3 +59,6 @@ clone-deps = { cmd = """bash -c '
   git clone https://github.com/cornellev/cev_msgs.git /home/dev/ws/src/cev_msgs || true &&
   git clone --branch tmp_changes https://github.com/cornellev/Obstacle_node.git /home/dev/ws/src/Obstacle_node || true
 '""" }
+
+[tasks.setup-all]
+depends-on = ["clone-deps", "pip-install", "build"]
